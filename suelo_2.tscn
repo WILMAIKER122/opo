@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://cyml8bh8bgern"]
+
+[ext_resource type="PackedScene" uid="uid://dxmojic84d3d0" path="res://suelo.blend" id="1_dtj0y"]
+[ext_resource type="PackedScene" uid="uid://bxrre7y2jtmwf" path="res://pj/character_pj.tscn" id="2_er1n8"]
+[ext_resource type="PackedScene" uid="uid://k3b0ckvjnsr8" path="res://enemi/enemi_prueba.tscn" id="3_er1n8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n2hkq"]
+size = Vector3(20.387726, 1, 1)
+
+[sub_resource type="Environment" id="Environment_26hbr"]
+
+[node name="suelo2" unique_id=1942572753 instance=ExtResource("1_dtj0y")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="1" unique_id=1493165016]
+transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2" unique_id=162464323]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1454099520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 0, 10.220448)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" index="1" unique_id=1934730079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 0, -10.093828)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" index="2" unique_id=1640536771]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.1074505, 0, -0.18724632)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D" index="3" unique_id=1917115821]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.037024, 0, -0.18724632)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="3" unique_id=864880606]
+environment = SubResource("Environment_26hbr")
+
+[node name="CharacterBody3D" parent="." index="4" unique_id=1556463437 instance=ExtResource("2_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7662838, 0)
+
+[node name="CharacterBody3D2" parent="." index="5" unique_id=43443851 instance=ExtResource("3_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.86122, 0.86521244, 0)
+
+[node name="PhantomCamera3D" parent="CharacterBody3D2" index="2" unique_id=2088072435 node_paths=PackedStringArray("follow_targets")]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 6.86122, 5.4670277, 6.7986355)
+follow_targets = [NodePath(".."), null]
+
+[editable path="CharacterBody3D2"]

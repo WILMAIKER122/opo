@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://k3b0ckvjnsr8"]
+
+[ext_resource type="Script" uid="uid://dh1bhkw84m7kg" path="res://enemi/enemi_prueba.gd" id="1_83rv6"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ix5yl"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_0bbhj"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_er1n8"]
+size = Vector3(7.478821, 2.6046143, 5.8310547)
+
+[sub_resource type="Resource" id="Resource_rkhdh"]
+script = ExtResource("3_0bbhj")
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=43443851]
+script = ExtResource("1_83rv6")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=928766475]
+shape = SubResource("CapsuleShape3D_n2hkq")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1735329413]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=712771397]
+shape = SubResource("BoxShape3D_er1n8")
+
+[node name="PhantomCamera3D" type="Node3D" parent="." unique_id=2088072435 node_paths=PackedStringArray("follow_targets")]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 4.601815, 6.7986355)
+top_level = true
+script = ExtResource("2_ix5yl")
+follow_mode = 3
+follow_targets = [NodePath(".."), null]
+tween_resource = SubResource("Resource_rkhdh")
+follow_offset = Vector3(0, 4, 6)
+align_transform_with_view = Callable()
+align_position_with_view = Callable()
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

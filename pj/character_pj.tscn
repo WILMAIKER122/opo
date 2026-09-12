@@ -1,0 +1,255 @@
+[gd_scene format=3 uid="uid://bxrre7y2jtmwf"]
+
+[ext_resource type="Script" uid="uid://b54h5rb3i54qr" path="res://pj/codigos/maquina_estados/character_estado.gd" id="1_637rf"]
+[ext_resource type="PackedScene" uid="uid://bspdh24iktu8u" path="res://pj/pj.tscn" id="1_pvnr6"]
+[ext_resource type="Resource" uid="uid://d80bky17w1sn" path="res://pj/archivos_stree/estadisticas_player.tres" id="2_v3rxr"]
+[ext_resource type="Script" uid="uid://bv4uw0fc47eew" path="res://pj/codigos/area_pj.gd" id="3_wis5t"]
+[ext_resource type="Script" uid="uid://ctjtbspo2kwve" path="res://pj/codigos/maquina_estados/maquina_estados.gd" id="4_637rf"]
+[ext_resource type="Script" uid="uid://bt6lpdwdu5w6d" path="res://pj/codigos/maquina_estados/estado_idle.gd" id="5_71acr"]
+[ext_resource type="Script" uid="uid://bugcnbh677rdk" path="res://pj/codigos/maquina_estados/estado_run.gd" id="6_ksono"]
+[ext_resource type="Script" uid="uid://jk0ra5hxkl3u" path="res://pj/codigos/maquina_estados/estado_dash.gd" id="7_yp2pw"]
+[ext_resource type="Script" uid="uid://c3tg2g4h7o5wp" path="res://pj/codigos/maquina_estados/estado_ataque.gd" id="8_mbfbu"]
+[ext_resource type="PackedScene" uid="uid://boghq7c8qbn5" path="res://pj/zeta.tscn" id="8_v3rxr"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_yp2pw"]
+[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="10_mbfbu"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="11_v3rxr"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gfbs8"]
+animation = &"ataque"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_v3rxr"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_wis5t"]
+graph_offset = Vector2(-359.92908, -5.526133)
+nodes/output/position = Vector2(426.66666, 106.666664)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_gfbs8")
+nodes/Animation/position = Vector2(-100, 100)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_v3rxr")
+nodes/TimeScale/position = Vector2(186.66667, 80)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"Animation"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_mbfbu"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_v3rxr"]
+animation = &"ataque2"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_5ntod"]
+nodes/output/position = Vector2(780, 20)
+nodes/ataque2/node = SubResource("AnimationNodeAnimation_v3rxr")
+nodes/ataque2/position = Vector2(0, 53.333332)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_mbfbu")
+nodes/TimeScale/position = Vector2(346.66666, 0)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"ataque2"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_lgry4"]
+animation = &"ataque3"
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_7mkal"]
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_dgug3"]
+graph_offset = Vector2(-17.985718, 67.955894)
+nodes/output/position = Vector2(666.6667, 160)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_7mkal")
+nodes/TimeScale/position = Vector2(395.26675, 150.84671)
+nodes/Animation/node = SubResource("AnimationNodeAnimation_lgry4")
+nodes/Animation/position = Vector2(109.706696, 160.52672)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"Animation"]
+
+[sub_resource type="AnimationNodeOneShot" id="AnimationNodeOneShot_gwkmd"]
+filters = ["esqueleto/Skeleton3D:pecho", "esqueleto/Skeleton3D:pie1_2", "esqueleto/Skeleton3D:pie2", "esqueleto/Skeleton3D:pinza1", "esqueleto/Skeleton3D:pinza2"]
+
+[sub_resource type="AnimationNodeTransition" id="AnimationNodeTransition_4ws18"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nh6f0"]
+animation = &"dash"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_n62ec"]
+graph_offset = Vector2(-325.68536, -2.2599487)
+nodes/dash/node = SubResource("AnimationNodeAnimation_nh6f0")
+nodes/dash/position = Vector2(-160, 20)
+nodes/Transition/node = SubResource("AnimationNodeTransition_4ws18")
+nodes/Transition/position = Vector2(-120, 200)
+nodes/OneShot/node = SubResource("AnimationNodeOneShot_gwkmd")
+nodes/OneShot/position = Vector2(80, 40)
+node_connections = [&"output", 0, &"OneShot", &"OneShot", 0, &"dash", &"OneShot", 1, &"Transition"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_pjk6a"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_hukvr"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_hmv1d"]
+graph_offset = Vector2(-281.76135, -5.526367)
+nodes/idle/node = SubResource("AnimationNodeAnimation_hukvr")
+nodes/idle/position = Vector2(-120, 100)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_pjk6a")
+nodes/TimeScale/position = Vector2(60, 80)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"idle"]
+
+[sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_usnrs"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_6quix"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_qj2nm"]
+graph_offset = Vector2(-220.59468, 31.189487)
+nodes/run/node = SubResource("AnimationNodeAnimation_6quix")
+nodes/run/position = Vector2(-40, 100)
+nodes/TimeScale/node = SubResource("AnimationNodeTimeScale_usnrs")
+nodes/TimeScale/position = Vector2(120, 80)
+node_connections = [&"output", 0, &"TimeScale", &"TimeScale", 0, &"run"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ufbhi"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fxa3b"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_do4sp"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_2amgh"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yfplh"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xqra2"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yfofg"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_d8yxj"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_s3hha"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dwtd0"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5a5pv"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_gi6j7"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_02xue"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_kfjfk"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_n62cq"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q1cyn"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0aj0y"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sdlxe"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xw2aq"]
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_t5qh0"]
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_n2hkq"]
+states/End/position = Vector2(1069.3334, 109.333336)
+states/Start/position = Vector2(192, 89)
+states/ataque/node = SubResource("AnimationNodeBlendTree_wis5t")
+states/ataque/position = Vector2(582.3333, 175.66667)
+states/ataque2/node = SubResource("AnimationNodeBlendTree_5ntod")
+states/ataque2/position = Vector2(770, 162.66667)
+states/ataque3/node = SubResource("AnimationNodeBlendTree_dgug3")
+states/ataque3/position = Vector2(662.6667, 89.44444)
+states/dash/node = SubResource("AnimationNodeBlendTree_n62ec")
+states/dash/position = Vector2(706.6667, -16)
+states/idle/node = SubResource("AnimationNodeBlendTree_hmv1d")
+states/idle/position = Vector2(337, 28)
+states/run/node = SubResource("AnimationNodeBlendTree_qj2nm")
+states/run/position = Vector2(323, 187)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_ufbhi"), "idle", "run", SubResource("AnimationNodeStateMachineTransition_fxa3b"), "idle", "dash", SubResource("AnimationNodeStateMachineTransition_do4sp"), "idle", "ataque", SubResource("AnimationNodeStateMachineTransition_2amgh"), "ataque", "idle", SubResource("AnimationNodeStateMachineTransition_yfplh"), "dash", "idle", SubResource("AnimationNodeStateMachineTransition_xqra2"), "run", "idle", SubResource("AnimationNodeStateMachineTransition_yfofg"), "run", "dash", SubResource("AnimationNodeStateMachineTransition_d8yxj"), "dash", "run", SubResource("AnimationNodeStateMachineTransition_s3hha"), "run", "ataque", SubResource("AnimationNodeStateMachineTransition_dwtd0"), "ataque", "run", SubResource("AnimationNodeStateMachineTransition_5a5pv"), "ataque", "ataque2", SubResource("AnimationNodeStateMachineTransition_gi6j7"), "ataque2", "ataque3", SubResource("AnimationNodeStateMachineTransition_02xue"), "ataque3", "ataque", SubResource("AnimationNodeStateMachineTransition_kfjfk"), "ataque2", "idle", SubResource("AnimationNodeStateMachineTransition_n62cq"), "ataque3", "idle", SubResource("AnimationNodeStateMachineTransition_q1cyn"), "ataque3", "run", SubResource("AnimationNodeStateMachineTransition_0aj0y"), "ataque2", "run", SubResource("AnimationNodeStateMachineTransition_sdlxe"), "ataque2", "dash", SubResource("AnimationNodeStateMachineTransition_xw2aq"), "ataque3", "dash", SubResource("AnimationNodeStateMachineTransition_t5qh0")]
+graph_offset = Vector2(206, -19)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_lgry4"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ffylk"]
+size = Vector3(1.5838623, 1.777832, 2.4294434)
+
+[sub_resource type="Resource" id="Resource_5ntod"]
+script = ExtResource("11_v3rxr")
+
+[node name="CharacterBody3D" type="CharacterBody3D" unique_id=1556463437]
+script = ExtResource("1_637rf")
+estadisticas = ExtResource("2_v3rxr")
+zeta_dejar = ExtResource("8_v3rxr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2060959599]
+shape = SubResource("CapsuleShape3D_n2hkq")
+
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=2000078994]
+root_node = NodePath("../pj")
+tree_root = SubResource("AnimationNodeStateMachine_n2hkq")
+anim_player = NodePath("../pj/AnimationPlayer")
+parameters/ataque/TimeScale/scale = 1.2000000000000028
+parameters/ataque2/TimeScale/scale = 1.0
+parameters/ataque3/TimeScale/scale = 2.5
+parameters/dash/Transition/current_state = ""
+parameters/dash/Transition/transition_request = ""
+parameters/dash/Transition/current_index = -1
+parameters/dash/OneShot/active = false
+parameters/dash/OneShot/internal_active = false
+parameters/dash/OneShot/request = 0
+parameters/idle/TimeScale/scale = 2.0
+parameters/run/TimeScale/scale = 1.0
+
+[node name="Area3D" type="Area3D" parent="." unique_id=60657654 node_paths=PackedStringArray("camara")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4678203, 0, 0)
+script = ExtResource("3_wis5t")
+camara = NodePath("../camara_pj")
+"TEMBLOR_HACER_DAÑO" = SubResource("FastNoiseLite_lgry4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1007182101]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45367432, 0.38891602, 0.092163086)
+shape = SubResource("BoxShape3D_ffylk")
+
+[node name="estados" type="Node" parent="." unique_id=662191899 node_paths=PackedStringArray("initial_state")]
+script = ExtResource("4_637rf")
+initial_state = NodePath("idle")
+
+[node name="idle" type="Node" parent="estados" unique_id=831303618]
+script = ExtResource("5_71acr")
+
+[node name="run" type="Node" parent="estados" unique_id=119023127]
+script = ExtResource("6_ksono")
+
+[node name="dash" type="Node" parent="estados" unique_id=1186762353 node_paths=PackedStringArray("personaje")]
+script = ExtResource("7_yp2pw")
+personaje = NodePath("../..")
+
+[node name="ataque" type="Node" parent="estados" unique_id=591799676]
+script = ExtResource("8_mbfbu")
+recoil_impulse = 8.0
+
+[node name="camaraprisipal" type="Camera3D" parent="." unique_id=666978458]
+physics_interpolation_mode = 1
+transform = Transform3D(1, 0, 0, 0, 0.7912235, 0.611527, 0, -0.611527, 0.7912235, 0, 4, 6)
+top_level = true
+size = 17.714
+near = 0.001
+
+[node name="PhantomCameraHost" type="Node" parent="camaraprisipal" unique_id=1404287025]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("9_yp2pw")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="camara_pj" type="Node3D" parent="." unique_id=909315240 node_paths=PackedStringArray("follow_target")]
+transform = Transform3D(1, 0, 0, 0, 0.7912221, 0.61152595, 0, -0.61152595, 0.7912221, 0, 4, 6)
+top_level = true
+script = ExtResource("10_mbfbu")
+priority = 1
+follow_mode = 2
+follow_target = NodePath("..")
+tween_resource = SubResource("Resource_5ntod")
+follow_offset = Vector3(0, 4, 6)
+follow_damping = true
+follow_damping_value = Vector3(0.2, 0.1, 0)
+draw_follow_line = true
+metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+
+[node name="pj" parent="." unique_id=1098280456 instance=ExtResource("1_pvnr6")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0.3144474, 0, 0)
+
+[connection signal="animation_finished" from="AnimationTree" to="estados/ataque" method="_on_animation_tree_animation_finished"]
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+
+[editable path="pj"]

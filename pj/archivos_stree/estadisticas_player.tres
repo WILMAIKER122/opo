@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="estadisticas_player" format=3 uid="uid://d80bky17w1sn"]
+
+[ext_resource type="Script" uid="uid://bbyyt0pp6xmw3" path="res://pj/codigos/estadisticas_base.gd" id="1_7o4bo"]
+
+[resource]
+script = ExtResource("1_7o4bo")
+vida = 100
+velocidad_max = 7.0
+aceleracion = 22.0
+dash_duraccion = 0.3
+dash_velociadad = 15.0
+dano = 10
+metadata/_custom_type_script = "uid://bbyyt0pp6xmw3"
