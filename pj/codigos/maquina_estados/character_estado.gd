@@ -6,6 +6,8 @@ extends CharacterBody3D
 @onready var playback: AnimationNodeStateMachinePlayback = anim_tree.get("parameters/playback")
 @onready var state_machine: StateMachine = $estados
 @export var zeta_dejar:PackedScene
+@onready var collision: CollisionShape3D = $CollisionShape3D
+@onready var area: Area3D = $Area3D
 
 
 const ROTATION_SPEED = 7.0
@@ -40,18 +42,24 @@ func handle_rotation(delta: float, direction: Vector3) -> void:
 	# Actualizamos el objetivo según la tecla que se presione
 	if Input.is_action_pressed("ui_left"):
 		target_scale_x = -1.0
-		$Area3D.position.x = -0.4
+		area.position.x = -0.4
+		collision.position.x = 0.05
+
 	elif Input.is_action_pressed("ui_right"):
 		target_scale_x = 1.0
-		$Area3D.position.x = 1.6
+		area.position.x = 1.6
+		collision.position.x = 0.55
 	# El personaje se sigue moviendo hacia el objetivo aunque ya no presiones la tecla
 	pj.scale.x = move_toward(pj.scale.x, target_scale_x, ROTATION_SPEED * delta)
+
 func zeta_func(valor:bool):
 	var var_zeta =$pj/esqueleto/Skeleton3D/zeta
 	if not var_zeta.visible:
-		$pj/esqueleto/Skeleton3D/zeta.visible = valor
+		var_zeta.visible = valor
 	else:
-		$pj/esqueleto/Skeleton3D/zeta.visible = valor
+		var_zeta.visible = valor
 		var instanciar_zeta = zeta_dejar.instantiate()
 		get_tree().current_scene.add_child(instanciar_zeta)
 		instanciar_zeta.global_position = global_position
+		instanciar_zeta.position.y -=0.8
+		return

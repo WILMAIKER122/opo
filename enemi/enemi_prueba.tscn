@@ -1,19 +1,24 @@
 [gd_scene format=3 uid="uid://k3b0ckvjnsr8"]
 
-[ext_resource type="Script" uid="uid://dh1bhkw84m7kg" path="res://enemi/enemi_prueba.gd" id="1_83rv6"]
-[ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="2_ix5yl"]
-[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_0bbhj"]
+[ext_resource type="Script" uid="uid://da0mk5o6x451r" path="res://enemi/codigo/Enemi.gd" id="1_t5i0v"]
+[ext_resource type="Resource" uid="uid://cl8b5kx6ep25e" path="res://enemi/archivos_stree/enemi_estadis.tres" id="2_t5i0v"]
+[ext_resource type="Script" uid="uid://b8ak835es6e34" path="res://enemi/codigo/estados/EstadoPatrullando.gd" id="3_4c3y3"]
+[ext_resource type="Script" uid="uid://c300svh56ii3r" path="res://enemi/codigo/estados/state_machine.gd" id="3_ix5yl"]
+[ext_resource type="Script" uid="uid://2cvouanttvex" path="res://enemi/codigo/estados/EstadoPersiguiendo.gd" id="4_72dk4"]
+[ext_resource type="Script" uid="uid://cl2eadbrgdo5c" path="res://enemi/codigo/estados/EstadoAtacando.gd" id="5_abgi2"]
+[ext_resource type="Script" uid="uid://pf0k1hsg23eu" path="res://enemi/codigo/estados/EstadoRecibiendoDanio.gd" id="6_liykn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_er1n8"]
 size = Vector3(7.478821, 2.6046143, 5.8310547)
 
-[sub_resource type="Resource" id="Resource_rkhdh"]
-script = ExtResource("3_0bbhj")
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_m4pfc"]
+height = 1.9638672
 
-[node name="CharacterBody3D" type="CharacterBody3D" unique_id=43443851]
-script = ExtResource("1_83rv6")
+[node name="enemigo" type="CharacterBody3D" unique_id=43443851]
+script = ExtResource("1_t5i0v")
+stats = ExtResource("2_t5i0v")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=928766475]
 shape = SubResource("CapsuleShape3D_n2hkq")
@@ -23,17 +28,33 @@ shape = SubResource("CapsuleShape3D_n2hkq")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=712771397]
 shape = SubResource("BoxShape3D_er1n8")
 
-[node name="PhantomCamera3D" type="Node3D" parent="." unique_id=2088072435 node_paths=PackedStringArray("follow_targets")]
-transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 4.601815, 6.7986355)
-top_level = true
-script = ExtResource("2_ix5yl")
-follow_mode = 3
-follow_targets = [NodePath(".."), null]
-tween_resource = SubResource("Resource_rkhdh")
-follow_offset = Vector3(0, 4, 6)
-align_transform_with_view = Callable()
-align_position_with_view = Callable()
-metadata/_custom_type_script = "uid://csjccrhj5wnx7"
+[node name="TimerPatrulla" type="Timer" parent="." unique_id=952809133]
+
+[node name="TimerAtaque" type="Timer" parent="." unique_id=1332560954]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1811091446]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00048828125, 0)
+mesh = SubResource("CapsuleMesh_m4pfc")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=1043990820]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2230388, 0)
+billboard = 1
+
+[node name="StateMachine" type="Node" parent="." unique_id=343609363 node_paths=PackedStringArray("estado_inicial")]
+script = ExtResource("3_ix5yl")
+estado_inicial = NodePath("Patrullando")
+
+[node name="Patrullando" type="Node" parent="StateMachine" unique_id=552653081]
+script = ExtResource("3_4c3y3")
+
+[node name="Persiguiendo" type="Node" parent="StateMachine" unique_id=1069061836]
+script = ExtResource("4_72dk4")
+
+[node name="Atacando" type="Node" parent="StateMachine" unique_id=405828845]
+script = ExtResource("5_abgi2")
+
+[node name="RecibiendoDanio" type="Node" parent="StateMachine" unique_id=1062377032]
+script = ExtResource("6_liykn")
 
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]

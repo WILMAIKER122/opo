@@ -162,42 +162,42 @@ albedo_texture = ExtResource("6_7l320")
 
 [node name="pj" unique_id=1098280456 instance=ExtResource("1_hgy7l")]
 
-[node name="ante_pinza" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="0" unique_id=1693686945]
+[node name="ante_pinza" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="0" unique_id=971175721]
 material_override = SubResource("StandardMaterial3D_jvm6u")
 material_overlay = SubResource("StandardMaterial3D_etmae")
 
-[node name="cuerpo" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="1" unique_id=2040363526]
+[node name="cuerpo" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="1" unique_id=1228726078]
 material_override = SubResource("StandardMaterial3D_5f2co")
 material_overlay = SubResource("StandardMaterial3D_hgy7l")
 
-[node name="mano1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="2" unique_id=11857729]
+[node name="mano1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="2" unique_id=1710956588]
 material_override = SubResource("StandardMaterial3D_qvf24")
 material_overlay = SubResource("StandardMaterial3D_io2iy")
 
-[node name="ojos" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="3" unique_id=1723487430]
+[node name="ojos" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="3" unique_id=1575206825]
 material_override = SubResource("StandardMaterial3D_oimw3")
 material_overlay = SubResource("StandardMaterial3D_fey8b")
 
-[node name="ojos1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="4" unique_id=1223920222]
+[node name="ojos1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="4" unique_id=130030883]
 material_override = SubResource("StandardMaterial3D_2kmqq")
 material_overlay = SubResource("StandardMaterial3D_3dhdc")
 
-[node name="pie" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="5" unique_id=79150605]
+[node name="pie" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="5" unique_id=77457068]
 material_override = SubResource("StandardMaterial3D_suves")
 material_overlay = SubResource("StandardMaterial3D_7j5af")
 
-[node name="pie1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="6" unique_id=615877742]
+[node name="pie1" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="6" unique_id=1548457407]
 material_override = SubResource("StandardMaterial3D_7vdtq")
 material_overlay = SubResource("StandardMaterial3D_px5lf")
 
-[node name="pinza" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="7" unique_id=541268722]
+[node name="pinza" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="7" unique_id=1792053160]
 material_override = SubResource("StandardMaterial3D_twyln")
 material_overlay = SubResource("StandardMaterial3D_nfsir")
 
-[node name="pinza_deo" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="8" unique_id=1098844710]
+[node name="pinza_deo" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="8" unique_id=113326320]
 material_override = SubResource("StandardMaterial3D_ogdpd")
 material_overlay = SubResource("StandardMaterial3D_dmmq7")
 
-[node name="zeta" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(2101288895) index="9" unique_id=318574448]
+[node name="zeta" parent="esqueleto/Skeleton3D" parent_id_path=PackedInt32Array(566356713) index="9" unique_id=439413609]
 material_override = SubResource("StandardMaterial3D_c1gl6")
 material_overlay = SubResource("StandardMaterial3D_ecnm2")

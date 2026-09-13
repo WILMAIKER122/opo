@@ -12,7 +12,10 @@ size = Vector3(20.387726, 1, 1)
 [node name="suelo2" unique_id=1942572753 instance=ExtResource("1_dtj0y")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="1" unique_id=1493165016]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+transform = Transform3D(0.9056995, -0.29975697, 0.29975688, 3.6897791e-09, 0.70710677, 0.70710677, -0.4239203, -0.6404264, 0.6404263, 0, 3.9299223, 0)
+light_energy = 0.656
+shadow_enabled = true
+shadow_opacity = 0.65
 
 [node name="StaticBody3D" type="StaticBody3D" parent="." index="2" unique_id=162464323]
 
@@ -38,11 +41,10 @@ environment = SubResource("Environment_26hbr")
 [node name="CharacterBody3D" parent="." index="4" unique_id=1556463437 instance=ExtResource("2_er1n8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7662838, 0)
 
-[node name="CharacterBody3D2" parent="." index="5" unique_id=43443851 instance=ExtResource("3_er1n8")]
+[node name="CharacterBody3D2" parent="." index="5" unique_id=43443851 node_paths=PackedStringArray("jugador") instance=ExtResource("3_er1n8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.86122, 0.86521244, 0)
+jugador = NodePath("../CharacterBody3D")
 
-[node name="PhantomCamera3D" parent="CharacterBody3D2" index="2" unique_id=2088072435 node_paths=PackedStringArray("follow_targets")]
-transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 6.86122, 5.4670277, 6.7986355)
-follow_targets = [NodePath(".."), null]
-
-[editable path="CharacterBody3D2"]
+[node name="enemigo" parent="." index="6" unique_id=341361106 node_paths=PackedStringArray("jugador") instance=ExtResource("3_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.8046665, 0.86521244, -4.5307055)
+jugador = NodePath("../CharacterBody3D")
