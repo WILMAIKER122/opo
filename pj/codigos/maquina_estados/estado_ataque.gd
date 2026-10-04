@@ -1,59 +1,87 @@
 extends State
 
 @export var combo_animations: Array[String] = ["ataque", "ataque2", "ataque3"]
+@onready var area: Area3D = $"../../Area3D"
+@onready var animation_tree: AnimationTree = $"../../AnimationTree"
 
 @export_group("Impulsos y Rotación")
-@export var attack_forward_impulse: float = 6.0   # Fuerza de avance al atacar
-@export var recoil_impulse: float = 5.0          # Fuerza de retroceso al golpear a un enemigo
-@export var attack_friction: float = 12.0        # Qué tan rápido se frena el impulso (fricción)
-@export var rotation_speed: float = 15.0         # Velocidad con la que rota/voltea el personaje
+@export var attack_forward_impulse: float = 6.0
+@export var moving_impulse_multiplier: float = 1.5
+@export var recoil_impulse: float = 5.0
+@export var attack_friction: float = 12.0
+@export var rotation_speed: float = 15.0
 
-# Variables de control del combo, cancelación y rotación
-var current_combo: int = 0         # Índice actual (0 = ataque, 1 = ataque2, 2 = ataque3)
+@export_group("Velocidad de Ataque")
+@export var reduccion_ultimo_ataque: float = 0.9  # diferencia mínima respecto a los demás golpes
+
+@export_group("Recuperación")
+@export var tiempo_recuperacion: float = 0.4  # segundos de "vulnerabilidad"/quietud tras el último golpe
+
+var current_combo: int = 0
 var combo_queued: bool = false
 var can_cancel: bool = false
 var hitbox_active: bool = false
-var can_dash_cancel: bool = true   # Permite cancelar con dash (antes de hitbox o en cancel window)
-var can_change_direction: bool = true # Permite cambiar de dirección solo antes de la hitbox
+var can_dash_cancel: bool = true
+var can_change_direction: bool = true
 
 var target_scale_x: float = 1.0
+var multiplicador_velocidad_actual: float = 1.0
 
+var en_recuperacion: bool = false
+var timer_recuperacion: float = 0.0
+
+var time_scale_base: Dictionary = {}
+
+func _ready() -> void:
+	for nombre_anim in combo_animations:
+		var ruta = "parameters/%s/TimeScale/scale" % nombre_anim
+		time_scale_base[nombre_anim] = animation_tree.get(ruta)
+		
 func enter() -> void:
 	print(current_combo)
-	# Reiniciamos banderas de control para este golpe
 	combo_queued = false
 	can_cancel = false
 	hitbox_active = false
 	can_dash_cancel = true
 	can_change_direction = true
+	en_recuperacion = false
+	character.estadisticas.hambre.gastar(character.estadisticas.hambre.costo_ataque)
+	multiplicador_velocidad_actual = _obtener_multiplicador_velocidad()
+	_aplicar_time_scale(multiplicador_velocidad_actual)
 	
-	# Reproduce la animación correspondiente al paso actual del combo
 	var current_anim = combo_animations[current_combo]
 	character.playback.start(current_anim)
-	
-	# Aplica el impulso hacia adelante en la dirección que mira el personaje actual
-	_apply_forward_impulse()
 
 func handle_input(event: InputEvent) -> void:
-	# 1. Cancelar con dash (tecla Z / acción "dash")
-	if event.is_action_pressed("z"):
+	if en_recuperacion:
+		return  # Durante la recuperación no se puede cancelar ni encadenar nada
+	
+	if event.is_action_pressed("x"):
 		if can_dash_cancel:
 			_reset_combo_state()
 			state_machine.transition_to("Dash")
 			return
 
-	# 2. Encadenar siguiente golpe de combo (tecla X)
-	if event.is_action_pressed("x"):
+	if event.is_action_pressed("z"):
 		combo_queued = true
 		if can_cancel:
 			_try_advance_combo()
 
 func update_physics(delta: float) -> void:
-	# Disminuye gradualmente la velocidad del impulso hasta frenar al personaje
-	character.velocity.x = lerp(character.velocity.x, 0.0, attack_friction * delta)
-	character.velocity.z = move_toward(character.velocity.z, 0.0, attack_friction * delta)
+	if en_recuperacion:
+		# Durante la recuperación el personaje queda quieto, sin input, hasta que termine el timer
+		character.velocity.x = lerp(character.velocity.x, 0.0, attack_friction * delta)
+		character.velocity.z = move_toward(character.velocity.z, 0.0, attack_friction * delta)
+		
+		timer_recuperacion += delta
+		if timer_recuperacion >= tiempo_recuperacion:
+			_finalizar_recuperacion()
+		return
 	
-	# Si la ventana de cancelación ya está abierta y el jugador intenta moverse -> Cancela a Run
+	var friccion_escalada = attack_friction * multiplicador_velocidad_actual
+	character.velocity.x = lerp(character.velocity.x, 0.0, friccion_escalada * delta)
+	character.velocity.z = move_toward(character.velocity.z, 0.0, friccion_escalada * delta)
+	
 	if can_cancel:
 		var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 		if input_dir != Vector2.ZERO:
@@ -61,21 +89,39 @@ func update_physics(delta: float) -> void:
 			state_machine.transition_to("Run")
 			return
 
-	# Si aún está permitida la rotación (antes de la hitbox), permite girar de forma suave
 	if can_change_direction and character.pj:
 		if Input.is_action_pressed("ui_left"):
 			target_scale_x = -1.0
-			$"../../Area3D".position.x = -0.4
+			area.position.x = -0.4
 			character.pj.scale.x = target_scale_x
 		elif Input.is_action_pressed("ui_right"):
 			target_scale_x = 1.0
-			$"../../Area3D".position.x = 1.6
+			area.position.x = 1.6
 			character.pj.scale.x = target_scale_x
 		else:
 			if character.pj.scale.x < 0.5:
-				$"../../Area3D".position.x = -0.4
+				area.position.x = -0.4
 			else:
-				$"../../Area3D".position.x = 1.6
+				area.position.x = 1.6
+
+# ==============================================================================
+# VELOCIDAD DE ATAQUE
+# ==============================================================================
+
+func _obtener_multiplicador_velocidad() -> float:
+	var vel_stat: float = character.estadisticas.velocidad_ataque
+	var es_ultimo_golpe: bool = current_combo == combo_animations.size() - 1
+	
+	if es_ultimo_golpe:
+		return 1.0 + (vel_stat - 1.0) * reduccion_ultimo_ataque
+	print("ultimo", vel_stat)
+	return vel_stat
+
+func _aplicar_time_scale(multiplicador: float) -> void:
+	var nombre_anim = combo_animations[current_combo]
+	var ruta_parametro = "parameters/%s/TimeScale/scale" % nombre_anim
+	var base = time_scale_base.get(nombre_anim, 1.0)
+	animation_tree.set(ruta_parametro, base * multiplicador)
 
 # ==============================================================================
 # MOVIMIENTO E IMPULSOS
@@ -83,8 +129,14 @@ func update_physics(delta: float) -> void:
 
 func _apply_forward_impulse() -> void:
 	var facing_dir := _get_facing_direction()
-	character.velocity.x = facing_dir.x * attack_forward_impulse
-	character.velocity.z = facing_dir.z * attack_forward_impulse
+	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	var final_impulse = attack_forward_impulse * multiplicador_velocidad_actual
+	if input_dir != Vector2.ZERO:
+		final_impulse *= moving_impulse_multiplier
+		
+	character.velocity.x = facing_dir.x * final_impulse
+	character.velocity.z = facing_dir.z * final_impulse
 
 func apply_recoil() -> void:
 	var facing_dir := _get_facing_direction()
@@ -97,24 +149,25 @@ func _get_facing_direction() -> Vector3:
 		return Vector3(dir_x, 0, 0)
 	return -character.transform.basis.z.normalized()
 
-
 # ==============================================================================
 # FUNCIONES LLAMADAS DESDE LA PISTA (CALL METHOD TRACK) EN GODOT
 # ==============================================================================
 
 func enable_hitbox() -> void:
-	hitbox_active = true
-	can_dash_cancel = false       # Se bloquea el dash durante el impacto activo
-	can_change_direction = false  # Se bloquea la rotación durante el impacto activo
-
-func disable_hitbox() -> void:
 	hitbox_active = false
-
+	area.activar_desactivar_area(hitbox_active)
+	can_dash_cancel = false
+	can_change_direction = false
+	_apply_forward_impulse()
+	
+func disable_hitbox() -> void:
+	hitbox_active = true
+	area.activar_desactivar_area(hitbox_active)
+	
 func open_cancel_window() -> void:
 	can_cancel = true
-	can_dash_cancel = true  # SE REHABILITA EL DASH para cancelar el fin del ataque
+	can_dash_cancel = true
 	
-	# Si ya se había presionado 'X' durante la hitbox, encadena el siguiente golpe de combo
 	if combo_queued:
 		_try_advance_combo()
 
@@ -133,8 +186,33 @@ func _reset_combo_state() -> void:
 	can_dash_cancel = false
 	can_change_direction = false
 	current_combo = 0
+	en_recuperacion = false
+	timer_recuperacion = 0.0
+	
+	for nombre_anim in combo_animations:
+		var ruta = "parameters/%s/TimeScale/scale" % nombre_anim
+		animation_tree.set(ruta, time_scale_base.get(nombre_anim, 1.0))
 
 func _exit_attack() -> void:
+	var es_ultimo_golpe: bool = current_combo == combo_animations.size() - 1
+	
+	if es_ultimo_golpe and not en_recuperacion:
+		# En vez de transicionar de inmediato, entra en fase de recuperación
+		en_recuperacion = true
+		timer_recuperacion = 0.0
+		can_cancel = false
+		can_dash_cancel = false
+		return
+	
+	_reset_combo_state()
+	
+	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	if input_dir != Vector2.ZERO:
+		state_machine.transition_to("Run")
+	else:
+		state_machine.transition_to("Idle")
+
+func _finalizar_recuperacion() -> void:
 	_reset_combo_state()
 	
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")

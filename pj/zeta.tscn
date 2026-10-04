@@ -3,6 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bnnw8abd2o0hv" path="res://pj/zeta.blend" id="1_e38qc"]
 [ext_resource type="Script" uid="uid://54gr5am22wae" path="res://pj/codigos/zeta.gd" id="2_igyj0"]
 [ext_resource type="Texture2D" uid="uid://dugffa7orfbnv" path="res://pj/sprites/pj_zeta.png" id="3_1egvu"]
+[ext_resource type="Resource" uid="uid://cvvbnimy5twnr" path="res://pj/archivos_stree/zetas/zetas_items/normal.tres" id="3_t4vfo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mbfbu"]
 transparency = 2
@@ -20,6 +21,7 @@ size = Vector3(0.8770752, 0.44580078, 0.18875122)
 [node name="zeta" unique_id=1208381324 instance=ExtResource("1_e38qc")]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
 script = ExtResource("2_igyj0")
+datos_zeta = ExtResource("3_t4vfo")
 
 [node name="Armature" parent="." index="0" unique_id=110734985]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)

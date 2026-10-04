@@ -1,238 +1,83 @@
 extends CharacterBody3D
 
+@export var partes: Array[Texture2D]
+@export var collection_delay: float = 0.5
+@export var magnet_speed: float = 12.0
 
-# --- RECURSO DE ESTADÍSTICAS ---
-@export var stats: EnemigoStats
+@export var rotation_speed: float = 2.5  
+@export var bob_amplitude: float = 0.15  
+@export var bob_speed: float = 4.0       
 
-# --- ESTADOS DEL ENEMIGO ---
-enum Estado {
-	PATRULLANDO,
-	PERSIGUIENDO,
-	ATACANDO,
-	RECIBIENDO_DANIO,
-	ESPERA
-}
+var player: Node3D = null
+var can_be_collected: bool = false
+var is_being_collected: bool = false
+var has_landed: bool = false
 
-var estado_actual: Estado = Estado.PATRULLANDO
-
-# --- VARIABLES DINÁMICAS ---
-var vida_actual: float
-
-# --- REFERENCIAS ---
-@export var jugador: CharacterBody3D
-
-var direccion_patrulla: Vector3 = Vector3.ZERO
-var punto_acecho_offset: Vector3 = Vector3.ZERO
-var direccion_embestida: Vector3 = Vector3.ZERO
-var vector_knockback: Vector3 = Vector3.ZERO # Fuerza actual de empuje
-
-var puede_atacar: bool = true
-var esta_estuneado: bool = false
+var initial_y_sprite: float = 0.0
+var time_passed: float = 0.0
 var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
+var fall_timer: float = 0.0  # Temporizador de seguridad
 
-# Nodos Hijos
-@onready var timer_patrulla: Timer = $TimerPatrulla
-@onready var timer_ataque: Timer = $TimerAtaque
-@onready var label: Label3D = $Label3D
-
+@onready var sprite: Sprite3D = $Sprite3D
+@onready var collection_area: Area3D = $Area3D
 
 func _ready() -> void:
-	# Si no se ha asignado un recurso desde el inspector, crea uno por defecto para evitar errores
-	if not stats:
-		stats = EnemigoStats.new()
+	if not partes.is_empty():
+		sprite.texture = partes[randi() % partes.size()]
+	
+	sprite.billboard = BaseMaterial3D.BILLBOARD_DISABLED
 
-	vida_actual = stats.vida_maxima
-	generar_nueva_direccion_patrulla()
-	timer_patrulla.timeout.connect(_on_timer_patrulla_timeout)
-	timer_ataque.timeout.connect(_on_timer_ataque_timeout)
-	timer_patrulla.start(randf_range(2.0, 4.0))
+	# Impulso inicial de salto al aparecer
+	velocity = Vector3(
+		randf_range(-2.5, 2.5),
+		randf_range(3.5, 5.5),
+		randf_range(-2.5, 2.5)
+	)
 
+	await get_tree().create_timer(collection_delay).timeout
+	can_be_collected = true
+	
+	if not collection_area.body_entered.is_connected(_on_player_entered):
+		collection_area.body_entered.connect(_on_player_entered)
 
 func _physics_process(delta: float) -> void:
-	# Aplica gravedad si está en el aire
-	label.text = str(vida_actual)
-	if not is_on_floor():
-		velocity.y -= gravity * delta
-
-	# Lógica por estado
-	match estado_actual:
-		Estado.PATRULLANDO:
-			_procesar_patrulla(delta)
-		Estado.PERSIGUIENDO:
-			_procesar_persecucion(delta)
-		Estado.ATACANDO:
-			_procesar_ataque(delta)
-		Estado.RECIBIENDO_DANIO:
-			_procesar_recibir_danio(delta)
-		Estado.ESPERA:
-			velocity.x = move_toward(velocity.x, 0, stats.velocidad_patrulla * delta)
-			velocity.z = move_toward(velocity.z, 0, stats.velocidad_patrulla * delta)
-
-	move_and_slide()
-
-
-# --- LÓGICA DE ESTADOS ---
-
-func _procesar_patrulla(_delta: float) -> void:
-	velocity.x = direccion_patrulla.x * stats.velocidad_patrulla
-	velocity.z = direccion_patrulla.z * stats.velocidad_patrulla
-	
-	if direccion_patrulla != Vector3.ZERO:
-		look_at(global_position + direccion_patrulla, Vector3.UP)
-
-
-func _procesar_persecucion(_delta: float) -> void:
-	if not is_instance_valid(jugador):
-		cambiar_estado(Estado.PATRULLANDO)
+	if is_being_collected and player:
+		velocity = Vector3.ZERO
+		global_position = global_position.move_toward(player.global_position, magnet_speed * delta)
+		
+		if global_position.distance_to(player.global_position) < 0.5:
+			_collect()
 		return
 
-	var objetivo_pos = jugador.global_position + punto_acecho_offset
-	var direccion = (objetivo_pos - global_position)
-	direccion.y = 0
-	
-	if direccion.length() > 0.5:
-		direccion = direccion.normalized()
-		velocity.x = direccion.x * stats.velocidad_persecucion
-		velocity.z = direccion.z * stats.velocidad_persecucion
-		look_at(jugador.global_position, Vector3.UP)
+	if not has_landed:
+		fall_timer += delta
+		
+		# Aplicar gravedad mientras cae
+		if not is_on_floor():
+			velocity.y -= gravity * delta
+		
+		move_and_slide()
+		
+		# CONDICIÓN DE ATERRIZAJE: 
+		# O toca el suelo normalmente, o si pasan más de 3 segundos y ya casi no se mueve, lo forzamos a aterrizar
+		if is_on_floor() or (fall_timer > 3.0 and abs(velocity.y) < 0.2):
+			velocity = Vector3.ZERO
+			has_landed = true
+			# Tomamos la posición Y exacta del sprite en el momento de tocar el suelo
+			initial_y_sprite = sprite.position.y
 	else:
-		_actualizar_punto_acecho()
-
-
-func _procesar_ataque(_delta: float) -> void:
-	velocity.x = direccion_embestida.x * stats.velocidad_embestida
-	velocity.z = direccion_embestida.z * stats.velocidad_embestida
-
-
-func _procesar_recibir_danio(delta: float) -> void:
-	# Reducimos progresivamente la velocidad del empuje (fricción)
-	vector_knockback = vector_knockback.move_toward(Vector3.ZERO, 30.0 * delta)
-	velocity.x = vector_knockback.x
-	velocity.z = vector_knockback.z
-
-
-func cambiar_estado(nuevo_estado: Estado) -> void:
-	# Si está estuneado o recibiendo daño, no permite cambiar de estado por detección de áreas
-	if estado_actual == Estado.RECIBIENDO_DANIO and nuevo_estado != Estado.PERSIGUIENDO and nuevo_estado != Estado.PATRULLANDO:
-		return
-
-	if estado_actual == nuevo_estado:
-		return
+		# Efecto estilo Minecraft (Girar y flotar desde su posición de suelo)
+		time_passed += delta
+		sprite.rotation.y += rotation_speed * delta
 		
-	estado_actual = nuevo_estado
-	
-	match estado_actual:
-		Estado.PATRULLANDO:
-			generar_nueva_direccion_patrulla()
-		Estado.PERSIGUIENDO:
-			_actualizar_punto_acecho()
-		Estado.ATACANDO:
-			_iniciar_secuencia_ataque()
+		var bob_offset = sin(time_passed * bob_speed) * bob_amplitude
+		sprite.position.y = initial_y_sprite + bob_offset
 
+func _on_player_entered(body: Node3D) -> void:
+	if can_be_collected and body.is_in_group("Player"):
+		player = body
+		is_being_collected = true
 
-# --- SISTEMA DE DAÑO, KNOCKBACK Y STUN ---
-
-func recibir_danio(cantidad_danio: float, origen_impacto: Vector3, fuerza_knockback: float = 10.0, duracion_stun: float = 0.3) -> void:
-	vida_actual -= cantidad_danio
-	
-	if vida_actual <= 0:
-		morir()
-		return
-
-	# Calculamos la dirección opuesta al punto desde donde fue atacado
-	var direccion_empuje = (global_position - origen_impacto)
-	direccion_empuje.y = 0 # Mantener el empuje en el plano horizontal
-	direccion_empuje = direccion_empuje.normalized()
-
-	# Asignamos la fuerza del knockback
-	vector_knockback = direccion_empuje * fuerza_knockback
-	
-	# Cambiamos al estado de recibir daño
-	estado_actual = Estado.RECIBIENDO_DANIO
-	
-	var tiempo_total_recuperacion = max(0.2, duracion_stun)
-	
-	await get_tree().create_timer(tiempo_total_recuperacion).timeout
-	
-	if vida_actual > 0:
-		if is_instance_valid(jugador):
-			cambiar_estado(Estado.PERSIGUIENDO)
-		else:
-			cambiar_estado(Estado.PATRULLANDO)
-
-
-func morir() -> void:
+func _collect() -> void:
+	print("¡Parte de enemigo recolectada!")
 	queue_free()
-
-
-# --- FUNCIONES AUXILIARES ---
-
-func generar_nueva_direccion_patrulla() -> void:
-	var angulo_aleatorio = randf_range(0, TAU)
-	direccion_patrulla = Vector3(cos(angulo_aleatorio), 0, sin(angulo_aleatorio)).normalized()
-
-
-func _actualizar_punto_acecho() -> void:
-	var angulo = randf_range(0, TAU)
-	punto_acecho_offset = Vector3(cos(angulo), 0, sin(angulo)) * stats.distancia_mantenida
-
-
-func _iniciar_secuencia_ataque() -> void:
-	if not is_instance_valid(jugador):
-		cambiar_estado(Estado.PATRULLANDO)
-		return
-
-	velocity = Vector3.ZERO
-	look_at(jugador.global_position, Vector3.UP)
-	
-	direccion_embestida = (jugador.global_position - global_position)
-	direccion_embestida.y = 0
-	direccion_embestida = direccion_embestida.normalized()
-
-	await get_tree().create_timer(0.3).timeout
-	
-	if estado_actual != Estado.ATACANDO:
-		return
-
-	await get_tree().create_timer(0.4).timeout
-	
-	puede_atacar = false
-	timer_ataque.start(stats.tiempo_cooldown_ataque)
-	
-	if estado_actual == Estado.ATACANDO:
-		cambiar_estado(Estado.PERSIGUIENDO)
-
-
-func _on_area_ataque_body_entered(body: Node3D) -> void:
-	if body == jugador and puede_atacar and estado_actual != Estado.RECIBIENDO_DANIO:
-		cambiar_estado(Estado.ATACANDO)
-
-
-# --- TIMERS ---
-
-func _on_timer_patrulla_timeout() -> void:
-	if estado_actual == Estado.PATRULLANDO:
-		if randf() > 0.5:
-			generar_nueva_direccion_patrulla()
-		else:
-			direccion_patrulla = Vector3.ZERO
-		
-		timer_patrulla.start(randf_range(2.0, 4.0))
-
-
-func _on_timer_ataque_timeout() -> void:
-	puede_atacar = true
-
-
-func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body is Player:
-		jugador = body as CharacterBody3D
-		if estado_actual != Estado.RECIBIENDO_DANIO:
-			cambiar_estado(Estado.PERSIGUIENDO)
-
-
-func _on_area_3d_body_exited(body: Node3D) -> void:
-	if body == jugador:
-		jugador = null
-		if estado_actual != Estado.RECIBIENDO_DANIO:
-			cambiar_estado(Estado.PATRULLANDO)

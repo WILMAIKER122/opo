@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="ZetaPasivaEfectosUnicos" format=3 uid="uid://b34f00foyc5tu"]
+
+[ext_resource type="Script" uid="uid://dbmouuybhahl0" path="res://pj/codigos/codigo_zeta/ZetaPasivaEfectosUnicos.gd" id="1_1saon"]
+
+[resource]
+script = ExtResource("1_1saon")
+probabilidad_curacion = 1.0
+cantidad_curacion = 10.0
+metadata/_custom_type_script = "uid://dbmouuybhahl0"

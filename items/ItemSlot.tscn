@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://b0gak08kw4rgs"]
+
+[ext_resource type="Script" uid="uid://d1fobqnwd8ogq" path="res://items/item_slot.gd" id="1_eeplt"]
+[ext_resource type="Texture2D" uid="uid://dosg2kfaoprt" path="res://pj/textures/zeta2.png" id="2_j6njs"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvm6u"]
+bg_color = Color(0.5173623, 0.49248487, 0.5409074, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.30415657, 0.017716387, 0.043025643, 1)
+border_blend = true
+
+[node name="Panel" type="Panel" unique_id=1990462360]
+custom_minimum_size = Vector2(64, 64)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_jvm6u")
+script = ExtResource("1_eeplt")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=987798247]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=829891718]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1720855888]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+horizontal_alignment = 2
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer" unique_id=1598816202]
+custom_minimum_size = Vector2(64, 32)
+layout_mode = 2
+size_flags_vertical = 3
+texture = ExtResource("2_j6njs")
+expand_mode = 2

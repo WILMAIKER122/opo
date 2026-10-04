@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://d36l4o7po0kqh"]
+
+[ext_resource type="Script" uid="uid://vknwnh5k1c08" path="res://enemi/codigo/partes_enemigo.gd" id="1_mhawh"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/itemsData.gd" id="2_3ymgn"]
+[ext_resource type="Texture2D" uid="uid://d3a6xodhsqgf3" path="res://enemi/escenas/pie.png" id="3_3ymgn"]
+[ext_resource type="Resource" uid="uid://xhmksoy3f6hc" path="res://items/partes/parte1.tres" id="3_mhawh"]
+[ext_resource type="Resource" uid="uid://5n36a6qkknl7" path="res://items/partes/parte2.tres" id="4_mhawh"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m4pfc"]
+size = Vector3(1, 0.1772461, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rmxef"]
+radius = 1.3545635
+
+[node name="partes_enemi" type="CharacterBody3D" unique_id=1604769491]
+collision_layer = 0
+script = ExtResource("1_mhawh")
+items_posibles = Array[ExtResource("2_3ymgn")]([ExtResource("3_mhawh"), ExtResource("4_mhawh")])
+bob_amplitude = 0.7
+min_height = 1.0
+
+[node name="Sprite3D" type="Sprite3D" parent="." unique_id=1257331202]
+transform = Transform3D(0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0.7104815, 0)
+texture = ExtResource("3_3ymgn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1216100417]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025855064, -0.012090504, 0)
+shape = SubResource("BoxShape3D_m4pfc")
+debug_color = Color(0.8899621, 0.64093494, 0.105624, 0.41960785)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=760911449]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1829161994]
+shape = SubResource("SphereShape3D_rmxef")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]

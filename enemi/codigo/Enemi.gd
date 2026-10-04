@@ -60,7 +60,13 @@ func recibir_danio(cantidad_danio: float, origen_impacto: Vector3, fuerza_knockb
 		estado_danio.aplicar_knockback(origen_impacto, fuerza_knockback, duracion_stun)
 
 
+@export var escena_parte_drop: PackedScene # Arrastra aquí la escena de tu Node3D
 func morir() -> void:
+	var cantidad = randi_range(1, 5)
+	for i in range(cantidad):
+		var nueva_pieza = escena_parte_drop.instantiate()
+		get_tree().current_scene.add_child(nueva_pieza)
+		nueva_pieza.global_position = global_position + Vector3(randf_range(-0.5, 0.5), 0.5, randf_range(-0.5, 0.5))
 	queue_free()
 
 

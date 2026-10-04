@@ -3,7 +3,7 @@ extends Area3D
 @export var camara:PhantomCamera3D
 const TEMBLOR_HACER_DAÑO = preload("uid://dlhtjgeccwn53")
 @onready var collision: CollisionShape3D = $CollisionShape3D
-
+@export var esta:CharacterBody3D
 var enemigos_detectados:int = 0
 func activar_desactivar_area(valor:bool):
 	collision.disabled = valor
@@ -17,7 +17,7 @@ func _on_body_entered(body: Node3D) -> void:
 			hacer_temblor(0.1)
 			attack_state.apply_recoil()			
 		if body.has_method("recibir_danio"):
-			body.recibir_danio(25, global_position, 15.0, 0.5)
+			body.recibir_danio(esta.estadisticas.dano, global_position, 5.0, 0.5)
 func hacer_temblor(duracion: float):
 	if not camara:
 		return

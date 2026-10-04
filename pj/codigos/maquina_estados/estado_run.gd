@@ -4,9 +4,9 @@ func enter() -> void:
 	character.playback.travel("run")
 
 func handle_input(event: InputEvent) -> void:
-	if event.is_action_pressed("x"):
+	if event.is_action_pressed("z"):
 		state_machine.transition_to("ataque")
-	elif event.is_action_pressed("z"):
+	elif event.is_action_pressed("x"):
 		state_machine.transition_to("Dash")
 
 func update_physics(delta: float) -> void:

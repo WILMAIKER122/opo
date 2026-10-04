@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://xhmksoy3f6hc"]
+
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/itemsData.gd" id="1_ab04n"]
+[ext_resource type="Texture2D" uid="uid://x6beopfpv3p6" path="res://pj/pj_zeta.png" id="1_sed87"]
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/datos_items/EfectoItem.gd" id="1_wlgyo"]
+[ext_resource type="Resource" uid="uid://srfjhnw05g42" path="res://items/partes/efectos/curacion.tres" id="2_b0hw8"]
+
+[sub_resource type="Resource" id="Resource_wlgyo"]
+script = ExtResource("1_wlgyo")
+tipo = 2
+valor = 100.0
+duracion = 2.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[resource]
+script = ExtResource("1_ab04n")
+nombre = "zeta"
+icono = ExtResource("1_sed87")
+tipo = 1
+efectos = Array[ExtResource("1_wlgyo")]([ExtResource("2_b0hw8"), SubResource("Resource_wlgyo")])
+tags = Array[int]([0])
+hambre_restaurada = 30.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

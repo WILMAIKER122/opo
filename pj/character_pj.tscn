@@ -11,8 +11,12 @@
 [ext_resource type="Script" uid="uid://c3tg2g4h7o5wp" path="res://pj/codigos/maquina_estados/estado_ataque.gd" id="8_mbfbu"]
 [ext_resource type="PackedScene" uid="uid://boghq7c8qbn5" path="res://pj/zeta.tscn" id="8_v3rxr"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_yp2pw"]
+[ext_resource type="Script" uid="uid://4nqwe84fh33c" path="res://pj/codigos/maquina_estados/comer_Estado.gd" id="10_lgry4"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="10_mbfbu"]
+[ext_resource type="PackedScene" uid="uid://4m6yv0c43njb" path="res://items/selecion.tscn" id="11_gi6j7"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="11_v3rxr"]
+[ext_resource type="Script" uid="uid://b2jg3ok1dgprm" path="res://pj/codigos/interfaz.gd" id="14_5ntod"]
+[ext_resource type="Script" uid="uid://b0vyr40kjadla" path="res://items/inventario_ui.gd" id="17_dgug3"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
 height = 1.217926
@@ -23,7 +27,7 @@ animation = &"ataque"
 [sub_resource type="AnimationNodeTimeScale" id="AnimationNodeTimeScale_v3rxr"]
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_wis5t"]
-graph_offset = Vector2(-359.92908, -5.526133)
+graph_offset = Vector2(-44, 31)
 nodes/output/position = Vector2(426.66666, 106.666664)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_gfbs8")
 nodes/Animation/position = Vector2(-100, 100)
@@ -173,6 +177,36 @@ script = ExtResource("11_v3rxr")
 [sub_resource type="BoxShape3D" id="BoxShape3D_8w0r3"]
 size = Vector3(16.057098, 1, 8.263229)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qnnmt"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Gradient" id="Gradient_dgug3"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_uhjsn"]
+gradient = SubResource("Gradient_dgug3")
+height = 24
+fill_from = Vector2(0, 1)
+
+[sub_resource type="Gradient" id="Gradient_gi6j7"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_1t0pk"]
+gradient = SubResource("Gradient_gi6j7")
+height = 24
+
+[sub_resource type="Gradient" id="Gradient_02xue"]
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_3y86k"]
+gradient = SubResource("Gradient_02xue")
+height = 24
+
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=1556463437]
 script = ExtResource("1_637rf")
 estadisticas = ExtResource("2_v3rxr")
@@ -186,7 +220,7 @@ shape = SubResource("CapsuleShape3D_n2hkq")
 root_node = NodePath("../pj")
 tree_root = SubResource("AnimationNodeStateMachine_n2hkq")
 anim_player = NodePath("../pj/AnimationPlayer")
-parameters/ataque/TimeScale/scale = 1.2000000000000028
+parameters/ataque/TimeScale/scale = 1.1000000000000014
 parameters/ataque2/TimeScale/scale = 2.0
 parameters/ataque3/TimeScale/scale = 3.0
 parameters/dash/Transition/current_state = ""
@@ -198,10 +232,11 @@ parameters/dash/OneShot/request = 0
 parameters/idle/TimeScale/scale = 2.0
 parameters/run/TimeScale/scale = 1.0
 
-[node name="Area3D" type="Area3D" parent="." unique_id=60657654 node_paths=PackedStringArray("camara")]
+[node name="Area3D" type="Area3D" parent="." unique_id=60657654 node_paths=PackedStringArray("camara", "esta")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.4678203, 0, 0)
 script = ExtResource("3_wis5t")
 camara = NodePath("../camapra_combate")
+esta = NodePath("..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1007182101]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.45367432, 0.38891602, 0.092163086)
@@ -224,7 +259,12 @@ personaje = NodePath("../..")
 
 [node name="ataque" type="Node" parent="estados" unique_id=591799676]
 script = ExtResource("8_mbfbu")
+attack_forward_impulse = 15.0
 recoil_impulse = 8.0
+
+[node name="comer" type="Node" parent="estados" unique_id=2087752172]
+script = ExtResource("10_lgry4")
+popup_scene = ExtResource("11_gi6j7")
 
 [node name="camaraprisipal" type="Camera3D" parent="." unique_id=666978458]
 physics_interpolation_mode = 1
@@ -278,6 +318,80 @@ metadata/_custom_type_script = "uid://csjccrhj5wnx7"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="area_camara_com" unique_id=538068211]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.010055542, 0, -0.0911026)
 shape = SubResource("BoxShape3D_8w0r3")
+
+[node name="Label3D" type="Label3D" parent="." unique_id=779084980]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0395324, 0)
+billboard = 1
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1919082960]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=337879677]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("14_5ntod")
+
+[node name="inventario" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1244463324 node_paths=PackedStringArray("player")]
+custom_minimum_size = Vector2(64, 64)
+clip_contents = true
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -103.0
+offset_top = -70.0
+offset_right = 103.0
+grow_horizontal = 2
+grow_vertical = 0
+offset_transform_visual_only = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_qnnmt")
+script = ExtResource("17_dgug3")
+player = NodePath("../../..")
+
+[node name="controlador" type="GridContainer" parent="CanvasLayer/Control/inventario" unique_id=88879952]
+layout_mode = 2
+columns = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/Control" unique_id=198483279]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_bottom = 51.0
+grow_horizontal = 0
+
+[node name="vida" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=1631658825]
+layout_mode = 2
+text = "vida"
+horizontal_alignment = 1
+
+[node name="vida2" type="TextureProgressBar" parent="CanvasLayer/Control/VBoxContainer" unique_id=1943843540]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+texture_under = SubResource("GradientTexture2D_uhjsn")
+texture_over = SubResource("GradientTexture2D_1t0pk")
+texture_progress = SubResource("GradientTexture2D_3y86k")
+tint_under = Color(0.6784314, 0, 0, 1)
+tint_over = Color(0.09781166, 0.18430138, 0.031358484, 1)
+
+[node name="hambre" type="Label" parent="CanvasLayer/Control/VBoxContainer" unique_id=298440001]
+layout_mode = 2
+text = "hambre"
+horizontal_alignment = 1
+
+[node name="hambre2" type="TextureProgressBar" parent="CanvasLayer/Control/VBoxContainer" unique_id=820770786]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+texture_under = SubResource("GradientTexture2D_uhjsn")
+texture_progress = SubResource("GradientTexture2D_3y86k")
+tint_under = Color(0.6784314, 0, 0, 1)
+tint_over = Color(0.09781166, 0.18430138, 0.031358484, 1)
 
 [connection signal="animation_finished" from="AnimationTree" to="estados/ataque" method="_on_animation_tree_animation_finished"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://k3b0ckvjnsr8" path="res://enemi/enemi_prueba.tscn" id="3_er1n8"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n2hkq"]
-size = Vector3(20.387726, 1, 1)
+size = Vector3(20.387726, 8.1979065, 1)
 
 [sub_resource type="Environment" id="Environment_26hbr"]
 
@@ -24,15 +24,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 0, 10.220448)
 shape = SubResource("BoxShape3D_n2hkq")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" index="1" unique_id=1934730079]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 0, -10.093828)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 1.208664, -10.093828)
 shape = SubResource("BoxShape3D_n2hkq")
 
 [node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" index="2" unique_id=1640536771]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.1074505, 0, -0.18724632)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.1074505, 1.0666199, -0.18724632)
 shape = SubResource("BoxShape3D_n2hkq")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D" index="3" unique_id=1917115821]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.037024, 0, -0.18724632)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.037024, 1.3236694, -0.18724632)
 shape = SubResource("BoxShape3D_n2hkq")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." index="3" unique_id=864880606]

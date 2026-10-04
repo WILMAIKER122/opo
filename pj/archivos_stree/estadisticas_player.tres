@@ -1,13 +1,41 @@
 [gd_resource type="Resource" script_class="estadisticas_player" format=3 uid="uid://d80bky17w1sn"]
 
-[ext_resource type="Script" uid="uid://bbyyt0pp6xmw3" path="res://pj/codigos/estadisticas_base.gd" id="1_7o4bo"]
+[ext_resource type="Script" uid="uid://bvvwvbdl5go4" path="res://pj/codigos/estadisticas/sistema_afinidad.gd" id="1_sjsp0"]
+[ext_resource type="Script" uid="uid://5uweiht38e06" path="res://pj/codigos/estadisticas/sistema_buffs.gd" id="2_vsmev"]
+[ext_resource type="Script" uid="uid://bpiddc08ttlh0" path="res://pj/codigos/estadisticas/sistema_mejoras_permanentes.gd" id="3_dtq2i"]
+[ext_resource type="Script" uid="uid://degm1ysnbk3p1" path="res://pj/codigos/estadisticas/sistema_hambre.gd" id="3_vsmev"]
+[ext_resource type="Script" uid="uid://bbyyt0pp6xmw3" path="res://pj/codigos/estadisticas/estadisticas_base.gd" id="4_d30sd"]
+[ext_resource type="Script" uid="uid://c0hx4tqsac2t6" path="res://pj/codigos/estadisticas/stats_base.gd" id="5_8hwby"]
+[ext_resource type="Resource" uid="uid://cvvbnimy5twnr" path="res://pj/archivos_stree/zetas/zetas_items/normal.tres" id="6_sjsp0"]
+
+[sub_resource type="Resource" id="Resource_n62cq"]
+script = ExtResource("1_sjsp0")
+metadata/_custom_type_script = "uid://bvvwvbdl5go4"
+
+[sub_resource type="Resource" id="Resource_kfjfk"]
+script = ExtResource("2_vsmev")
+metadata/_custom_type_script = "uid://5uweiht38e06"
+
+[sub_resource type="Resource" id="Resource_3vi8l"]
+script = ExtResource("3_vsmev")
+metadata/_custom_type_script = "uid://degm1ysnbk3p1"
+
+[sub_resource type="Resource" id="Resource_02xue"]
+script = ExtResource("3_dtq2i")
+metadata/_custom_type_script = "uid://bpiddc08ttlh0"
+
+[sub_resource type="Resource" id="Resource_gi6j7"]
+script = ExtResource("5_8hwby")
+velocidad_max_base = 7.0
+dash_velociadad_base = 30.0
+metadata/_custom_type_script = "uid://c0hx4tqsac2t6"
 
 [resource]
-script = ExtResource("1_7o4bo")
-vida = 100
-velocidad_max = 7.0
-aceleracion = 22.0
-dash_duraccion = 0.3
-dash_velociadad = 15.0
-dano = 10
+script = ExtResource("4_d30sd")
+stats = SubResource("Resource_gi6j7")
+mejoras_permanentes = SubResource("Resource_02xue")
+buffs = SubResource("Resource_kfjfk")
+afinidad = SubResource("Resource_n62cq")
+zeta_actual = ExtResource("6_sjsp0")
+hambre = SubResource("Resource_3vi8l")
 metadata/_custom_type_script = "uid://bbyyt0pp6xmw3"

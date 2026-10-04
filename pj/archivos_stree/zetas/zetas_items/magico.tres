@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="Zeta_datos" format=3 uid="uid://custue6v05y35"]
+
+[ext_resource type="Resource" uid="uid://b34f00foyc5tu" path="res://pj/archivos_stree/zetas/ZetaPasivaEfectosUnicos.tres" id="1_mvef0"]
+[ext_resource type="Script" uid="uid://dkw561d816t07" path="res://pj/codigos/codigo_zeta/ZetaPasivaEstadisticas.gd" id="2_mvef0"]
+[ext_resource type="Script" uid="uid://d2h87m4hkwehj" path="res://pj/codigos/codigo_zeta/MutacionPosible.gd" id="3_7p8ce"]
+[ext_resource type="Resource" uid="uid://cubujsrhcfssi" path="res://pj/archivos_stree/zetas/ZetaPasivaResistencias.tres" id="3_v4tuc"]
+[ext_resource type="Script" uid="uid://dk0pv6p57c1tn" path="res://pj/codigos/codigo_zeta/codigo_zeta.gd" id="4_eymrf"]
+[ext_resource type="Texture2D" uid="uid://dosg2kfaoprt" path="res://pj/textures/zeta2.png" id="5_mvef0"]
+
+[sub_resource type="Resource" id="Resource_7p8ce"]
+script = ExtResource("2_mvef0")
+bonus_vida_max = 111.0
+peso = 1.0
+bonus_fuerza_ataque = 333.0
+metadata/_custom_type_script = "uid://dkw561d816t07"
+
+[resource]
+script = ExtResource("4_eymrf")
+nombre = "magico"
+textura = ExtResource("5_mvef0")
+estadisticas = SubResource("Resource_7p8ce")
+resistencias = ExtResource("3_v4tuc")
+EfectosUnicos = ExtResource("1_mvef0")
+desbloqueada = true
+metadata/_custom_type_script = "uid://dk0pv6p57c1tn"

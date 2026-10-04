@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="Zeta_datos" format=3 uid="uid://cvvbnimy5twnr"]
+
+[ext_resource type="Script" uid="uid://dk0pv6p57c1tn" path="res://pj/codigos/codigo_zeta/codigo_zeta.gd" id="1_hswfb"]
+[ext_resource type="Resource" uid="uid://b34f00foyc5tu" path="res://pj/archivos_stree/zetas/ZetaPasivaEfectosUnicos.tres" id="1_lal1t"]
+[ext_resource type="Script" uid="uid://dkw561d816t07" path="res://pj/codigos/codigo_zeta/ZetaPasivaEstadisticas.gd" id="2_lal1t"]
+[ext_resource type="Resource" uid="uid://cubujsrhcfssi" path="res://pj/archivos_stree/zetas/ZetaPasivaResistencias.tres" id="3_fi2sn"]
+[ext_resource type="Script" uid="uid://d2h87m4hkwehj" path="res://pj/codigos/codigo_zeta/MutacionPosible.gd" id="3_n4v4h"]
+[ext_resource type="Resource" uid="uid://boyxb5xmb2ift" path="res://pj/archivos_stree/zetas/mutacion_posible.tres" id="4_2ksm6"]
+[ext_resource type="Texture2D" uid="uid://dhnt3x7h5hrqc" path="res://pj/textures/zeta.PNG" id="5_n4v4h"]
+
+[sub_resource type="Resource" id="Resource_wtwn7"]
+script = ExtResource("2_lal1t")
+bonus_vida_max = 30.0
+peso = 2.0
+bonus_fuerza_ataque = 30.0
+metadata/_custom_type_script = "uid://dkw561d816t07"
+
+[resource]
+script = ExtResource("1_hswfb")
+nombre = "normal"
+textura = ExtResource("5_n4v4h")
+estadisticas = SubResource("Resource_wtwn7")
+resistencias = ExtResource("3_fi2sn")
+EfectosUnicos = ExtResource("1_lal1t")
+gustos = Array[int]([0])
+odios = Array[int]([4])
+desbloqueada = true
+umbral_mutacion = 3
+posibles_mutaciones = Array[ExtResource("3_n4v4h")]([ExtResource("4_2ksm6")])
+metadata/_custom_type_script = "uid://dk0pv6p57c1tn"

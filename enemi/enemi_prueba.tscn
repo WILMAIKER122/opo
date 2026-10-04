@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://da0mk5o6x451r" path="res://enemi/codigo/Enemi.gd" id="1_t5i0v"]
 [ext_resource type="Resource" uid="uid://cl8b5kx6ep25e" path="res://enemi/archivos_stree/enemi_estadis.tres" id="2_t5i0v"]
 [ext_resource type="Script" uid="uid://b8ak835es6e34" path="res://enemi/codigo/estados/EstadoPatrullando.gd" id="3_4c3y3"]
+[ext_resource type="PackedScene" uid="uid://d36l4o7po0kqh" path="res://enemi/escenas/partes_enemigo.tscn" id="3_abgi2"]
 [ext_resource type="Script" uid="uid://c300svh56ii3r" path="res://enemi/codigo/estados/state_machine.gd" id="3_ix5yl"]
 [ext_resource type="Script" uid="uid://2cvouanttvex" path="res://enemi/codigo/estados/EstadoPersiguiendo.gd" id="4_72dk4"]
 [ext_resource type="Script" uid="uid://cl2eadbrgdo5c" path="res://enemi/codigo/estados/EstadoAtacando.gd" id="5_abgi2"]
@@ -19,6 +20,7 @@ height = 1.9638672
 [node name="enemigo" type="CharacterBody3D" unique_id=43443851]
 script = ExtResource("1_t5i0v")
 stats = ExtResource("2_t5i0v")
+escena_parte_drop = ExtResource("3_abgi2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=928766475]
 shape = SubResource("CapsuleShape3D_n2hkq")

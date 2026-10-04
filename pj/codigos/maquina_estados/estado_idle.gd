@@ -6,10 +6,12 @@ func enter() -> void:
 	character.velocity.z = 0.0
 
 func handle_input(event: InputEvent) -> void:
-	if event.is_action_pressed("x"):
+	if event.is_action_pressed("z"):
 		state_machine.transition_to("ataque")
-	elif event.is_action_pressed("z"):
+	elif event.is_action_pressed("x"):
 		state_machine.transition_to("Dash")
+	if event.is_action_pressed("comer"):
+		state_machine.transition_to("comer")
 
 func update_physics(delta: float) -> void:
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
