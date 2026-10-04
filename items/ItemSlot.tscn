@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://b0gak08kw4rgs"]
 
 [ext_resource type="Script" uid="uid://d1fobqnwd8ogq" path="res://items/item_slot.gd" id="1_eeplt"]
-[ext_resource type="Texture2D" uid="uid://dosg2kfaoprt" path="res://pj/textures/zeta2.png" id="2_j6njs"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvm6u"]
 bg_color = Color(0.5173623, 0.49248487, 0.5409074, 1)
@@ -41,5 +40,4 @@ text_overrun_behavior = 3
 custom_minimum_size = Vector2(64, 32)
 layout_mode = 2
 size_flags_vertical = 3
-texture = ExtResource("2_j6njs")
 expand_mode = 2

@@ -1,9 +1,12 @@
 extends Node
 
+signal inventario_base_actualizado
+
 const RUTA_BASE := "res://base.tscn"
 const RUTA_RUN := "res://suelo_2.tscn"
 const RUTA_GUARDADO := "res://base/datos_guardado.tres"
 
+@export var zeta_inicial: Zeta_datos   # Asignar en el Inspector la Zeta fija con la que siempre arranca una run
 
 var en_run: bool = false
 var vida_inicial_run: float = -1.0
@@ -14,14 +17,26 @@ var vida_inicial_run: float = -1.0
 var inventario_base: Dictionary = {}
 
 func _ready() -> void:
-	var escena_actual = get_tree().current_scene.scene_file_path
-	en_run = (escena_actual == RUTA_RUN)
-	print("CodigoGlobal iniciado. Escena actual: ", escena_actual, " | en_run: ", en_run)
-	
+	call_deferred("_actualizar_en_run_segun_escena")
 	cargar_partida()
+
+func _actualizar_en_run_segun_escena() -> void:
+	var escena_actual = get_tree().current_scene
+	
+	if escena_actual == null:
+		push_warning("CodigoGlobal: no se pudo determinar la escena actual al iniciar.")
+		return
+	
+	var es_base = escena_actual.has_meta("es_base") and escena_actual.get_meta("es_base") == true
+	en_run = not es_base
+	print("CodigoGlobal iniciado. Escena real: ", escena_actual.scene_file_path, " | ¿Es base?: ", es_base, " | en_run: ", en_run)
 
 func iniciar_run(estadisticas: estadisticas_player) -> void:
 	en_run = true
+	
+	if estadisticas.zeta_inicial:
+		estadisticas.cambiar_zeta(estadisticas.zeta_inicial)
+	estadisticas.con_zeta = true
 	
 	if estadisticas.hambre.esta_en_cero():
 		vida_inicial_run = estadisticas.stats.vida_base * penalizacion_vida_inicial
@@ -30,17 +45,20 @@ func iniciar_run(estadisticas: estadisticas_player) -> void:
 		vida_inicial_run = -1.0
 	
 	estadisticas.inventario.clear()
+	estadisticas.buffs.limpiar_run()
 	
 	get_tree().change_scene_to_file(RUTA_RUN)
-
+	
 func finalizar_run(estadisticas: estadisticas_player) -> void:
 	en_run = false
+	estadisticas.con_zeta = false
 	_transferir_inventario_a_base(estadisticas)
 	estadisticas.buffs.limpiar_run()
 	get_tree().change_scene_to_file(RUTA_BASE)
 
 func morir(estadisticas: estadisticas_player) -> void:
 	en_run = false
+	estadisticas.con_zeta = false
 	_aplicar_penalizacion_muerte(estadisticas)
 	_transferir_inventario_a_base(estadisticas)
 	estadisticas.buffs.limpiar_run()
@@ -70,6 +88,7 @@ func _transferir_inventario_a_base(estadisticas: estadisticas_player) -> void:
 	print("Inventario transferido a la base.")
 	
 	guardar_partida()
+	inventario_base_actualizado.emit()
 
 # ==============================================================================
 # GUARDADO Y CARGA
@@ -98,5 +117,6 @@ func cargar_partida() -> void:
 	if datos:
 		inventario_base = datos.inventario_base
 		print("Partida cargada. Items en inventario de base: ", inventario_base.size())
+		inventario_base_actualizado.emit()
 	else:
 		push_warning("No se pudo cargar el archivo de guardado.")

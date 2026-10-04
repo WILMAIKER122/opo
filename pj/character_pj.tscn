@@ -335,19 +335,21 @@ grow_vertical = 2
 script = ExtResource("14_5ntod")
 
 [node name="inventario" type="PanelContainer" parent="CanvasLayer/Control" unique_id=1244463324 node_paths=PackedStringArray("player")]
+visible = false
 custom_minimum_size = Vector2(64, 64)
 clip_contents = true
 layout_mode = 1
-anchors_preset = 7
+anchors_preset = 8
 anchor_left = 0.5
-anchor_top = 1.0
+anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -103.0
-offset_top = -70.0
-offset_right = 103.0
+anchor_bottom = 0.5
+offset_left = -293.0
+offset_top = -257.5
+offset_right = 293.0
+offset_bottom = 257.5
 grow_horizontal = 2
-grow_vertical = 0
+grow_vertical = 2
 offset_transform_visual_only = false
 theme_override_styles/panel = SubResource("StyleBoxFlat_qnnmt")
 script = ExtResource("17_dgug3")
@@ -393,9 +395,17 @@ texture_progress = SubResource("GradientTexture2D_3y86k")
 tint_under = Color(0.6784314, 0, 0, 1)
 tint_over = Color(0.09781166, 0.18430138, 0.031358484, 1)
 
+[node name="Button" type="Button" parent="CanvasLayer/Control" unique_id=2057168629]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
+focus_mode = 0
+text = "ver"
+
 [connection signal="animation_finished" from="AnimationTree" to="estados/ataque" method="_on_animation_tree_animation_finished"]
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
 [connection signal="body_entered" from="area_camara_com" to="Area3D" method="_on_area_camara_com_body_entered"]
 [connection signal="body_exited" from="area_camara_com" to="Area3D" method="_on_area_camara_com_body_exited"]
+[connection signal="pressed" from="CanvasLayer/Control/Button" to="CanvasLayer/Control" method="_on_button_pressed"]
 
 [editable path="pj"]

@@ -2,13 +2,23 @@
 
 [ext_resource type="PackedScene" uid="uid://dxmojic84d3d0" path="res://suelo.blend" id="1_8rhti"]
 [ext_resource type="PackedScene" uid="uid://bxrre7y2jtmwf" path="res://pj/character_pj.tscn" id="2_ohhpf"]
+[ext_resource type="Script" uid="uid://bedmcb4sqtlme" path="res://InventarioBaseUI.gd" id="3_8rhti"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n2hkq"]
 size = Vector3(20.387726, 8.1979065, 1)
 
 [sub_resource type="Environment" id="Environment_26hbr"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohhpf"]
+bg_color = Color(0.08158498, 0.33079898, 0.39911944, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
 [node name="suelo2" unique_id=1942572753 instance=ExtResource("1_8rhti")]
+metadata/es_base = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="1" unique_id=1493165016]
 transform = Transform3D(0.9056995, -0.29975697, 0.29975688, 3.6897791e-09, 0.70710677, 0.70710677, -0.4239203, -0.6404264, 0.6404263, 0, 3.9299223, 0)
@@ -39,3 +49,38 @@ environment = SubResource("Environment_26hbr")
 
 [node name="CharacterBody3D" parent="." index="4" unique_id=1556463437 instance=ExtResource("2_ohhpf")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7662838, 0)
+
+[node name="camaraprisipal" parent="CharacterBody3D" index="4" unique_id=666978458]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 6.368099, 6.7986355)
+
+[node name="camara_pj" parent="CharacterBody3D" index="5" unique_id=909315240]
+transform = Transform3D(1, 0, 0, 0, 0.7912221, 0.61152595, 0, -0.61152595, 0.7912221, 0, 5.766284, 6)
+
+[node name="camapra_combate" parent="CharacterBody3D" index="7" unique_id=443764553]
+transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 6.368099, 6.7986355)
+
+[node name="inventario" type="PanelContainer" parent="." index="5" unique_id=855862995]
+visible = false
+custom_minimum_size = Vector2(64, 64)
+clip_contents = true
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -293.0
+offset_top = -257.5
+offset_right = 293.0
+offset_bottom = 257.5
+grow_horizontal = 2
+grow_vertical = 2
+offset_transform_visual_only = false
+theme_override_styles/panel = SubResource("StyleBoxFlat_ohhpf")
+script = ExtResource("3_8rhti")
+
+[node name="controlador" type="GridContainer" parent="inventario" index="0" unique_id=1873834429]
+layout_mode = 2
+columns = 3
+
+[editable path="CharacterBody3D"]
+[editable path="CharacterBody3D/pj"]

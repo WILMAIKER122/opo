@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d36l4o7po0kqh"]
 
 [ext_resource type="Script" uid="uid://vknwnh5k1c08" path="res://enemi/codigo/partes_enemigo.gd" id="1_mhawh"]
-[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/itemsData.gd" id="2_3ymgn"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/datos_items/itemsData.gd" id="2_3ymgn"]
 [ext_resource type="Texture2D" uid="uid://d3a6xodhsqgf3" path="res://enemi/escenas/pie.png" id="3_3ymgn"]
 [ext_resource type="Resource" uid="uid://xhmksoy3f6hc" path="res://items/partes/parte1.tres" id="3_mhawh"]
 [ext_resource type="Resource" uid="uid://5n36a6qkknl7" path="res://items/partes/parte2.tres" id="4_mhawh"]

@@ -13,7 +13,7 @@ var tiempo_dash_disponible: int = 1
 
 @export var mutaciones: SistemaMutaciones
 @export var hambre: SistemaHambre
-
+@export var zeta_inicial: Zeta_datos
 func _init() -> void:
 	if not stats: stats = StatsBase.new()
 	if not mejoras_permanentes: mejoras_permanentes = SistemaMejorasPermanentes.new()
@@ -28,33 +28,57 @@ func inicializar() -> void:
 # ==============================================================================
 # STATS CALCULADOS (reemplazan a las variables sueltas de antes)
 # ==============================================================================
+func _en_base() -> bool:
+	var escena_actual = Engine.get_main_loop().current_scene
+	if escena_actual == null:
+		return false
+	return escena_actual.has_meta("es_base") and escena_actual.get_meta("es_base") == true
 
 var vida: float:
-	get: return _calcular("vida", stats.vida_base) + _bonus_zeta_vida()
+	get:
+		if _en_base():
+			return stats.vida_base
+		return _calcular("vida", stats.vida_base) + _bonus_zeta_vida()
 
 var velocidad_max: float:
-	get: return _calcular("velocidad_max", stats.velocidad_max_base) - _bonus_zeta_peso()
+	get:
+		if _en_base():
+			return stats.velocidad_max_base
+		return _calcular("velocidad_max", stats.velocidad_max_base) - _bonus_zeta_peso()
 
 var aceleracion: float:
-	get: return _calcular("aceleracion", stats.aceleracion_base)
+	get:
+		if _en_base():
+			return stats.aceleracion_base
+		return _calcular("aceleracion", stats.aceleracion_base)
 
 var dash_duraccion: float:
-	get: return _calcular("dash_duraccion", stats.dash_duraccion_base)
+	get:
+		if _en_base():
+			return stats.dash_duraccion_base
+		return _calcular("dash_duraccion", stats.dash_duraccion_base)
 
 var dash_velociadad: float:
-	get: return _calcular("dash_velociadad", stats.dash_velociadad_base)
+	get:
+		if _en_base():
+			return stats.dash_velociadad_base
+		return _calcular("dash_velociadad", stats.dash_velociadad_base)
 
 var dano: float:
 	get:
+		if _en_base():
+			return stats.dano_base
 		var valor = _calcular("dano", stats.dano_base) + _bonus_zeta_fuerza()
 		if hambre.esta_en_cero():
 			valor *= (1.0 - hambre.reduccion_dano_hambre_cero / 100.0)
 		return valor
 
 var velocidad_ataque: float:
-	get: return _calcular("velocidad_ataque", stats.velocidad_ataque_base)
-
-
+	get:
+		if _en_base():
+			return stats.velocidad_ataque_base
+		return _calcular("velocidad_ataque", stats.velocidad_ataque_base)
+		
 func _calcular(nombre_stat: String, base: float) -> float:
 	var flat = mejoras_permanentes.bonus_flat(nombre_stat) + buffs.bonus_flat(nombre_stat)
 	var porcentaje = mejoras_permanentes.bonus_porcentaje(nombre_stat) + buffs.bonus_porcentaje(nombre_stat)

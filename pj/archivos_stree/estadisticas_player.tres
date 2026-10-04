@@ -38,4 +38,5 @@ buffs = SubResource("Resource_kfjfk")
 afinidad = SubResource("Resource_n62cq")
 zeta_actual = ExtResource("6_sjsp0")
 hambre = SubResource("Resource_3vi8l")
+zeta_inicial = ExtResource("6_sjsp0")
 metadata/_custom_type_script = "uid://bbyyt0pp6xmw3"
