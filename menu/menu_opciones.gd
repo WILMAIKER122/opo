@@ -1,11 +1,18 @@
 extends Control
 ## Menú de Pausa: Volver al juego / Opciones / Menú Principal / Salir.
 ## Se maneja solo con teclado o mando (el foco de los botones hace todo el trabajo).
+##
+## Se abre con MenuManager.open_menu("pausa", <ruta de esta escena>, true) y se cierra SIEMPRE
+## a través de MenuManager.close_current_menu(): así el gestor queda libre y se pueden abrir
+## otros menús (comer, cocinar...) después de pausar.
 
 ## Escena del menú principal (para volver desde la pausa)
-@export_file("*.tscn") var escena_menu_principal: String = "res://menu_principal.tscn"
+@export_file("*.tscn") var escena_menu_principal: String = "res://menu/menu_principal.tscn"
 
 const RUTA_OPCIONES := "user://opciones.cfg"
+
+# Frame en que se abrió el menú: el Esc que lo abre NO tiene que cerrarlo en ese mismo frame
+var _frame_apertura: int = -1
 
 @onready var panel_menu: Control = $PanelMenu
 @onready var panel_opciones: Control = $PanelOpciones
@@ -19,8 +26,9 @@ const RUTA_OPCIONES := "user://opciones.cfg"
 
 
 func _ready() -> void:
-	# IMPORTANTE: Este menú debe seguir procesándose aunque el juego esté en pausa
-	process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	# ALWAYS (no WHEN_PAUSED): tiene que responder tanto en pausa como con el juego corriendo
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	_frame_apertura = Engine.get_process_frames()
 
 	boton_volver_juego.pressed.connect(_reanudar_juego)
 	boton_opciones.pressed.connect(_abrir_opciones)
@@ -38,43 +46,49 @@ func _ready() -> void:
 	if OS.has_feature("web"):
 		boton_salir.hide()
 
-	# Configurar bucle de foco para los botones del menú de pausa
-	var botones_visibles = [boton_volver_juego, boton_opciones, boton_menu_principal]
+	# Foco en bucle entre los botones del menú de pausa
+	var botones_visibles: Array[Button] = [boton_volver_juego, boton_opciones, boton_menu_principal]
 	if boton_salir.visible:
 		botones_visibles.append(boton_salir)
-	
 	var primero: Button = botones_visibles[0]
 	var ultimo: Button = botones_visibles[botones_visibles.size() - 1]
-	
 	primero.focus_neighbor_top = primero.get_path_to(ultimo)
 	ultimo.focus_neighbor_bottom = ultimo.get_path_to(primero)
 
 	_cargar_opciones()
-	
-	# Al empezar la partida, el menú de pausa arranca oculto y el juego corriendo
-	hide()
-	get_tree().paused = false
+
+	# Abierto por MenuManager: se muestra directo y es el gestor quien maneja la pausa.
+	# Si en cambio es un nodo fijo en la escena (sin gestor), arranca oculto y con el juego corriendo.
+	if MenuManager.get_current_menu() == self:
+		_mostrar_menu(boton_volver_juego)
+	else:
+		hide()
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Tecla Escape / Pausa para abrir o cerrar el menú de pausa
-	if event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		
-		if visible:
-			# Si estamos en opciones dentro del menú, primero cerramos opciones
-			if panel_opciones.visible:
-				_cerrar_opciones()
-			else:
-				_reanudar_juego()
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	# El mismo Esc que abrió el menú llega acá en el mismo frame: se ignora
+	if Engine.get_process_frames() == _frame_apertura:
+		return
+	get_viewport().set_input_as_handled()
+
+	if visible:
+		# Dentro de Opciones, Esc primero cierra Opciones
+		if panel_opciones.visible:
+			_cerrar_opciones()
 		else:
-			_pausar_juego()
+			_reanudar_juego()
+	elif MenuManager.get_current_menu() != self:
+		# Solo en el modo "nodo fijo": Esc lo abre
+		_pausar_juego()
 
 
 # ==============================================================================
 # CONTROL DE PAUSA
 # ==============================================================================
 
+## Solo para el modo "nodo fijo" (sin MenuManager)
 func _pausar_juego() -> void:
 	show()
 	get_tree().paused = true
@@ -82,8 +96,12 @@ func _pausar_juego() -> void:
 
 
 func _reanudar_juego() -> void:
-	hide()
-	get_tree().paused = false
+	if MenuManager.get_current_menu() == self:
+		# El gestor libera el menú y quita la pausa (si la puso él)
+		MenuManager.close_current_menu({"accion": "reanudar"})
+	else:
+		hide()
+		get_tree().paused = false
 
 
 # ==============================================================================
@@ -108,15 +126,17 @@ func _cerrar_opciones() -> void:
 
 
 func _al_menu_principal() -> void:
-	# Despausamos ANTES de cambiar de escena para evitar bloqueos
-	get_tree().paused = false
-	
-	# Usamos tu función global para cambiar de escena y verificar el estado
+	# Primero se libera el gestor (y se quita la pausa) y DESPUÉS se cambia de escena
+	if MenuManager.get_current_menu() == self:
+		MenuManager.close_current_menu({"accion": "menu_principal"})
+	else:
+		get_tree().paused = false
+
 	if CodigoGlobal.has_method("cambiar_escena"):
 		CodigoGlobal.cambiar_escena(escena_menu_principal)
 	else:
 		get_tree().change_scene_to_file(escena_menu_principal)
-	MenuManager.close_current_menu()
+
 
 func _al_salir() -> void:
 	get_tree().quit()

@@ -39,6 +39,7 @@ func _process(_delta: float) -> void:
 ## Abre un menú. Retorna true si se abrió con éxito, false si ya había uno abierto o falló.
 ## datos: se le pasan al menú mediante su método configurar(datos), si lo tiene.
 func open_menu(menu_name: String, menu_scene_path: String, pause_game: bool = true, datos: Dictionary = {}) -> bool:
+	_limpiar_si_obsoleto()
 	if current_menu != null:
 		print("MenuManager: Ya hay un menú abierto ('%s')." % current_menu_name)
 		return false
@@ -106,4 +107,19 @@ func close_current_menu(resultado: Dictionary = {}) -> void:
 
 
 func is_menu_open() -> bool:
-	return current_menu != null and is_instance_valid(current_menu)
+	_limpiar_si_obsoleto()
+	return current_menu != null
+
+
+## Red de seguridad: si un menú se ocultó o se liberó SIN pasar por close_current_menu(),
+## el gestor quedaría "ocupado" para siempre y no dejaría abrir ningún otro. Acá se detecta
+## ese caso y se limpia (quitando también la pausa si la había puesto el gestor).
+func _limpiar_si_obsoleto() -> void:
+	if current_menu == null:
+		return
+	var obsoleto := not is_instance_valid(current_menu) or not current_menu.is_inside_tree()
+	if not obsoleto and current_menu is CanvasItem and not (current_menu as CanvasItem).visible:
+		obsoleto = true # un menú oculto ya no está abierto
+	if obsoleto:
+		push_warning("MenuManager: el menú '%s' quedó oculto/liberado sin cerrarse bien; se limpia." % current_menu_name)
+		close_current_menu({"accion": "cancelar"})
