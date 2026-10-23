@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ZetaPasivaEstadisticas" format=3 uid="uid://bfnsibnrndu7t"]
 
-[ext_resource type="Script" uid="uid://dkw561d816t07" path="res://pj/codigos/codigo_zeta/ZetaPasivaEstadisticas.gd" id="1_p54to"]
+[ext_resource type="Script" uid="uid://dkw561d816t07" path="res://pj/codigos/zeta/ZetaPasivaEstadisticas.gd" id="1_p54to"]
 
 [resource]
 script = ExtResource("1_p54to")

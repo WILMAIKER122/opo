@@ -19,7 +19,7 @@ func actualizar_fisicas(_delta: float) -> void:
 		direccion = direccion.normalized()
 		enemigo.velocity.x = direccion.x * enemigo.stats.velocidad_persecucion
 		enemigo.velocity.z = direccion.z * enemigo.stats.velocidad_persecucion
-		enemigo.look_at(enemigo.jugador.global_position, Vector3.UP)
+		enemigo.mirar_hacia(enemigo.jugador.global_position.x - enemigo.global_position.x)
 	else:
 		_actualizar_punto_acecho()
 

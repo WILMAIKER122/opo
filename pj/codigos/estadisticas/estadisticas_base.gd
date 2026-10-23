@@ -14,6 +14,9 @@ var tiempo_dash_disponible: int = 1
 @export var mutaciones: SistemaMutaciones
 @export var hambre: SistemaHambre
 @export var zeta_inicial: Zeta_datos
+
+@export var sinergias: SistemaSinergias = SistemaSinergias.new()
+
 func _init() -> void:
 	if not stats: stats = StatsBase.new()
 	if not mejoras_permanentes: mejoras_permanentes = SistemaMejorasPermanentes.new()
@@ -172,17 +175,22 @@ func aplicar_efecto(efecto: EfectoItem) -> void:
 	emit_changed()
 
 func comer_item(item: ItemData, veces: int) -> void:
+	var en_base := _en_base()
 	for i in veces:
-		for efecto in item.efectos:
-			aplicar_efecto(efecto)
+		if not en_base:
+			for efecto in item.efectos:
+				aplicar_efecto(efecto)
 		afinidad.registrar_comida(item, zeta_actual)
 		hambre.comer(item.hambre_restaurada)
-		
 		var nueva_zeta = mutaciones.registrar_comida(item, zeta_actual)
 		if nueva_zeta:
 			self.zeta_actual = nueva_zeta
 			print("¡La Zeta mutó a: ", nueva_zeta.nombre, "!")
-	
+
+	if not en_base:
+		for s in sinergias.registrar_comida(item, veces):
+			_aplicar_sinergia(s)
+
 	emit_changed()
 # ==============================================================================
 # CICLO DE RUN
@@ -196,7 +204,41 @@ func actualizar(delta: float, en_run: bool) -> void:
 	if dano_hambre > 0.0:
 		buffs.agregar_buff("vida", -dano_hambre, false, -1.0)
 		emit_changed()
-		
+	sinergias.actualizar(delta)	
 func terminar_run() -> void:
 	buffs.limpiar_run()
 	emit_changed()
+
+func _aplicar_sinergia(s: SinergiaSabor) -> void:
+	for efecto in s.efectos_stats:
+		if efecto == null:
+			continue
+		var copia := efecto.duplicate() as EfectoItem
+		if copia.duracion != 0.0: # los instantáneos (curación) quedan como están
+			copia.duracion = s.duracion_segundos
+		aplicar_efecto(copia)
+	print("¡Sinergia activada!: ", s.nombre)
+
+func recibir_dano(cantidad: float) -> void:
+	if cantidad <= 0.0:
+		return
+	buffs.agregar_buff("vida", -cantidad, false, -1.0)
+	emit_changed()
+
+func curar(cantidad: float) -> void:
+	if cantidad <= 0.0:
+		return
+	buffs.agregar_buff("vida", cantidad, false, -1.0)
+	emit_changed()
+
+## Inventario desde el que se come: el de la base si estás en la base, si no el de la run
+func obtener_inventario_activo() -> Dictionary:
+	if _en_base():
+		return CodigoGlobal.inventario_base
+	return inventario
+
+func quitar_item_activo(clave: String, cantidad_a_quitar: int) -> void:
+	if _en_base():
+		CodigoGlobal.quitar_item_base(clave, cantidad_a_quitar)
+	else:
+		quitar_item(clave, cantidad_a_quitar)

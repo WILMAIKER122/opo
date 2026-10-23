@@ -1,10 +1,52 @@
 [gd_scene format=3 uid="uid://d36l4o7po0kqh"]
 
 [ext_resource type="Script" uid="uid://vknwnh5k1c08" path="res://enemi/codigo/partes_enemigo.gd" id="1_mhawh"]
-[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/datos_items/itemsData.gd" id="2_3ymgn"]
-[ext_resource type="Texture2D" uid="uid://d3a6xodhsqgf3" path="res://enemi/escenas/pie.png" id="3_3ymgn"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_3ymgn"]
+[ext_resource type="Texture2D" uid="uid://d3a6xodhsqgf3" path="res://enemi/texturas/pie.png" id="3_3ymgn"]
 [ext_resource type="Resource" uid="uid://xhmksoy3f6hc" path="res://items/partes/parte1.tres" id="3_mhawh"]
 [ext_resource type="Resource" uid="uid://5n36a6qkknl7" path="res://items/partes/parte2.tres" id="4_mhawh"]
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="5_um8rl"]
+[ext_resource type="Texture2D" uid="uid://bewjhs4vhu6d2" path="res://pj/pj_mano.png" id="6_mioh1"]
+[ext_resource type="Texture2D" uid="uid://d2jhyxkpay3x3" path="res://pj/modelos/texturas/pie.PNG" id="7_o2x5a"]
+[ext_resource type="Texture2D" uid="uid://bpq22six45lto" path="res://pj/pj_cuerpo.png" id="8_qyynl"]
+
+[sub_resource type="Resource" id="Resource_6im6t"]
+script = ExtResource("5_um8rl")
+tipo = 2
+valor = -40.0
+es_porcentaje = true
+duracion = 60.0
+probabilidad = 0.463
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_f3sa5"]
+script = ExtResource("2_3ymgn")
+nombre = "pinsa"
+icono = ExtResource("6_mioh1")
+tipo = 1
+efectos = Array[ExtResource("5_um8rl")]([SubResource("Resource_6im6t")])
+tags = Array[int]([1])
+rareza = 1
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_wlgyo"]
+script = ExtResource("2_3ymgn")
+nombre = "pata"
+icono = ExtResource("7_o2x5a")
+tags = Array[int]([1])
+rareza = 1
+hambre_restaurada = 10.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_b0hw8"]
+script = ExtResource("2_3ymgn")
+nombre = "cuerpo"
+icono = ExtResource("8_qyynl")
+tipo = 1
+tags = Array[int]([1])
+rareza = 1
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_m4pfc"]
 size = Vector3(1, 0.1772461, 1)
@@ -15,7 +57,7 @@ radius = 1.3545635
 [node name="partes_enemi" type="CharacterBody3D" unique_id=1604769491]
 collision_layer = 0
 script = ExtResource("1_mhawh")
-items_posibles = Array[ExtResource("2_3ymgn")]([ExtResource("3_mhawh"), ExtResource("4_mhawh")])
+items_posibles = Array[ExtResource("2_3ymgn")]([ExtResource("3_mhawh"), ExtResource("4_mhawh"), SubResource("Resource_f3sa5"), SubResource("Resource_wlgyo"), SubResource("Resource_b0hw8")])
 bob_amplitude = 0.7
 min_height = 1.0
 

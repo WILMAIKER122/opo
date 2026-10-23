@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://degm1ysnbk3p1" path="res://pj/codigos/estadisticas/sistema_hambre.gd" id="3_vsmev"]
 [ext_resource type="Script" uid="uid://bbyyt0pp6xmw3" path="res://pj/codigos/estadisticas/estadisticas_base.gd" id="4_d30sd"]
 [ext_resource type="Script" uid="uid://c0hx4tqsac2t6" path="res://pj/codigos/estadisticas/stats_base.gd" id="5_8hwby"]
+[ext_resource type="Resource" uid="uid://cx5644rx74qq2" path="res://sinergia/sistema_sinergia.tres" id="6_dtq2i"]
 [ext_resource type="Resource" uid="uid://cvvbnimy5twnr" path="res://pj/archivos_stree/zetas/zetas_items/normal.tres" id="6_sjsp0"]
 
 [sub_resource type="Resource" id="Resource_n62cq"]
@@ -39,4 +40,5 @@ afinidad = SubResource("Resource_n62cq")
 zeta_actual = ExtResource("6_sjsp0")
 hambre = SubResource("Resource_3vi8l")
 zeta_inicial = ExtResource("6_sjsp0")
+sinergias = ExtResource("6_dtq2i")
 metadata/_custom_type_script = "uid://bbyyt0pp6xmw3"

@@ -8,3 +8,4 @@ extends Resource
 @export var dash_velociadad_base: float = 10.0
 @export var dano_base: int = 5
 @export var velocidad_ataque_base: float = 1.0
+@export var capacidad_provisiones: int = 5

@@ -12,3 +12,6 @@ class_name EnemigoStats
 @export_group("Comportamiento Estilo Cult of the Lamb")
 @export var distancia_mantenida: float = 3.5 # Radio alrededor del jugador para acechar
 @export var tiempo_cooldown_ataque: float = 2.0
+
+@export var danio_ataque: float = 10.0
+@export var knockback_ataque: float = 8.0

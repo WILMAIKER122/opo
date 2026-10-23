@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="MutacionPosible" format=3 uid="uid://boyxb5xmb2ift"]
 
-[ext_resource type="Script" uid="uid://d2h87m4hkwehj" path="res://pj/codigos/codigo_zeta/MutacionPosible.gd" id="1_tk6f1"]
+[ext_resource type="Script" uid="uid://d2h87m4hkwehj" path="res://pj/codigos/zeta/MutacionPosible.gd" id="1_tk6f1"]
 [ext_resource type="Resource" uid="uid://custue6v05y35" path="res://pj/archivos_stree/zetas/zetas_items/magico.tres" id="2_7xg85"]
 
 [resource]

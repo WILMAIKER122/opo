@@ -1,0 +1,145 @@
+[gd_scene format=3 uid="uid://baay30tm06i66"]
+
+[ext_resource type="Texture2D" uid="uid://g3g3io124q03" path="res://pj/modelos/texturas/mano.PNG" id="1_60kud"]
+[ext_resource type="Script" uid="uid://s4ftv3lpigf5" path="res://recetas/ui/popup_cocina.gd" id="1_lnadh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hn0pb"]
+bg_color = Color(0.1254902, 0.22352941, 0.19215687, 0.4392157)
+border_width_left = 20
+border_width_top = 20
+border_width_right = 20
+border_width_bottom = 20
+border_color = Color(0.03839716, 0.038397178, 0.0383971, 1)
+border_blend = true
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_86ek7"]
+content_margin_left = 1079.0
+
+[node name="PopupCocina" type="CanvasLayer" unique_id=1815565150]
+script = ExtResource("1_lnadh")
+
+[node name="Control" type="Control" parent="." unique_id=1600978473]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="Control" unique_id=1576989853]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.003921569, 0.0627451, 0.14117648, 0.2901961)
+
+[node name="PanelPrincipal" type="PanelContainer" parent="Control" unique_id=153932907]
+custom_minimum_size = Vector2(100, 560)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hn0pb")
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/PanelPrincipal" unique_id=566737953]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/PanelPrincipal/MarginContainer" unique_id=234891703]
+layout_mode = 2
+
+[node name="LabelTitulo" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=2146526009]
+layout_mode = 2
+theme_override_font_sizes/font_size = 29
+text = "Cocina"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Columnas" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=363062826]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ColumnaIngredientes" type="VBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas" unique_id=2005136938]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelIngredientes" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaIngredientes" unique_id=238192011]
+layout_mode = 2
+theme_override_font_sizes/font_size = 23
+text = "ingredientes"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ContenedorGrid" type="MarginContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaIngredientes" unique_id=1739174325]
+layout_mode = 2
+theme_override_constants/margin_top = 7
+theme_override_constants/margin_bottom = 7
+
+[node name="GridIngredientes" type="GridContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaIngredientes/ContenedorGrid" unique_id=1260405323]
+layout_mode = 2
+columns = 5
+
+[node name="Cursor" type="TextureRect" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaIngredientes/ContenedorGrid" unique_id=1533154446]
+top_level = true
+custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+texture = ExtResource("1_60kud")
+
+[node name="VSeparator" type="VSeparator" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas" unique_id=101296158]
+layout_mode = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_86ek7")
+
+[node name="ColumnaOlla" type="VBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas" unique_id=1482588942]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LabelOlla" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=1100485742]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Olla"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VistaPrevia" type="HFlowContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=2103956182]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+
+[node name="LabelConteo" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=348243669]
+layout_mode = 2
+
+[node name="PanelResultado" type="PanelContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=1875092459]
+layout_mode = 2
+
+[node name="FilaResultadooxContainer" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla/PanelResultado" unique_id=1699701587]
+layout_mode = 2
+
+[node name="IconoResultado" type="TextureRect" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla/PanelResultado/FilaResultadooxContainer" unique_id=708507706]
+custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+
+[node name="LabelResultado" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla/PanelResultado/FilaResultadooxContainer" unique_id=2137292689]
+layout_mode = 2
+
+[node name="LabelMensaje" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=57175276]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="LabelRecetario" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/Columnas/ColumnaOlla" unique_id=526328518]
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="LabelAyuda" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=1825092030]
+layout_mode = 2
+theme_override_font_sizes/font_size = 21

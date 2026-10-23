@@ -28,7 +28,7 @@ func actualizar_fisicas(_delta: float) -> void:
 	enemigo.velocity.z = direccion_patrulla.z * enemigo.stats.velocidad_patrulla
 	
 	if direccion_patrulla != Vector3.ZERO:
-		enemigo.look_at(enemigo.global_position + direccion_patrulla, Vector3.UP)
+		enemigo.mirar_hacia(direccion_patrulla.x)
 
 
 func generar_nueva_direccion() -> void:

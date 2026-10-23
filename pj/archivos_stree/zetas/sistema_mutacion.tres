@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="SistemaMutaciones" format=3 uid="uid://dkvibh58gi645"]
 
-[ext_resource type="Script" uid="uid://ddvbpt73de3rh" path="res://pj/codigos/codigo_zeta/sistema_mutaciones.gd" id="1_rakvq"]
+[ext_resource type="Script" uid="uid://ddvbpt73de3rh" path="res://pj/codigos/zeta/sistema_mutaciones.gd" id="1_rakvq"]
 
 [resource]
 script = ExtResource("1_rakvq")

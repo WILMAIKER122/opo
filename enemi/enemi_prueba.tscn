@@ -6,16 +6,19 @@
 [ext_resource type="PackedScene" uid="uid://d36l4o7po0kqh" path="res://enemi/escenas/partes_enemigo.tscn" id="3_abgi2"]
 [ext_resource type="Script" uid="uid://c300svh56ii3r" path="res://enemi/codigo/estados/state_machine.gd" id="3_ix5yl"]
 [ext_resource type="Script" uid="uid://2cvouanttvex" path="res://enemi/codigo/estados/EstadoPersiguiendo.gd" id="4_72dk4"]
-[ext_resource type="Script" uid="uid://cl2eadbrgdo5c" path="res://enemi/codigo/estados/EstadoAtacando.gd" id="5_abgi2"]
 [ext_resource type="Script" uid="uid://pf0k1hsg23eu" path="res://enemi/codigo/estados/EstadoRecibiendoDanio.gd" id="6_liykn"]
+[ext_resource type="Script" uid="uid://bs0lxllco61ud" path="res://enemi/codigo/estados/EstadoAtaqueSalto.gd" id="7_abgi2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_er1n8"]
-size = Vector3(7.478821, 2.6046143, 5.8310547)
+size = Vector3(11.985188, 2.6046143, 12.002518)
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_m4pfc"]
 height = 1.9638672
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m4pfc"]
+size = Vector3(1.7475586, 1.6787109, 1.7180176)
 
 [node name="enemigo" type="CharacterBody3D" unique_id=43443851]
 script = ExtResource("1_t5i0v")
@@ -28,6 +31,7 @@ shape = SubResource("CapsuleShape3D_n2hkq")
 [node name="Area3D" type="Area3D" parent="." unique_id=1735329413]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=712771397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.008378983, 0, 0.012382507)
 shape = SubResource("BoxShape3D_er1n8")
 
 [node name="TimerPatrulla" type="Timer" parent="." unique_id=952809133]
@@ -53,10 +57,28 @@ script = ExtResource("3_4c3y3")
 script = ExtResource("4_72dk4")
 
 [node name="Atacando" type="Node" parent="StateMachine" unique_id=405828845]
-script = ExtResource("5_abgi2")
+script = ExtResource("7_abgi2")
 
 [node name="RecibiendoDanio" type="Node" parent="StateMachine" unique_id=1062377032]
 script = ExtResource("6_liykn")
 
+[node name="AreaAtaque" type="Area3D" parent="." unique_id=1999888153]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.46801, 0, -0.003456831)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaAtaque" unique_id=1542009751]
+shape = SubResource("BoxShape3D_m4pfc")
+
+[node name="AreaDanio" type="Area3D" parent="." unique_id=2143226696]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.008238554)
+collision_layer = 3
+collision_mask = 3
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="AreaDanio" unique_id=427337941]
+shape = SubResource("BoxShape3D_m4pfc")
+
 [connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
 [connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="AreaAtaque" to="." method="_on_area_ataque_body_entered"]
+[connection signal="body_entered" from="AreaDanio" to="." method="_on_area_danio_body_entered"]

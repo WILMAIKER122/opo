@@ -1,0 +1,109 @@
+extends Node
+## Gestor central de menús/popups. Se registra como AUTOLOAD con el nombre "MenuManager":
+## Proyecto > Configuración del proyecto > Autoload > ruta de este archivo, nombre MenuManager.
+##
+## - Solo hay un menú abierto a la vez.
+## - Los menús se abren con el juego en pausa (opcional) y FUNCIONAN en pausa: se les pone
+##   process_mode = ALWAYS, así que cada menú maneja sus propios controles.
+## - Si un menú tiene un método configurar(datos: Dictionary), se llama apenas se abre.
+## - Un menú se cierra llamando MenuManager.close_current_menu(resultado). Ese resultado le
+##   llega a quien lo abrió por la señal menu_closed.
+## - Si la escena cambia con un menú abierto, se cierra solo y se quita la pausa.
+
+signal menu_opened(menu_name: String)
+## resultado: lo que mandó el menú al cerrarse, ej. {"accion": "confirmar", "seleccion": {...}}
+signal menu_closed(menu_name: String, resultado: Dictionary)
+
+var current_menu: Node = null
+var current_menu_name: String = ""
+
+# Solo se quita la pausa si FUE ESTE gestor quien la puso
+var _pauso_el_juego: bool = false
+var _id_escena_origen: int = 0
+
+
+func _ready() -> void:
+	# El gestor tiene que seguir funcionando con el juego en pausa
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
+func _process(_delta: float) -> void:
+	if current_menu == null:
+		return
+	# Si la escena cambió con el menú abierto (Enter, muerte, etc.), se cierra solo
+	var escena := get_tree().current_scene
+	if escena == null or escena.get_instance_id() != _id_escena_origen:
+		close_current_menu({"accion": "cancelar"})
+
+
+## Abre un menú. Retorna true si se abrió con éxito, false si ya había uno abierto o falló.
+## datos: se le pasan al menú mediante su método configurar(datos), si lo tiene.
+func open_menu(menu_name: String, menu_scene_path: String, pause_game: bool = true, datos: Dictionary = {}) -> bool:
+	if current_menu != null:
+		print("MenuManager: Ya hay un menú abierto ('%s')." % current_menu_name)
+		return false
+
+	if not ResourceLoader.exists(menu_scene_path):
+		push_warning("MenuManager: no existe la escena: %s" % menu_scene_path)
+		return false
+
+	var scene_resource := load(menu_scene_path) as PackedScene
+	if scene_resource == null:
+		push_warning("MenuManager: no se pudo cargar la escena: %s" % menu_scene_path)
+		return false
+
+	var menu_instance := scene_resource.instantiate()
+	if menu_instance == null:
+		push_warning("MenuManager: no se pudo instanciar el menú: %s" % menu_name)
+		return false
+
+	# Los menús tienen que responder aunque el juego esté en pausa
+	menu_instance.process_mode = Node.PROCESS_MODE_ALWAYS
+
+	current_menu = menu_instance
+	current_menu_name = menu_name
+	var escena := get_tree().current_scene
+	_id_escena_origen = escena.get_instance_id() if escena else 0
+
+	get_tree().root.add_child(menu_instance)
+
+	if menu_instance.has_method("configurar"):
+		menu_instance.configurar(datos)
+
+	if pause_game and not get_tree().paused:
+		get_tree().paused = true
+		_pauso_el_juego = true
+
+	menu_opened.emit(menu_name)
+	print("MenuManager: Menú abierto -> ", menu_name)
+	return true
+
+
+## Devuelve el nodo del menú actual para poder interactuar con él
+func get_current_menu() -> Node:
+	return current_menu
+
+
+## Cierra el menú actual. El resultado se manda por la señal menu_closed.
+func close_current_menu(resultado: Dictionary = {}) -> void:
+	if current_menu == null:
+		return
+
+	var closed_name := current_menu_name
+	if is_instance_valid(current_menu):
+		current_menu.queue_free()
+	current_menu = null
+	current_menu_name = ""
+
+	# Primero se quita la pausa y DESPUÉS se avisa: así quien reaccione (ej. cambiar de
+	# escena o seguir comiendo) ya encuentra el juego andando.
+	if _pauso_el_juego:
+		get_tree().paused = false
+		_pauso_el_juego = false
+
+	menu_closed.emit(closed_name, resultado)
+	print("MenuManager: Menú cerrado -> ", closed_name)
+
+
+func is_menu_open() -> bool:
+	return current_menu != null and is_instance_valid(current_menu)

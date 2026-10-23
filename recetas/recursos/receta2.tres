@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://54mjf3teifj7"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_j7jur"]
+[ext_resource type="Texture2D" uid="uid://dpxtecbi3bmi2" path="res://pj/modelos/texturas/pinza.PNG" id="2_4q8n4"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="3_nny2a"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="4_dxhyf"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="5_h0w8a"]
+
+[sub_resource type="Resource" id="Resource_o3rxx"]
+script = ExtResource("3_nny2a")
+icono = ExtResource("2_4q8n4")
+tipo = 1
+tags = Array[int]([9])
+rareza = 1
+hambre_restaurada = 11.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_jp7lm"]
+script = ExtResource("4_dxhyf")
+cantidad_minima = 4
+cantidad_maxima = 7
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("5_h0w8a")
+nombre = "pooto"
+requisitos = Array[ExtResource("4_dxhyf")]([SubResource("Resource_jp7lm")])
+prioridad = 1
+plato = SubResource("Resource_o3rxx")
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

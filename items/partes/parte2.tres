@@ -1,9 +1,9 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://5n36a6qkknl7"]
 
-[ext_resource type="Texture2D" uid="uid://dosg2kfaoprt" path="res://pj/textures/zeta2.png" id="1_q5jjo"]
-[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/datos_items/EfectoItem.gd" id="1_vgwh5"]
+[ext_resource type="Texture2D" uid="uid://dosg2kfaoprt" path="res://pj/modelos/texturas/zeta2.png" id="1_q5jjo"]
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_vgwh5"]
 [ext_resource type="Resource" uid="uid://srfjhnw05g42" path="res://items/partes/efectos/curacion.tres" id="2_8e8yr"]
-[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/datos_items/itemsData.gd" id="2_k01rj"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_k01rj"]
 
 [resource]
 script = ExtResource("2_k01rj")

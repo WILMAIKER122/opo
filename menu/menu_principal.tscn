@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://clcogjod3t43n"]
+
+[ext_resource type="Script" uid="uid://b2l6x2y4kyuvg" path="res://menu/menu_principal.gd" id="1_7f2mk"]
+
+[sub_resource type="Gradient" id="Gradient_1ll5q"]
+colors = PackedColorArray(0.09239707, 0.09239706, 0.09239706, 1, 0.072842635, 0.072842635, 0.072842635, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7f2mk"]
+gradient = SubResource("Gradient_1ll5q")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1ll5q"]
+bg_color = Color(0.5843017, 0.7147355, 0.9192569, 1)
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.29639468, 0.8970636, 0.9239339, 1)
+border_blend = true
+
+[node name="MenuPrincipal" type="Control" unique_id=234471563]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_7f2mk")
+escena_juego = "uid://bnuo05yva0fv3"
+
+[node name="Fondo" type="TextureRect" parent="." unique_id=2021851232]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_7f2mk")
+
+[node name="Titulo" type="Label" parent="." unique_id=1166753318]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 64
+text = "opo"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PanelMenu" type="CenterContainer" parent="." unique_id=172292554]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxMenu" type="VBoxContainer" parent="PanelMenu" unique_id=1091879665]
+layout_mode = 2
+theme_override_constants/separation = 9
+
+[node name="BotonJugar" type="Button" parent="PanelMenu/VBoxMenu" unique_id=494715764]
+layout_mode = 2
+text = "jugar"
+
+[node name="BotonOpciones" type="Button" parent="PanelMenu/VBoxMenu" unique_id=1654675731]
+layout_mode = 2
+text = "opciones "
+
+[node name="BotonSalir" type="Button" parent="PanelMenu/VBoxMenu" unique_id=74311381]
+layout_mode = 2
+text = "salir "
+
+[node name="PanelOpciones" type="CenterContainer" parent="." unique_id=1031290774]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="PanelOpciones" unique_id=241370160]
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_1ll5q")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelOpciones/PanelContainer" unique_id=1848533110]
+layout_mode = 2
+
+[node name="VBoxOpciones" type="VBoxContainer" parent="PanelOpciones/PanelContainer/MarginContainer" unique_id=1544469836]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="LabelOpciones" type="Label" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones" unique_id=793960343]
+layout_mode = 2
+theme_override_font_sizes/font_size = 23
+text = "opciones"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FilaVolumen" type="HBoxContainer" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones" unique_id=830240072]
+layout_mode = 2
+
+[node name="LabelVolumen" type="Label" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones/FilaVolumen" unique_id=1498424447]
+layout_mode = 2
+text = "volumen"
+
+[node name="SliderVolumen" type="HSlider" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones/FilaVolumen" unique_id=755878758]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="CheckPantallaCompleta" type="CheckButton" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones" unique_id=1173322236]
+layout_mode = 2
+text = "Pantalla completa"
+
+[node name="BotonVolver" type="Button" parent="PanelOpciones/PanelContainer/MarginContainer/VBoxOpciones" unique_id=1788432221]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "salir"
+
+[node name="LabelAyuda" type="Label" parent="." unique_id=1231554543]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -146.5
+offset_top = -23.0
+offset_right = 146.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "↑↓ moverse · Enter aceptar · Esc volver"

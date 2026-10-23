@@ -1,34 +1,40 @@
-extends EstadoEnemigo
+extends EstadoAtaque
 class_name EstadoAtacando
+## ATAQUE 1 — EMBESTIDA.
+## Se frena y te mira (aviso), fija la dirección y embiste en línea recta.
+## El AreaDanio solo lastima durante la embestida.
+##
+## En la escena de este enemigo, el AreaDanio conviene como una forma alrededor del cuerpo.
 
-var direccion_embestida: Vector3 = Vector3.ZERO
+@export_group("Tiempos")
+## Segundos que se frena antes de embestir (el "aviso"). 0 = embestida inmediata.
+@export var tiempo_aviso: float = 0.3
+## Segundos que dura la embestida
+@export var tiempo_embestida: float = 0.4
 
-func entrar() -> void:
-	_iniciar_ataque()
+enum Fase { AVISO, EMBESTIDA }
+var _fase: Fase = Fase.AVISO
+var _direccion_embestida: Vector3 = Vector3.ZERO
 
-func actualizar_fisicas(_delta: float) -> void:
-	enemigo.velocity.x = direccion_embestida.x * enemigo.stats.velocidad_embestida
-	enemigo.velocity.z = direccion_embestida.z * enemigo.stats.velocidad_embestida
 
-func _iniciar_ataque() -> void:
-	if not is_instance_valid(enemigo.jugador):
-		enemigo.state_machine.cambiar_estado("patrullando")
-		return
+func _al_iniciar_ataque() -> void:
+	# La dirección se fija ahora: si el jugador se mueve durante el aviso, la esquiva
+	_direccion_embestida = _direccion_al_jugador()
+	_fase = Fase.AVISO
+	_tiempo_fase = tiempo_aviso
 
-	enemigo.velocity = Vector3.ZERO
-	enemigo.look_at(enemigo.jugador.global_position, Vector3.UP)
-	
-	direccion_embestida = (enemigo.jugador.global_position - enemigo.global_position)
-	direccion_embestida.y = 0
-	direccion_embestida = direccion_embestida.normalized()
 
-	await get_tree().create_timer(0.3).timeout
-	if enemigo.state_machine.estado_actual != self: return
+func _procesar_ataque(_delta: float) -> void:
+	match _fase:
+		Fase.AVISO:
+			_frenar()
+			if _tiempo_fase <= 0.0:
+				_fase = Fase.EMBESTIDA
+				_tiempo_fase = tiempo_embestida
+				_empezar_dano()
 
-	await get_tree().create_timer(0.4).timeout
-	
-	enemigo.puede_atacar = false
-	enemigo.timer_ataque.start(enemigo.stats.tiempo_cooldown_ataque)
-	
-	if enemigo.state_machine.estado_actual == self:
-		enemigo.state_machine.cambiar_estado("persiguiendo")
+		Fase.EMBESTIDA:
+			enemigo.velocity.x = _direccion_embestida.x * enemigo.stats.velocidad_embestida
+			enemigo.velocity.z = _direccion_embestida.z * enemigo.stats.velocidad_embestida
+			if _tiempo_fase <= 0.0:
+				_terminar_ataque()

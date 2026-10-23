@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ZetaPasivaResistencias" format=3 uid="uid://cubujsrhcfssi"]
 
-[ext_resource type="Script" uid="uid://cs34nhgbkdm2v" path="res://pj/codigos/codigo_zeta/ZetaPasivaResistencias.gd" id="1_ub2sx"]
+[ext_resource type="Script" uid="uid://cs34nhgbkdm2v" path="res://pj/codigos/zeta/ZetaPasivaResistencias.gd" id="1_ub2sx"]
 
 [resource]
 script = ExtResource("1_ub2sx")
