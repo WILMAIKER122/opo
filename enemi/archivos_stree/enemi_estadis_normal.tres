@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="EnemigoStats" format=3 uid="uid://cqara5axaa4nw"]
+
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="1_krqml"]
+[ext_resource type="Resource" uid="uid://xhmksoy3f6hc" path="res://items/partes/parte1.tres" id="2_jyej0"]
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="3_77t16"]
+[ext_resource type="Script" uid="uid://bwrmqa4qb7aop" path="res://enemi/codigo/estadisticas_enemi.gd" id="3_bb1h5"]
+[ext_resource type="Texture2D" uid="uid://ipv7soi37g38" path="res://pj/modelos/texturas/pinza_deo.PNG" id="4_t1s10"]
+
+[sub_resource type="Resource" id="Resource_muwds"]
+script = ExtResource("1_krqml")
+nombre = "slop"
+icono = ExtResource("4_t1s10")
+tipo = 1
+tags = Array[int]([1, 0])
+rareza = 1
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[resource]
+script = ExtResource("3_bb1h5")
+id = "03"
+nombre = "toes"
+partes = Array[ExtResource("1_krqml")]([ExtResource("2_jyej0"), SubResource("Resource_muwds")])
+metadata/_custom_type_script = "uid://bwrmqa4qb7aop"

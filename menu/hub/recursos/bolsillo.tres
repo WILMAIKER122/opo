@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PaginaHubData" format=3 uid="uid://d01rn610obvgg"]
+
+[ext_resource type="PackedScene" uid="uid://dfbet11wtnbrj" path="res://menu/hub/paginas/pagina_bolsillo.tscn" id="1_1rhm0"]
+[ext_resource type="Script" uid="uid://bdvxejsay4ok8" path="res://menu/hub/pagina_hub_data.gd" id="2_au88i"]
+
+[resource]
+script = ExtResource("2_au88i")
+id = &"bolsillo"
+titulo = "Bolsillo"
+escena = ExtResource("1_1rhm0")
+accion_atajo = &"bolsillo_equipar"
+metadata/_custom_type_script = "uid://bdvxejsay4ok8"

@@ -1,0 +1,116 @@
+[gd_resource type="Resource" script_class="DatosGuardado" format=3]
+
+[ext_resource type="Script" path="res://items/codigo/EfectoItem.gd" id="1_eag46"]
+[ext_resource type="Script" path="res://guardado/DatosGuardado.gd" id="1_ff5wc"]
+[ext_resource type="Resource" path="res://items/partes/efectos/curacion.tres" id="2_gqrxd"]
+[ext_resource type="Texture2D" path="res://pj/pj_zeta.png" id="3_56pmm"]
+[ext_resource type="Script" path="res://items/codigo/itemsData.gd" id="4_8eusa"]
+[ext_resource type="Texture2D" path="res://pj/modelos/texturas/pinza_deo.PNG" id="5_56pmm"]
+[ext_resource type="Texture2D" path="res://pj/modelos/texturas/zeta2.png" id="6_8eusa"]
+[ext_resource type="Texture2D" path="res://pj/modelos/texturas/pinza.PNG" id="7_8eusa"]
+
+[sub_resource type="Resource" id="Resource_wlgyo"]
+script = ExtResource("1_eag46")
+tipo = 2
+valor = 100.0
+duracion = 2.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_cak3q"]
+script = ExtResource("4_8eusa")
+nombre = "zeta"
+cantidad = 4
+icono = ExtResource("3_56pmm")
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([ExtResource("2_gqrxd"), SubResource("Resource_wlgyo")])
+tags = Array[int]([0])
+hambre_restaurada = 30.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_n22il"]
+script = ExtResource("1_eag46")
+valor = 100.0
+es_porcentaje = true
+duracion = 10.0
+probabilidad = 0.452
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_ygeq4"]
+script = ExtResource("4_8eusa")
+nombre = "nois"
+cantidad = 19
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_n22il")])
+tags = Array[int]([0])
+rareza = 1
+hambre_restaurada = 20.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_axj7l"]
+script = ExtResource("4_8eusa")
+nombre = "slop"
+cantidad = 92
+icono = ExtResource("5_56pmm")
+tipo = 1
+tags = Array[int]([1, 0])
+rareza = 1
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_8eusa"]
+script = ExtResource("1_eag46")
+tipo = 2
+valor = 100.0
+duracion = 2.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_3moeg"]
+script = ExtResource("4_8eusa")
+nombre = "zeta"
+cantidad = 99
+icono = ExtResource("3_56pmm")
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([ExtResource("2_gqrxd"), SubResource("Resource_8eusa")])
+tags = Array[int]([0])
+hambre_restaurada = 30.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_yc0im"]
+script = ExtResource("4_8eusa")
+nombre = "zeta mago"
+cantidad = 39
+icono = ExtResource("6_8eusa")
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([ExtResource("2_gqrxd")])
+tags = Array[int]([0])
+hambre_restaurada = 30.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_8gan4"]
+script = ExtResource("4_8eusa")
+cantidad = 7
+icono = ExtResource("7_8eusa")
+tipo = 1
+tags = Array[int]([9])
+rareza = 1
+hambre_restaurada = 11.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[resource]
+script = ExtResource("1_ff5wc")
+inventario_base = {
+"nois": SubResource("Resource_ygeq4"),
+"slop": SubResource("Resource_axj7l"),
+"zeta": SubResource("Resource_3moeg"),
+"zeta mago": SubResource("Resource_yc0im"),
+"Ítem": SubResource("Resource_8gan4")
+}
+bolsillo = {
+"zeta": SubResource("Resource_cak3q")
+}
+recetas_descubiertas = Array[String](["pooto", "poo"])
+conocimientos = Array[String](["zeta:normal", "sinergia:Vampiro", "zeta:magico", "sinergia:nose", "sinergia:Ligero"])
+vistos = Array[String](["bestia:03", "bestia:01", "item:zeta", "tag:0", "item:nois", "item:slop", "tag:1", "item:zeta mago", "item:Ítem", "tag:9"])
+derrotas = {
+"01": 43,
+"03": 135
+}

@@ -38,3 +38,6 @@ func decrementar_seleccion() -> bool:
 	veces_seleccionado -= 1
 	_actualizar_texto()
 	return true
+func fijar_seleccion(n: int) -> void:
+	veces_seleccionado = clampi(n, 0, item_data.cantidad)
+	_actualizar_texto()

@@ -22,4 +22,6 @@ estadisticas = SubResource("Resource_7p8ce")
 resistencias = ExtResource("3_v4tuc")
 EfectosUnicos = ExtResource("1_mvef0")
 desbloqueada = true
+comportamiento_suelta = 1
+multiplicador_dano_suelta = 1.5
 metadata/_custom_type_script = "uid://dk0pv6p57c1tn"

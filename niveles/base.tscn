@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://bxrre7y2jtmwf" path="res://pj/escenas/character_pj.tscn" id="2_o0l11"]
 [ext_resource type="Script" uid="uid://bedmcb4sqtlme" path="res://items/ui/InventarioBaseUI.gd" id="3_3vkmu"]
 [ext_resource type="Script" uid="uid://csb2xakm5a8if" path="res://recetas/codigo/EstacionCocina.gd" id="4_3b27h"]
+[ext_resource type="Script" uid="uid://lbay7r1q3f0m" path="res://niveles/codigo/portal_run.gd" id="5_o0l11"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n2hkq"]
 size = Vector3(20.387726, 8.1979065, 1)
@@ -20,6 +21,9 @@ border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_m4pfc"]
 radius = 1.9061252
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m4pfc"]
+size = Vector3(3.272766, 1.4443359, 1.3300781)
 
 [node name="suelo3" unique_id=1942572753 instance=ExtResource("1_vah36")]
 metadata/es_base = true
@@ -53,13 +57,6 @@ environment = SubResource("Environment_26hbr")
 
 [node name="CharacterBody3D" parent="." index="4" unique_id=1556463437 instance=ExtResource("2_o0l11")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7662838, 0)
-
-[node name="dash" parent="CharacterBody3D/estados" parent_id_path=PackedInt32Array(1556463437, 662191899) index="2" unique_id=1186762353]
-dash_cooldown = 0.5
-rotation_speed = 15.0
-
-[node name="camaraprisipal" parent="CharacterBody3D" index="4" unique_id=666978458]
-transform = Transform3D(1, 0, 0, 0, 0.79863554, 0.601815, 0, -0.601815, 0.79863554, 0, 6.368099, 6.7986355)
 
 [node name="camara_pj" parent="CharacterBody3D" index="5" unique_id=909315240]
 transform = Transform3D(1, 0, 0, 0, 0.7912221, 0.61152595, 0, -0.61152595, 0.7912221, 0, 5.766284, 6)
@@ -97,6 +94,14 @@ script = ExtResource("4_3b27h")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=810953588]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5339756, 0)
 shape = SubResource("SphereShape3D_m4pfc")
+
+[node name="Area3D2" type="Area3D" parent="." index="7" unique_id=1179338466]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -9.435008)
+script = ExtResource("5_o0l11")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2" index="0" unique_id=208348171]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.9333801, -0.22216797, 0.16503906)
+shape = SubResource("BoxShape3D_m4pfc")
 
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_al_entrar"]
 [connection signal="body_exited" from="Area3D" to="Area3D" method="_al_salir"]

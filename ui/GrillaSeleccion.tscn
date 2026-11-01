@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bprttf4civ3g0"]
+
+[ext_resource type="Script" uid="uid://01bns22646tf" path="res://ui/codigo/grilla_seleccion.gd" id="1_gd2eh"]
+[ext_resource type="Texture2D" uid="uid://g3g3io124q03" path="res://pj/modelos/texturas/mano.PNG" id="2_u3tv3"]
+
+[node name="GrillaSeleccion" type="ScrollContainer" unique_id=2077178312]
+custom_minimum_size = Vector2(0, 260)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -130.0
+offset_right = 20.0
+offset_bottom = 130.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+script = ExtResource("1_gd2eh")
+
+[node name="Contenido" type="Control" parent="." unique_id=141534582]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Grid" type="GridContainer" parent="Contenido" unique_id=1753261435]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/h_separation = 6
+theme_override_constants/v_separation = 6
+columns = 5
+
+[node name="Cursor" type="TextureRect" parent="Contenido" unique_id=2074718502]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("2_u3tv3")
+expand_mode = 1

@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://dr7bsxrbo6ff"]
+
+[ext_resource type="Script" uid="uid://di2tbq1laptjd" path="res://menu/hub/paginas/pagina_tomo.gd" id="1_lvyvq"]
+
+[node name="PaginaTomo" type="VBoxContainer" unique_id=2007745276]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_lvyvq")
+
+[node name="FilaPestanas" type="HBoxContainer" parent="." unique_id=838497524]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="HintAnterior" type="Label" parent="FilaPestanas" unique_id=1774949352]
+layout_mode = 2
+text = "←"
+vertical_alignment = 1
+
+[node name="BotonBestias" type="Button" parent="FilaPestanas" unique_id=1508973334]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Bestias"
+
+[node name="BotonRecetas" type="Button" parent="FilaPestanas" unique_id=45866398]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Recetas"
+
+[node name="BotonSinergias" type="Button" parent="FilaPestanas" unique_id=1319014662]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sinergias"
+
+[node name="BotonZetas" type="Button" parent="FilaPestanas" unique_id=190441944]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Zetas"
+
+[node name="HintSiguiente" type="Label" parent="FilaPestanas" unique_id=831896424]
+layout_mode = 2
+text = "→"
+vertical_alignment = 1
+
+[node name="Pagina" type="Control" parent="." unique_id=1330507034]
+custom_minimum_size = Vector2(0, 380)
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Cuerpo" type="HBoxContainer" parent="Pagina" unique_id=108007241]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(620, 360)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="ScrollLista" type="ScrollContainer" parent="Pagina/Cuerpo" unique_id=329242926]
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/scrollbar_h_separation = 6
+theme_override_constants/scrollbar_v_separation = 6
+
+[node name="ContenedorLista" type="VBoxContainer" parent="Pagina/Cuerpo/ScrollLista" unique_id=559570841]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelDetalle" type="PanelContainer" parent="Pagina/Cuerpo" unique_id=403638696]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxDetalle" type="VBoxContainer" parent="Pagina/Cuerpo/PanelDetalle" unique_id=1157991454]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="IconoDetalle" type="TextureRect" parent="Pagina/Cuerpo/PanelDetalle/VBoxDetalle" unique_id=868783965]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+custom_maximum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TituloDetalle" type="Label" parent="Pagina/Cuerpo/PanelDetalle/VBoxDetalle" unique_id=322017280]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="TextoDetalle" type="RichTextLabel" parent="Pagina/Cuerpo/PanelDetalle/VBoxDetalle" unique_id=1718160826]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="LabelProgreso" type="Label" parent="." unique_id=740979053]
+unique_name_in_owner = true
+layout_mode = 2

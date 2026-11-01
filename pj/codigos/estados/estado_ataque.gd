@@ -3,7 +3,8 @@ extends State
 @export var combo_animations: Array[String] = ["ataque", "ataque2", "ataque3"]
 @onready var area: Area3D = $"../../Area3D"
 @onready var animation_tree: AnimationTree = $"../../AnimationTree"
-
+## "" = golpe normal, "dash" = ataque veloz, "contraataque" = tras esquive perfecto
+var _tipo_golpe: StringName = &""
 @export_group("Impulsos y Rotación")
 @export var attack_forward_impulse: float = 6.0
 @export var moving_impulse_multiplier: float = 1.5
@@ -32,6 +33,30 @@ var timer_recuperacion: float = 0.0
 
 var time_scale_base: Dictionary = {}
 
+@export_group("Daño y efectos por golpe")
+## Multiplica el daño del jugador. El último golpe pega más fuerte.
+@export var multiplicador_danio: Array[float] = [1.0, 1.0, 1.6]
+@export var empuje_enemigo: Array[float] = [5.0, 5.0, 12.0]
+@export var stun_enemigo: Array[float] = [0.3, 0.3, 0.7]
+## Segundos que se congela el juego al impactar
+@export var hitstop: Array[float] = [0.05, 0.05, 0.10]
+@export var temblor_camara: Array[float] = [0.1, 0.1, 0.2]
+
+
+@export_group("Ataque tras dash")
+## Segundos después de terminar el dash en los que el primer golpe es un "ataque veloz"
+@export var ventana_tras_dash: float = 0.3
+@export var multiplicador_danio_tras_dash: float = 1.5
+## Multiplica la velocidad de la animación del primer golpe
+@export var velocidad_tras_dash: float = 1.3
+## Multiplica el impulso hacia adelante (se lanza sobre el enemigo)
+@export var impulso_tras_dash: float = 1.4
+
+@export_group("Contraataque (tras esquive perfecto)")
+@export var multiplicador_danio_contraataque: float = 2.0
+@export var velocidad_contraataque: float = 1.4
+
+
 func _ready() -> void:
 	for nombre_anim in combo_animations:
 		var ruta = "parameters/%s/TimeScale/scale" % nombre_anim
@@ -45,12 +70,27 @@ func enter() -> void:
 	can_dash_cancel = true
 	can_change_direction = true
 	en_recuperacion = false
+		# Solo el primer golpe del combo puede ser especial
+	_tipo_golpe = _detectar_golpe_especial() if current_combo == 0 else &""
 	character.estadisticas.hambre.gastar(character.estadisticas.hambre.costo_ataque)
 	multiplicador_velocidad_actual = _obtener_multiplicador_velocidad()
 	_aplicar_time_scale(multiplicador_velocidad_actual)
 	
 	var current_anim = combo_animations[current_combo]
 	character.playback.start(current_anim)
+
+## ¿Este primer golpe viene de un esquive perfecto, o de un dash reciente?
+func _detectar_golpe_especial() -> StringName:
+	var ahora := Time.get_ticks_msec()
+	if ahora <= character.contraataque_hasta_ms:
+		character.contraataque_hasta_ms = -1
+		character.ultimo_dash_fin_ms = -100000
+		return &"contraataque"
+	if ahora - character.ultimo_dash_fin_ms <= int(ventana_tras_dash * 1000.0):
+		character.ultimo_dash_fin_ms = -100000
+		return &"dash"
+	return &""
+
 
 func handle_input(event: InputEvent) -> void:
 	if en_recuperacion:
@@ -111,11 +151,15 @@ func update_physics(delta: float) -> void:
 func _obtener_multiplicador_velocidad() -> float:
 	var vel_stat: float = character.estadisticas.velocidad_ataque
 	var es_ultimo_golpe: bool = current_combo == combo_animations.size() - 1
-	
+	var mult := vel_stat
 	if es_ultimo_golpe:
-		return 1.0 + (vel_stat - 1.0) * reduccion_ultimo_ataque
-	print("ultimo", vel_stat)
-	return vel_stat
+		mult = 1.0 + (vel_stat - 1.0) * reduccion_ultimo_ataque
+	match _tipo_golpe:
+		&"dash":
+			mult *= velocidad_tras_dash
+		&"contraataque":
+			mult *= velocidad_contraataque
+	return mult
 
 func _aplicar_time_scale(multiplicador: float) -> void:
 	var nombre_anim = combo_animations[current_combo]
@@ -132,6 +176,9 @@ func _apply_forward_impulse() -> void:
 	var input_dir := Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
 	
 	var final_impulse = attack_forward_impulse * multiplicador_velocidad_actual
+	if _tipo_golpe != &"":
+		final_impulse *= impulso_tras_dash
+	
 	if input_dir != Vector2.ZERO:
 		final_impulse *= moving_impulse_multiplier
 		
@@ -154,15 +201,15 @@ func _get_facing_direction() -> Vector3:
 # ==============================================================================
 
 func enable_hitbox() -> void:
-	hitbox_active = false
-	area.activar_desactivar_area(hitbox_active)
+	hitbox_active = true
+	area.activar_desactivar_area(true)
 	can_dash_cancel = false
 	can_change_direction = false
 	_apply_forward_impulse()
-	
+
 func disable_hitbox() -> void:
-	hitbox_active = true
-	area.activar_desactivar_area(hitbox_active)
+	hitbox_active = false
+	area.activar_desactivar_area(false)
 	
 func open_cancel_window() -> void:
 	can_cancel = true
@@ -181,7 +228,9 @@ func _try_advance_combo() -> void:
 		enter()
 
 func _reset_combo_state() -> void:
+	_tipo_golpe = &""
 	hitbox_active = false
+	area.activar_desactivar_area(false)
 	can_cancel = false
 	can_dash_cancel = false
 	can_change_direction = false
@@ -224,3 +273,34 @@ func _finalizar_recuperacion() -> void:
 func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
 	if current_combo < combo_animations.size() and anim_name == combo_animations[current_combo]:
 		_exit_attack()
+
+
+func _dato_golpe(lista: Array[float], por_defecto: float) -> float:
+	if lista.is_empty():
+		return por_defecto
+	return lista[mini(current_combo, lista.size() - 1)]
+
+
+func efectos_golpe() -> Dictionary:
+	var danio := _dato_golpe(multiplicador_danio, 1.0)
+	var etiqueta := ""
+	var color := Color.WHITE
+	match _tipo_golpe:
+		&"dash":
+			danio *= multiplicador_danio_tras_dash
+			etiqueta = "¡Ataque veloz!"
+			color = Color(1.0, 0.75, 0.3)
+		&"contraataque":
+			danio *= multiplicador_danio_contraataque
+			etiqueta = "¡Contraataque!"
+			color = Color(0.5, 0.9, 1.0)
+	return {
+		"danio": danio,
+		"empuje": _dato_golpe(empuje_enemigo, 5.0),
+		"stun": _dato_golpe(stun_enemigo, 0.5),
+		# Los golpes especiales congelan un poco más
+		"hitstop": _dato_golpe(hitstop, 0.05) + (0.03 if _tipo_golpe != &"" else 0.0),
+		"temblor": _dato_golpe(temblor_camara, 0.1),
+		"etiqueta": etiqueta,
+		"color": color,
+	}

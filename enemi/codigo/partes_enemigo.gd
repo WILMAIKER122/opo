@@ -23,18 +23,17 @@ var fall_timer: float = 0.0
 @onready var sprite: Sprite3D = $Sprite3D
 @onready var collection_area: Area3D = $Area3D
 
+## Lo llama el enemigo al soltarla: qué parte es. null = se sortea de items_posibles
+func configurar(item: ItemData) -> void:
+	item_seleccionado = item
+
+
 func _ready() -> void:
-	if not items_posibles.is_empty():
-		# Elegimos un índice aleatorio seguro
-		var indice_aleatorio = randi() % items_posibles.size()
-		
-		# Guardamos el ítem seleccionado
-		item_seleccionado = items_posibles[indice_aleatorio]
-		
-		# Si el ítem tiene un icono asignado, se lo ponemos al Sprite3D automáticamente
-		if item_seleccionado and item_seleccionado.icono:
-			sprite.texture = item_seleccionado.icono
-	
+	if item_seleccionado == null and not items_posibles.is_empty():
+		item_seleccionado = items_posibles[randi() % items_posibles.size()]
+	if item_seleccionado and item_seleccionado.icono:
+		sprite.texture = item_seleccionado.icono
+
 	sprite.billboard = BaseMaterial3D.BILLBOARD_DISABLED
 
 	# Impulso inicial de salto

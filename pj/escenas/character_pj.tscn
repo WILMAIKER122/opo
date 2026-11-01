@@ -2,27 +2,66 @@
 
 [ext_resource type="Script" uid="uid://b54h5rb3i54qr" path="res://pj/codigos/estados/character_estado.gd" id="1_637rf"]
 [ext_resource type="PackedScene" uid="uid://bspdh24iktu8u" path="res://pj/escenas/pj.tscn" id="1_pvnr6"]
-[ext_resource type="Resource" uid="uid://d80bky17w1sn" path="res://pj/archivos_stree/estadisticas_player.tres" id="2_v3rxr"]
+[ext_resource type="Script" uid="uid://bvvwvbdl5go4" path="res://pj/codigos/estadisticas/sistema_afinidad.gd" id="2_8i7ke"]
 [ext_resource type="Script" uid="uid://bv4uw0fc47eew" path="res://pj/codigos/area_pj.gd" id="3_wis5t"]
+[ext_resource type="Script" uid="uid://5uweiht38e06" path="res://pj/codigos/estadisticas/sistema_buffs.gd" id="3_xoarj"]
 [ext_resource type="Script" uid="uid://ctjtbspo2kwve" path="res://pj/codigos/estados/maquina_estados.gd" id="4_637rf"]
+[ext_resource type="Script" uid="uid://degm1ysnbk3p1" path="res://pj/codigos/estadisticas/sistema_hambre.gd" id="4_db4sv"]
+[ext_resource type="Script" uid="uid://bpiddc08ttlh0" path="res://pj/codigos/estadisticas/sistema_mejoras_permanentes.gd" id="5_7fdve"]
 [ext_resource type="Script" uid="uid://bt6lpdwdu5w6d" path="res://pj/codigos/estados/estado_idle.gd" id="5_71acr"]
 [ext_resource type="Script" uid="uid://bugcnbh677rdk" path="res://pj/codigos/estados/estado_run.gd" id="6_ksono"]
+[ext_resource type="Script" uid="uid://bbyyt0pp6xmw3" path="res://pj/codigos/estadisticas/estadisticas_base.gd" id="6_ogbcm"]
+[ext_resource type="Resource" uid="uid://cx5644rx74qq2" path="res://sinergia/sistema_sinergia.tres" id="7_o7o1y"]
 [ext_resource type="Script" uid="uid://jk0ra5hxkl3u" path="res://pj/codigos/estados/estado_dash.gd" id="7_yp2pw"]
 [ext_resource type="Script" uid="uid://c3tg2g4h7o5wp" path="res://pj/codigos/estados/estado_ataque.gd" id="8_mbfbu"]
+[ext_resource type="Script" uid="uid://c0hx4tqsac2t6" path="res://pj/codigos/estadisticas/stats_base.gd" id="8_p6aom"]
 [ext_resource type="PackedScene" uid="uid://boghq7c8qbn5" path="res://pj/escenas/zeta.tscn" id="8_v3rxr"]
+[ext_resource type="Resource" uid="uid://cvvbnimy5twnr" path="res://pj/archivos_stree/zetas/zetas_items/normal.tres" id="9_vy1us"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="9_yp2pw"]
 [ext_resource type="Script" uid="uid://4nqwe84fh33c" path="res://pj/codigos/estados/comer_Estado.gd" id="10_lgry4"]
 [ext_resource type="Script" uid="uid://csjccrhj5wnx7" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_3d.gd" id="10_mbfbu"]
-[ext_resource type="PackedScene" uid="uid://4m6yv0c43njb" path="res://items/ui/selecion.tscn" id="11_gi6j7"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="11_v3rxr"]
 [ext_resource type="Script" uid="uid://c6hcd52uymcky" path="res://pj/codigos/estadisticas/RecibiendoDanio.gd" id="12_gi6j7"]
 [ext_resource type="Script" uid="uid://q8tkjp8h1rct" path="res://pj/codigos/estados/Cocinar.gd" id="13_kfjfk"]
 [ext_resource type="Script" uid="uid://b2jg3ok1dgprm" path="res://pj/codigos/interfaz.gd" id="14_5ntod"]
 [ext_resource type="PackedScene" uid="uid://baay30tm06i66" path="res://recetas/ui/popup_cocina.tscn" id="14_n62cq"]
-[ext_resource type="Script" uid="uid://dcxsoqphr6t31" path="res://pj/codigos/estados/equipar.gd" id="15_q1cyn"]
-[ext_resource type="PackedScene" uid="uid://cr64fqd1oxyd4" path="res://items/ui/PopupEquipo.tscn" id="16_0aj0y"]
 [ext_resource type="Script" uid="uid://blxa4cmojx4s8" path="res://ui/HUD.gd" id="17_02xue"]
 [ext_resource type="Script" uid="uid://b0vyr40kjadla" path="res://items/ui/inventario_ui.gd" id="17_dgug3"]
+[ext_resource type="Script" uid="uid://t2frvyqxulm3" path="res://pj/codigos/estados/comer_rapido.gd" id="24_xoarj"]
+
+[sub_resource type="Resource" id="Resource_n62cq"]
+script = ExtResource("2_8i7ke")
+metadata/_custom_type_script = "uid://bvvwvbdl5go4"
+
+[sub_resource type="Resource" id="Resource_kfjfk"]
+script = ExtResource("3_xoarj")
+metadata/_custom_type_script = "uid://5uweiht38e06"
+
+[sub_resource type="Resource" id="Resource_3vi8l"]
+script = ExtResource("4_db4sv")
+metadata/_custom_type_script = "uid://degm1ysnbk3p1"
+
+[sub_resource type="Resource" id="Resource_02xue"]
+script = ExtResource("5_7fdve")
+metadata/_custom_type_script = "uid://bpiddc08ttlh0"
+
+[sub_resource type="Resource" id="Resource_gi6j7"]
+script = ExtResource("8_p6aom")
+velocidad_max_base = 7.0
+dash_velociadad_base = 30.0
+metadata/_custom_type_script = "uid://c0hx4tqsac2t6"
+
+[sub_resource type="Resource" id="Resource_hpn4y"]
+script = ExtResource("6_ogbcm")
+stats = SubResource("Resource_gi6j7")
+mejoras_permanentes = SubResource("Resource_02xue")
+buffs = SubResource("Resource_kfjfk")
+afinidad = SubResource("Resource_n62cq")
+zeta_actual = ExtResource("9_vy1us")
+hambre = SubResource("Resource_3vi8l")
+zeta_inicial = ExtResource("9_vy1us")
+sinergias = ExtResource("7_o7o1y")
+metadata/_custom_type_script = "uid://bbyyt0pp6xmw3"
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_n2hkq"]
 height = 1.217926
@@ -193,9 +232,8 @@ border_color = Color(1, 1, 1, 1)
 
 [node name="CharacterBody3D" type="CharacterBody3D" unique_id=1556463437]
 script = ExtResource("1_637rf")
-estadisticas = ExtResource("2_v3rxr")
+estadisticas = SubResource("Resource_hpn4y")
 zeta_dejar = ExtResource("8_v3rxr")
-duracion_invulnerabilidad = null
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2060959599]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.050768375, -0.30885315, 0)
@@ -249,7 +287,6 @@ recoil_impulse = 8.0
 
 [node name="comer" type="Node" parent="estados" unique_id=2087752172]
 script = ExtResource("10_lgry4")
-popup_scene = ExtResource("11_gi6j7")
 
 [node name="RecibiendoDanio" type="Node" parent="estados" unique_id=1986664640]
 script = ExtResource("12_gi6j7")
@@ -258,9 +295,8 @@ script = ExtResource("12_gi6j7")
 script = ExtResource("13_kfjfk")
 popup_scene = ExtResource("14_n62cq")
 
-[node name="Equipar" type="Node" parent="estados" unique_id=1175971884]
-script = ExtResource("15_q1cyn")
-popup_scene = ExtResource("16_0aj0y")
+[node name="ComerRapido" type="Node" parent="estados" unique_id=1807853]
+script = ExtResource("24_xoarj")
 
 [node name="camaraprisipal" type="Camera3D" parent="." unique_id=666978458]
 physics_interpolation_mode = 1

@@ -1,0 +1,87 @@
+[gd_scene format=3 uid="uid://dfbet11wtnbrj"]
+
+[ext_resource type="Script" uid="uid://bd7th0qlohe8i" path="res://menu/hub/paginas/pagina_bolsillo.gd" id="1_wep7g"]
+[ext_resource type="PackedScene" uid="uid://bprttf4civ3g0" path="res://ui/GrillaSeleccion.tscn" id="2_2pa4k"]
+
+[node name="PaginaBolsillo" type="VBoxContainer" unique_id=1178381865]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_wep7g")
+
+[node name="Columnas" type="HBoxContainer" parent="." unique_id=323894939]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="ColumnaDespensa" type="VBoxContainer" parent="Columnas" unique_id=1784525430]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 3.0
+
+[node name="LabelDespensa" type="Label" parent="Columnas/ColumnaDespensa" unique_id=1766150805]
+layout_mode = 2
+
+[node name="Grilla" parent="Columnas/ColumnaDespensa" unique_id=2077178312 instance=ExtResource("2_2pa4k")]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="ColumnaBolsillo" type="VBoxContainer" parent="Columnas" unique_id=1634411535]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="LabelBolsillo" type="Label" parent="Columnas/ColumnaBolsillo" unique_id=150763935]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="LabelCapacidad" type="Label" parent="Columnas/ColumnaBolsillo" unique_id=376341781]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="PanelBolsillo" type="PanelContainer" parent="Columnas/ColumnaBolsillo" unique_id=1684383953]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ContenedorBolsillo" type="VBoxContainer" parent="Columnas/ColumnaBolsillo/PanelBolsillo" unique_id=702568451]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelVacio" type="Label" parent="Columnas/ColumnaBolsillo" unique_id=1588389024]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="PanelDetalle" type="PanelContainer" parent="Columnas" unique_id=587282973]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxDetalle" type="VBoxContainer" parent="Columnas/PanelDetalle" unique_id=1211341790]
+layout_mode = 2
+
+[node name="IconoDetalle" type="TextureRect" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=1777826952]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TituloDetalle" type="Label" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=1353647171]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="TextoDetalle" type="RichTextLabel" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=430947569]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelMensaje" type="Label" parent="Columnas" unique_id=543821546]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelAyuda" type="Label" parent="." unique_id=1068702907]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Flechas: mover · Z/X: ±1 (Shift ±5) · A: partir · Esc: cancelar"

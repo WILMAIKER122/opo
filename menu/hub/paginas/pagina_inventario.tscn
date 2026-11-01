@@ -1,0 +1,55 @@
+[gd_scene format=3 uid="uid://canjmdb2pm8n2"]
+
+[ext_resource type="PackedScene" uid="uid://bprttf4civ3g0" path="res://ui/GrillaSeleccion.tscn" id="1_tuyq4"]
+[ext_resource type="Script" uid="uid://d3v3rji8d6xvu" path="res://menu/hub/paginas/pagina_inventario.gd" id="1_u6gj3"]
+
+[node name="PaginaInventario" type="VBoxContainer" unique_id=593084331]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_u6gj3")
+
+[node name="Columnas" type="HBoxContainer" parent="." unique_id=70171456]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 16
+
+[node name="Grilla" parent="Columnas" unique_id=2077178312 instance=ExtResource("1_tuyq4")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+
+[node name="PanelDetalle" type="PanelContainer" parent="Columnas" unique_id=525166852]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxDetalle" type="VBoxContainer" parent="Columnas/PanelDetalle" unique_id=414970545]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="IconoDetalle" type="TextureRect" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=1002715698]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TituloDetalle" type="Label" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=1792219141]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="TextoDetalle" type="RichTextLabel" parent="Columnas/PanelDetalle/VBoxDetalle" unique_id=1477151597]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="LabelSeleccion" type="Label" parent="." unique_id=1981967885]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="LabelAyuda" type="Label" parent="." unique_id=1433129053]
+layout_mode = 2
+text = "Flechas: mover · Z/X: ±1 (Shift ±5) · A: comer · Q/E: pestañas · Esc: cerrar"

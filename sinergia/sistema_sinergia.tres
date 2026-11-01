@@ -11,6 +11,44 @@ tipo = 1
 efecto_especial = 5
 metadata/_custom_type_script = "uid://db3m1fd8t7lvf"
 
+[sub_resource type="Resource" id="Resource_b0hw8"]
+script = ExtResource("2_la2mg")
+nombre = "Veneno"
+tipo = 1
+tag_acumulado = 1
+duracion_segundos = 20.0
+efecto_especial = 1
+valor_efecto_especial = 4.0
+metadata/_custom_type_script = "uid://db3m1fd8t7lvf"
+
+[sub_resource type="Resource" id="Resource_q012v"]
+script = ExtResource("2_la2mg")
+nombre = "Vampiro"
+tipo = 1
+cantidad_a_acumular = 2
+duracion_segundos = 20.0
+efecto_especial = 2
+valor_efecto_especial = 30.0
+metadata/_custom_type_script = "uid://db3m1fd8t7lvf"
+
+[sub_resource type="Resource" id="Resource_iscia"]
+script = ExtResource("2_la2mg")
+nombre = "Ligero"
+tags_combo = Array[int]([0, 1])
+duracion_segundos = 15.0
+efecto_especial = 3
+metadata/_custom_type_script = "uid://db3m1fd8t7lvf"
+
+[sub_resource type="Resource" id="Resource_igy2w"]
+script = ExtResource("2_la2mg")
+nombre = "Voraz"
+tipo = 1
+tag_acumulado = 1
+cantidad_a_acumular = 5
+efecto_especial = 4
+valor_efecto_especial = 100.0
+metadata/_custom_type_script = "uid://db3m1fd8t7lvf"
+
 [resource]
 script = ExtResource("1_0la1a")
-sinergias_disponibles = Array[ExtResource("2_la2mg")]([SubResource("Resource_8rhti")])
+sinergias_disponibles = Array[ExtResource("2_la2mg")]([SubResource("Resource_8rhti"), SubResource("Resource_b0hw8"), SubResource("Resource_q012v"), SubResource("Resource_iscia"), SubResource("Resource_igy2w")])

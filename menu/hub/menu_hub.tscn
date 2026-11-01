@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://cdd8w46dl6c4r"]
+
+[ext_resource type="Script" uid="uid://ropn8xwboaxd" path="res://menu/hub/menu_hub.gd" id="1_0s475"]
+[ext_resource type="Script" uid="uid://bdvxejsay4ok8" path="res://menu/hub/pagina_hub_data.gd" id="2_q0b6d"]
+[ext_resource type="Resource" uid="uid://d01rn610obvgg" path="res://menu/hub/recursos/bolsillo.tres" id="3_c80gw"]
+[ext_resource type="Resource" uid="uid://dfv7ee7t7h2ew" path="res://menu/hub/recursos/inventario.tres" id="4_2pgia"]
+[ext_resource type="Resource" uid="uid://bu2isqt17w48o" path="res://menu/hub/recursos/tomo.tres" id="5_2dk2e"]
+
+[node name="MenuHub" type="CanvasLayer" unique_id=1308238232]
+script = ExtResource("1_0s475")
+paginas = Array[ExtResource("2_q0b6d")]([ExtResource("3_c80gw"), ExtResource("4_2pgia"), ExtResource("5_2dk2e")])
+
+[node name="Control" type="Control" parent="." unique_id=835737305]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Fondo" type="ColorRect" parent="Control" unique_id=159570946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.20784314, 0.20784314, 0.20784314, 0.46666667)
+
+[node name="PanelPrincipal" type="PanelContainer" parent="Control" unique_id=1876350606]
+custom_minimum_size = Vector2(1000, 600)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Margen" type="MarginContainer" parent="Control/PanelPrincipal" unique_id=905059974]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Control/PanelPrincipal/Margen" unique_id=1547627720]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="FilaPestanas" type="HBoxContainer" parent="Control/PanelPrincipal/Margen/VBox" unique_id=1755448960]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="HintAnterior" type="Label" parent="Control/PanelPrincipal/Margen/VBox/FilaPestanas" unique_id=1114933067]
+layout_mode = 2
+text = "Q"
+
+[node name="Pestanas" type="HBoxContainer" parent="Control/PanelPrincipal/Margen/VBox/FilaPestanas" unique_id=1662895915]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="HintSiguiente" type="Label" parent="Control/PanelPrincipal/Margen/VBox/FilaPestanas" unique_id=1757251531]
+layout_mode = 2
+text = "E"
+vertical_alignment = 1
+
+[node name="ContenedorPagina" type="Control" parent="Control/PanelPrincipal/Margen/VBox" unique_id=694342374]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 440)
+layout_mode = 2
+size_flags_vertical = 3

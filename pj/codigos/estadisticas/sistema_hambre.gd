@@ -18,8 +18,9 @@ extends Resource
 
 var _tiempo_acumulado: float = 0.0
 
-func actualizar(delta: float, en_run: bool) -> float:
-	_tiempo_acumulado += delta
+func actualizar(delta: float, en_run: bool, velocidad_decaimiento: float = 1.0) -> float:
+	# Solo el decaimiento se acelera; el daño por hambre en 0 sigue usando el delta real
+	_tiempo_acumulado += delta * velocidad_decaimiento
 	
 	while _tiempo_acumulado >= intervalo_decaimiento:
 		_tiempo_acumulado -= intervalo_decaimiento

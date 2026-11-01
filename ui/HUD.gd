@@ -34,6 +34,7 @@ var _columna_ventanas: VBoxContainer
 ## id de ventana -> Label
 var _filas_ventanas: Dictionary = {}
 
+var _label_sabores: Label
 
 func _ready() -> void:
 	if player == null:
@@ -50,7 +51,7 @@ func _ready() -> void:
 	_al_cambiar_zeta(_est.zeta_actual)
 	player.connect("dano_recibido", _al_recibir_dano)
 
-
+	_mostrar_aviso_pago()	
 func _process(_delta: float) -> void:
 	_label_vida.text = str(maxi(0, ceili(_est.vida)))
 
@@ -64,7 +65,7 @@ func _process(_delta: float) -> void:
 
 	_actualizar_sinergias()
 	_actualizar_ventanas()
-
+	_actualizar_sabores()
 
 # ==============================================================================
 # CONSTRUCCIÓN
@@ -115,7 +116,10 @@ func _construir_ui() -> void:
 	_columna_ventanas.add_theme_constant_override("separation", 2)
 	_ignorar(_columna_ventanas)
 	columna.add_child(_columna_ventanas)
-
+	
+	_label_sabores = _crear_label("")
+	_label_sabores.add_theme_font_size_override("font_size", maxi(tamano_fuente - 4, 10))
+	columna.add_child(_label_sabores)
 
 func _crear_barra_hambre() -> Range:
 	var barra: Range
@@ -331,3 +335,32 @@ func _buscar_player() -> Player:
 		if nodo is Player:
 			return nodo as Player
 	return null
+
+func _actualizar_sabores() -> void:
+	var lineas := PackedStringArray()
+	for tag in _est.sabores_activos:
+		lineas.append("%s  %ds" % [ItemData.TagComida.keys()[tag], ceili(_est.sabores_activos[tag])])
+	_label_sabores.text = "\n".join(lineas)
+
+## Aviso de lo que cobró la puerta por la que se entró: "-3 Pata (quedan 5)"
+func _mostrar_aviso_pago() -> void:
+	var pagos: Array =	GeneradorPuertas.aviso_pago
+	if pagos.is_empty():
+		return
+	GeneradorPuertas.aviso_pago = []
+	var caja := VBoxContainer.new()
+	_ignorar(caja)
+	for p in pagos:
+		var fila := _nueva_fila()
+		fila.add_child(_crear_icono(p["icono"]))
+		var l := _crear_label("-%d  %s  (quedan %d)" % [p["cantidad"], p["nombre"], p["restante"]])
+		l.add_theme_color_override("font_color", Color(1.0, 0.55, 0.55))
+		fila.add_child(l)
+		caja.add_child(fila)
+	add_child(caja)
+	caja.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	caja.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP, Control.PRESET_MODE_MINSIZE, 40)
+	var t := create_tween()
+	t.tween_interval(3.0)
+	t.tween_property(caja, "modulate:a", 0.0, 0.6)
+	t.tween_callback(caja.queue_free)

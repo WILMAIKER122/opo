@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://ciosm682ls5j0"]
+
+[ext_resource type="PackedScene" uid="uid://k3b0ckvjnsr8" path="res://enemi/enemi_salto.tscn" id="1_l5bq5"]
+[ext_resource type="Resource" uid="uid://cqqslpvpkpsfo" path="res://enemi/archivos_stree/enemi_estadis_embestida.tres" id="2_odm2s"]
+
+[node name="enemigo" unique_id=43443851 instance=ExtResource("1_l5bq5")]
+tipo_enemigo = ExtResource("2_odm2s")
+tipo_ataque = 0

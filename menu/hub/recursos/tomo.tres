@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PaginaHubData" format=3 uid="uid://bu2isqt17w48o"]
+
+[ext_resource type="PackedScene" uid="uid://dr7bsxrbo6ff" path="res://menu/hub/paginas/pagina_tomo.tscn" id="1_bw3kc"]
+[ext_resource type="Script" uid="uid://bdvxejsay4ok8" path="res://menu/hub/pagina_hub_data.gd" id="2_vq1lq"]
+
+[resource]
+script = ExtResource("2_vq1lq")
+id = &"tomo"
+titulo = "Tomo"
+escena = ExtResource("1_bw3kc")
+accion_atajo = &"abrir_tomo"
+metadata/_custom_type_script = "uid://bdvxejsay4ok8"

@@ -1,0 +1,94 @@
+[gd_scene format=3 uid="uid://cyml8bh8bgern"]
+
+[ext_resource type="PackedScene" uid="uid://dxmojic84d3d0" path="res://niveles/suelo.blend" id="1_dtj0y"]
+[ext_resource type="Script" uid="uid://b2dswjn63c55l" path="res://niveles/codigo/sala.gd" id="2_2mq4j"]
+[ext_resource type="PackedScene" uid="uid://bxrre7y2jtmwf" path="res://pj/escenas/character_pj.tscn" id="2_er1n8"]
+[ext_resource type="PackedScene" uid="uid://k3b0ckvjnsr8" path="res://enemi/enemi_salto.tscn" id="3_er1n8"]
+[ext_resource type="Resource" uid="uid://cqara5axaa4nw" path="res://enemi/archivos_stree/enemi_estadis_normal.tres" id="4_5ohoa"]
+[ext_resource type="PackedScene" uid="uid://hvl11v6dohhd" path="res://enemi/enemigo_normal.tscn" id="4_tgdrs"]
+[ext_resource type="PackedScene" uid="uid://ciosm682ls5j0" path="res://enemi/enemigo_embiste.tscn" id="5_oclet"]
+[ext_resource type="Resource" uid="uid://cqqslpvpkpsfo" path="res://enemi/archivos_stree/enemi_estadis_embestida.tres" id="5_qyywm"]
+[ext_resource type="Script" uid="uid://cnxtyg565k3q4" path="res://niveles/codigo/puerta_sala.gd" id="9_a6b86"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n2hkq"]
+size = Vector3(20.387726, 8.1979065, 1)
+
+[sub_resource type="Environment" id="Environment_26hbr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_m4pfc"]
+
+[node name="suelo2" unique_id=1942572753 node_paths=PackedStringArray("puertas") instance=ExtResource("1_dtj0y")]
+script = ExtResource("2_2mq4j")
+puertas = [NodePath("Area3D"), NodePath("Area3D2"), NodePath("Area3D3")]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="1" unique_id=1493165016]
+transform = Transform3D(0.9056995, -0.29975697, 0.29975688, 3.6897791e-09, 0.70710677, 0.70710677, -0.4239203, -0.6404264, 0.6404263, 0, 3.9299223, 0)
+light_energy = 0.656
+shadow_enabled = true
+shadow_opacity = 0.65
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2" unique_id=162464323]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=1454099520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 0, 10.220448)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="StaticBody3D" index="1" unique_id=1934730079]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.059036255, 1.208664, -10.093828)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D3" type="CollisionShape3D" parent="StaticBody3D" index="2" unique_id=1640536771]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 10.1074505, 1.0666199, -0.18724632)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="CollisionShape3D4" type="CollisionShape3D" parent="StaticBody3D" index="3" unique_id=1917115821]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -10.037024, 1.3236694, -0.18724632)
+shape = SubResource("BoxShape3D_n2hkq")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="3" unique_id=864880606]
+environment = SubResource("Environment_26hbr")
+
+[node name="CharacterBody3D" parent="." index="4" unique_id=1556463437 instance=ExtResource("2_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7662838, 0)
+
+[node name="CharacterBody3D2" parent="." index="5" unique_id=43443851 node_paths=PackedStringArray("jugador") instance=ExtResource("3_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.86122, 0.86521244, 0)
+tipo_enemigo = ExtResource("4_5ohoa")
+jugador = NodePath("../CharacterBody3D")
+
+[node name="enemigo" parent="." index="6" unique_id=341361106 node_paths=PackedStringArray("jugador") instance=ExtResource("3_er1n8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.8046665, 0.86521244, -4.5307055)
+tipo_enemigo = ExtResource("5_qyywm")
+tipo_ataque = 0
+jugador = NodePath("../CharacterBody3D")
+
+[node name="enemigo2" parent="." index="7" unique_id=1757387389 node_paths=PackedStringArray("jugador") instance=ExtResource("4_tgdrs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.052977, 2.4998584, 0)
+jugador = NodePath("../CharacterBody3D")
+
+[node name="enemigo3" parent="." index="8" unique_id=2015825979 node_paths=PackedStringArray("jugador") instance=ExtResource("5_oclet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.463539, 1.0372357, 0)
+tipo_enemigo = ExtResource("4_5ohoa")
+tipo_ataque = 1
+jugador = NodePath("../CharacterBody3D")
+
+[node name="Area3D" type="Area3D" parent="." index="9" unique_id=378015232]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.42681074, -8.726747)
+script = ExtResource("9_a6b86")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=1008396676]
+shape = SubResource("BoxShape3D_m4pfc")
+
+[node name="Area3D2" type="Area3D" parent="." index="10" unique_id=1357586144]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.192039, 0.42681074, 0.5101509)
+script = ExtResource("9_a6b86")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2" index="0" unique_id=461475017]
+shape = SubResource("BoxShape3D_m4pfc")
+
+[node name="Area3D3" type="Area3D" parent="." index="11" unique_id=1905523956]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.954915, 0.42681074, 0.5101509)
+script = ExtResource("9_a6b86")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D3" index="0" unique_id=1847867469]
+shape = SubResource("BoxShape3D_m4pfc")

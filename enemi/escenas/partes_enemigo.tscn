@@ -33,6 +33,7 @@ metadata/_custom_type_script = "uid://es23ttf8ya3i"
 script = ExtResource("2_3ymgn")
 nombre = "pata"
 icono = ExtResource("7_o2x5a")
+tipo = 1
 tags = Array[int]([1])
 rareza = 1
 hambre_restaurada = 10.0

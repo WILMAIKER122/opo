@@ -1,7 +1,0 @@
-[gd_resource type="Resource" script_class="EnemigoStats" format=3 uid="uid://cl8b5kx6ep25e"]
-
-[ext_resource type="Script" uid="uid://bwrmqa4qb7aop" path="res://enemi/codigo/estadisticas_enemi.gd" id="1_y2imk"]
-
-[resource]
-script = ExtResource("1_y2imk")
-metadata/_custom_type_script = "uid://bwrmqa4qb7aop"

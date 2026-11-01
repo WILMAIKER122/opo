@@ -126,6 +126,8 @@ func _cerrar_opciones() -> void:
 
 
 func _al_menu_principal() -> void:
+	if CodigoGlobal.en_run:
+		CodigoGlobal.abandonar_run()
 	# Primero se libera el gestor (y se quita la pausa) y DESPUÉS se cambia de escena
 	if MenuManager.get_current_menu() == self:
 		MenuManager.close_current_menu({"accion": "menu_principal"})

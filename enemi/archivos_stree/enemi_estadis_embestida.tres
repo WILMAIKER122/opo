@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="EnemigoStats" format=3 uid="uid://cqqslpvpkpsfo"]
+
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="1_qdgco"]
+[ext_resource type="Resource" uid="uid://xhmksoy3f6hc" path="res://items/partes/parte1.tres" id="2_ahq7j"]
+[ext_resource type="Script" uid="uid://bwrmqa4qb7aop" path="res://enemi/codigo/estadisticas_enemi.gd" id="3_62dvh"]
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="3_ahq7j"]
+
+[sub_resource type="Resource" id="Resource_2bwjv"]
+script = ExtResource("3_ahq7j")
+valor = 100.0
+es_porcentaje = true
+duracion = 10.0
+probabilidad = 0.452
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_n7yxq"]
+script = ExtResource("1_qdgco")
+nombre = "nois"
+tipo = 1
+efectos = Array[ExtResource("3_ahq7j")]([SubResource("Resource_2bwjv")])
+tags = Array[int]([0])
+rareza = 1
+hambre_restaurada = 20.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[resource]
+script = ExtResource("3_62dvh")
+vida_maxima = 10.0
+id = "01"
+partes = Array[ExtResource("1_qdgco")]([ExtResource("2_ahq7j"), SubResource("Resource_n7yxq")])
+metadata/_custom_type_script = "uid://bwrmqa4qb7aop"

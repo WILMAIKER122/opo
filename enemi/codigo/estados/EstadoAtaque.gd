@@ -16,6 +16,8 @@ class_name EstadoAtaque
 ## Multiplica el knockback_ataque de EnemigoStats para este ataque
 @export var multiplicador_knockback: float = 1.0
 
+
+
 ## true mientras el AreaDanio puede lastimar (Enemi._on_area_danio_body_entered lo consulta)
 var haciendo_dano: bool = false
 ## Evita golpear más de una vez por golpe
@@ -23,7 +25,10 @@ var golpeo_realizado: bool = false
 ## Cuenta regresiva de la fase actual (se descuenta sola en cada frame de física)
 var _tiempo_fase: float = 0.0
 
-
+@export_group("Área de daño")
+## Posición X del AreaDanio mientras dura este ataque (mirando a la derecha; el enemigo la espeja solo).
+## 0 = alrededor del cuerpo (embestida). Positivo = caja por delante (golpe).
+@export var area_danio_x: float = 0.0
 # ==============================================================================
 # CICLO (no hace falta tocarlo)
 # ==============================================================================
@@ -32,6 +37,7 @@ func entrar() -> void:
 	haciendo_dano = false
 	golpeo_realizado = false
 	_frenar()
+	enemigo.fijar_area_danio_x(area_danio_x)
 
 	if not is_instance_valid(enemigo.jugador):
 		enemigo.state_machine.cambiar_estado("patrullando")

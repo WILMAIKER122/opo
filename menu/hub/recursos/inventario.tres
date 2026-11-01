@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="PaginaHubData" format=3 uid="uid://dfv7ee7t7h2ew"]
+
+[ext_resource type="PackedScene" uid="uid://canjmdb2pm8n2" path="res://menu/hub/paginas/pagina_inventario.tscn" id="1_qlii1"]
+[ext_resource type="Script" uid="uid://bdvxejsay4ok8" path="res://menu/hub/pagina_hub_data.gd" id="2_uyyub"]
+
+[resource]
+script = ExtResource("2_uyyub")
+id = &"inventario"
+titulo = "Inventario"
+escena = ExtResource("1_qlii1")
+accion_atajo = &"comer"
+metadata/_custom_type_script = "uid://bdvxejsay4ok8"
