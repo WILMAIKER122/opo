@@ -23,12 +23,15 @@ var _indice: int = -1
 var _pagina: PaginaMenu
 var _tween: Tween
 var _frame_apertura: int = -1
-
+@onready var boton_aceptar: Button = %BotonAceptar
+@onready var boton_cerrar: Button = %BotonCerrar
 
 func _ready() -> void:
 	layer = 100
 	_frame_apertura = Engine.get_process_frames()
-
+	boton_aceptar.pressed.connect(_aceptar_pagina)
+	boton_cerrar.pressed.connect(cerrar)
+	boton_cerrar.text = "Cerrar (%s)" % TeclasUI.tecla(&"ui_cancel")
 
 ## Lo llama MenuManager apenas se abre
 func configurar(datos: Dictionary) -> void:
@@ -134,7 +137,7 @@ func _mostrar_pestana(indice: int, direccion: int = 0) -> void:
 	contenedor.add_child(_pagina)
 	_pagina.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	_pagina.configurar(datos_base)
-
+	_actualizar_boton_aceptar()	
 	if direccion != 0:
 		_animar_cambio(direccion)
 
@@ -152,3 +155,14 @@ func _animar_cambio(direccion: int) -> void:
 	_tween.tween_property(_pagina, "offset_left", 0.0, segundos_deslizamiento)
 	_tween.tween_property(_pagina, "offset_right", 0.0, segundos_deslizamiento)
 	_tween.tween_property(_pagina, "modulate:a", 1.0, segundos_deslizamiento)
+
+
+func _aceptar_pagina() -> void:
+	if is_instance_valid(_pagina):
+		_pagina.aceptar()
+
+
+func _actualizar_boton_aceptar() -> void:
+	var texto := _pagina.texto_aceptar() if is_instance_valid(_pagina) else ""
+	boton_aceptar.visible = texto != ""
+	boton_aceptar.text = "%s (%s)" % [texto, TeclasUI.tecla(&"comer_confirmar")]

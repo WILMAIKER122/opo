@@ -34,7 +34,11 @@ var direccion_entrada: Vector3 = Vector3.ZERO
 
 var _efectos_tiempo: Array = []   # {"escala": float, "fin": int (ms reales)}
 
-
+var plantilla_bolsillo: Dictionary = {}   # clave -> cantidad objetivo (se guarda)
+var refuerzos: int = 0                    # enemigos extra que traerá la próxima sala
+## % de lo puesto en la olla que se pierde en una mezcla fallida (mínimo 1 unidad)
+@export var porcentaje_perdida_fallo: float = 30.0
+var mejoras_obtenidas: Dictionary = {}   # nombre de receta -> nivel obtenido (se guarda)
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	call_deferred("_actualizar_en_run_segun_escena")
@@ -145,7 +149,11 @@ func receta_descubierta(receta: RecetaCocina) -> bool:
 	return receta != null and recetas_descubiertas.has(receta.nombre)
 
 
-## olla: { clave : unidades }. Devuelve { "estado": "ok" | "fallida" | "vacia" | "invalida", ... }
+func nivel_mejora(receta: RecetaCocina) -> int:
+	return int(mejoras_obtenidas.get(receta.nombre, 0)) if receta else 0
+
+
+## olla: { clave : unidades }. Devuelve { "estado": "ok" | "fallida" | "completa" | "vacia" | "invalida", ... }
 func cocinar(olla: Dictionary) -> Dictionary:
 	var total := 0
 	for clave in olla:
@@ -160,14 +168,16 @@ func cocinar(olla: Dictionary) -> Dictionary:
 
 	var conteo := SistemaCocina.contar_tags(olla, inventario_base)
 	var receta := SistemaCocina.buscar_receta(conteo)
-	if receta == null or receta.plato == null:
-		return {"estado": "fallida"} # no se gasta ningún ingrediente
+	if receta == null or receta.mejora == null:
+		return _cocina_fallida(olla)
+	if nivel_mejora(receta) >= receta.nivel_max:
+		return {"estado": "completa", "receta": receta}   # no se gasta nada
 
 	for clave in olla.keys():
 		var n := int(olla[clave])
 		if n > 0:
 			quitar_item_base(clave, n, false)
-	agregar_item_base(receta.plato, receta.cantidad_resultado)
+	mejoras_obtenidas[receta.nombre] = nivel_mejora(receta) + 1
 
 	var nueva := not recetas_descubiertas.has(receta.nombre)
 	if nueva:
@@ -177,6 +187,35 @@ func cocinar(olla: Dictionary) -> Dictionary:
 	if nueva:
 		recetas_actualizadas.emit()
 	return {"estado": "ok", "receta": receta, "nueva": nueva}
+
+
+## Mezcla sin receta: se pierde un % de lo puesto (mínimo 1 unidad en total)
+func _cocina_fallida(olla: Dictionary) -> Dictionary:
+	var perdidas := {}
+	var suma := 0
+	var mayor := ""
+	for clave in olla:
+		var n := int(olla[clave])
+		if n <= 0:
+			continue
+		var perdida := mini(n, roundi(n * porcentaje_perdida_fallo / 100.0))
+		perdidas[clave] = perdida
+		suma += perdida
+		if mayor == "" or n > int(olla[mayor]):
+			mayor = clave
+	if suma == 0:
+		perdidas[mayor] = 1
+
+	var resumen: Array = []
+	for clave in perdidas:
+		var perdida := int(perdidas[clave])
+		if perdida <= 0:
+			continue
+		resumen.append({"nombre": (inventario_base[clave] as ItemData).nombre, "cantidad": perdida})
+		quitar_item_base(clave, perdida, false)
+	guardar_partida()
+	inventario_base_actualizado.emit()
+	return {"estado": "fallida", "perdido": resumen}
 
 
 # ==============================================================================

@@ -20,7 +20,7 @@ func enter() -> void:
 		return
 
 	MenuManager.menu_closed.connect(_al_cerrar_menu, CONNECT_ONE_SHOT)
-	if not MenuManager.open_menu("cocinar", popup_scene.resource_path, true):
+	if not MenuManager.open_menu("cocinar", popup_scene.resource_path, true, {"estadisticas": character.estadisticas}):
 		MenuManager.menu_closed.disconnect(_al_cerrar_menu)
 		state_machine.transition_to("idle")
 

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bympu3e4v5cou"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_jkbn3"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_7nx2c"]
+
+[resource]
+script = ExtResource("2_7nx2c")
+nombre = "Moho añejo"
+tipo = 1
+tags = Array[int]([8])
+rareza = 1
+hambre_restaurada = 5.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

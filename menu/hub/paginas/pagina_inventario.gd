@@ -8,7 +8,7 @@ class_name PaginaInventario
 @onready var titulo_detalle: Label = %TituloDetalle
 @onready var texto_detalle: RichTextLabel = %TextoDetalle
 @onready var label_seleccion: Label = %LabelSeleccion
-
+@onready var label_ayuda: Label = $LabelAyuda
 var estadisticas: estadisticas_player
 
 
@@ -22,7 +22,7 @@ func configurar(datos: Dictionary) -> void:
 	estadisticas = datos.get("estadisticas")
 	grilla.cargar(estadisticas.obtener_inventario_activo())
 	_actualizar_seleccion()
-
+	label_ayuda.text = "Flechas: mover · Z/X: ±1 (Shift ±5) · %s: comer · Q/E: pestañas · Esc: cerrar" % TeclasUI.tecla(&"comer_confirmar")
 
 func manejar_input(event: InputEvent) -> bool:
 	if grilla.manejar_input(event):
@@ -69,3 +69,10 @@ func _actualizar_detalle(slot) -> void:
 	titulo_detalle.text = slot.item_data.nombre
 	icono_detalle.texture = slot.item_data.icono
 	texto_detalle.text = texto_item(slot.item_data)
+
+
+func texto_aceptar() -> String:
+	return "Comer"
+
+func aceptar() -> void:
+	_comer()

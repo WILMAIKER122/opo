@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c5sy4fusujsrp"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_p3jus"]
+[ext_resource type="Texture2D" uid="uid://x6beopfpv3p6" path="res://pj/pj_zeta.png" id="2_5n7v8"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="3_swy3h"]
+
+[resource]
+script = ExtResource("3_swy3h")
+nombre = "Ala de escarabajo"
+icono = ExtResource("2_5n7v8")
+tipo = 1
+tags = Array[int]([2])
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

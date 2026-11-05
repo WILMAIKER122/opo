@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://7lssvwve1my2"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_i3oiq"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_lniye"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_b0jb2"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_i3oiq")
+nombre = "+1 slot"
+stat = "max_por_slot_bolsillo"
+valor = 1.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_osupg"]
+script = ExtResource("2_lniye")
+tag = 3
+cantidad_minima = 18
+cantidad_maxima = 20
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_b0jb2")
+nombre = "Almíbar espeso"
+requisitos = Array[ExtResource("2_lniye")]([SubResource("Resource_osupg")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 5
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

@@ -8,3 +8,5 @@ extends Resource
 @export var conocimientos: Array[String] = []
 @export var vistos: Array[String] = []
 @export var derrotas: Dictionary = {}
+@export var plantilla_bolsillo: Dictionary = {}
+@export var mejoras_obtenidas: Dictionary = {}

@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://d4frs44mxgafw"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_x74kf"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_q1yo3"]
+
+[sub_resource type="Resource" id="Resource_5fj7h"]
+script = ExtResource("1_x74kf")
+tipo = 1
+probabilidad = 0.5
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[resource]
+script = ExtResource("2_q1yo3")
+nombre = "Glándula de veneno"
+tipo = 1
+efectos = Array[ExtResource("1_x74kf")]([SubResource("Resource_5fj7h")])
+tags = Array[int]([7])
+rareza = 1
+hambre_restaurada = 7.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

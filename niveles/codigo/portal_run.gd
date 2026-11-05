@@ -17,6 +17,7 @@ func _ready() -> void:
 	_aviso.no_depth_test = true
 	_aviso.position = Vector3(0.0, 1.8, 0.0)
 	_aviso.visible = false
+	_aviso.text = "[%s] %s" % [TeclasUI.tecla(&"interactuar"), texto_aviso]	
 	add_child(_aviso)
 
 

@@ -17,9 +17,10 @@ extends Resource
 @export var prioridad: int = 0
 
 @export_group("Resultado")
-## El plato (ItemData ya armado como .tres, con sus efectos)
-@export var plato: ItemData
-@export var cantidad_resultado: int = 1
+## Mejora permanente que otorga (un .tres de MejoraPermanente)
+@export var mejora: MejoraPermanente
+## Cuántas veces se puede cocinar (cada vez aplica la mejora otra vez). 1 = una sola vez
+@export_range(1, 99) var nivel_max: int = 1
 
 
 ## conteo: { tag (int) : unidades de ese tag en la olla }

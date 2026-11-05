@@ -25,3 +25,11 @@ static func texto_item(item: ItemData) -> String:
 			nombres.append(ItemData.TagComida.keys()[tag])
 		texto += "\n[b]Tags:[/b] " + ", ".join(nombres)
 	return texto
+
+## Texto del botón Aceptar del hub ("" = esta página no tiene)
+func texto_aceptar() -> String:
+	return ""
+
+## Lo llama el botón Aceptar (y Enter) del hub
+func aceptar() -> void:
+	pass

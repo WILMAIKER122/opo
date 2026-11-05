@@ -78,3 +78,20 @@ unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 440)
 layout_mode = 2
 size_flags_vertical = 3
+
+[node name="FilaBotones" type="HBoxContainer" parent="Control/PanelPrincipal/Margen/VBox" unique_id=1738481931]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="BotonAceptar" type="Button" parent="Control/PanelPrincipal/Margen/VBox/FilaBotones" unique_id=1341713311]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_mode = 0
+
+[node name="BotonCerrar" type="Button" parent="Control/PanelPrincipal/Margen/VBox/FilaBotones" unique_id=1920937862]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_mode = 0

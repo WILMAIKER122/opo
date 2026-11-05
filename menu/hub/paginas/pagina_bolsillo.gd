@@ -30,8 +30,10 @@ func configurar(datos: Dictionary) -> void:
 	estadisticas = datos.get("estadisticas")
 	_en_run = CodigoGlobal.en_run
 	_partir = datos.get("partir", false) and not _en_run
-	var accion := "A: Partir a la run" if _partir else "A: Equipar"
+	var tecla := TeclasUI.tecla(&"comer_confirmar")
+	var accion := "%s: Partir a la run" % tecla if _partir else "%s: Equipar" % tecla
 	label_ayuda.text = "Flechas: mover · Z/X: ±1 (Shift ±5) · %s · Q/E: pestañas · Esc: cerrar" % accion
+	
 	_recargar()
 
 
@@ -58,7 +60,7 @@ func _confirmar() -> void:
 
 func _recargar() -> void:
 	grilla.tope_slots = estadisticas.stats.slots_bolsillo
-	grilla.tope_por_slot = estadisticas.stats.max_por_item_bolsillo
+	grilla.tope_por_slot = estadisticas.max_por_item_bolsillo()
 	grilla.cargar(_armar_pool())
 	var equipado := {}
 	for clave in estadisticas.bolsillo:
@@ -135,3 +137,9 @@ func _actualizar_detalle(slot) -> void:
 	titulo_detalle.text = slot.item_data.nombre
 	icono_detalle.texture = slot.item_data.icono
 	texto_detalle.text = texto_item(slot.item_data)
+
+func texto_aceptar() -> String:
+	return "Partir a la run" if _partir else "Equipar"
+
+func aceptar() -> void:
+	_confirmar()

@@ -1,0 +1,35 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://di754lww001wa"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_rvymg"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_5xifl"]
+[ext_resource type="Resource" uid="uid://custue6v05y35" path="res://pj/archivos_stree/zetas/zetas_items/magico.tres" id="2_hjs0i"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_hjs0i"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_rvymg")
+nombre = "+Zeta Mágica"
+tipo = 1
+stat = "max_por_slot_bolsillo"
+valor = 1.0
+zeta = ExtResource("2_hjs0i")
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_osupg"]
+script = ExtResource("2_5xifl")
+tag = 6
+cantidad_minima = 5
+cantidad_maxima = 15
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[sub_resource type="Resource" id="Resource_dwmkk"]
+script = ExtResource("2_5xifl")
+cantidad_minima = 3
+cantidad_maxima = 6
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_hjs0i")
+nombre = "Zeta mágica"
+requisitos = Array[ExtResource("2_5xifl")]([SubResource("Resource_osupg"), SubResource("Resource_dwmkk")])
+mejora = SubResource("Resource_rmeqb")
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

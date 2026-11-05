@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ctlwsb3aor0fj"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_r4l74"]
+[ext_resource type="Texture2D" uid="uid://x6beopfpv3p6" path="res://pj/pj_zeta.png" id="2_tr81g"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="3_u51wu"]
+
+[sub_resource type="Resource" id="Resource_gqa0v"]
+script = ExtResource("1_r4l74")
+tipo = 2
+stat_afectado = "velocidad_max"
+valor = 10.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[resource]
+script = ExtResource("3_u51wu")
+nombre = "Pluma de lechuza"
+icono = ExtResource("2_tr81g")
+tipo = 1
+efectos = Array[ExtResource("1_r4l74")]([SubResource("Resource_gqa0v")])
+tags = Array[int]([1])
+rareza = 1
+hambre_restaurada = 6.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

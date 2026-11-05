@@ -154,20 +154,3 @@ func _animar_cambio(direccion: int) -> void:
 	_tween.tween_property(cuerpo, "modulate:a", 1.0, segundos_deslizamiento)
 
 const NOMBRES_PESTANAS := ["Bestias", "Recetas", "Sinergias", "Zetas"]
-
-func _preparar_layout() -> void:
-	# "Pagina" es un Control común: hay que darle tamaño, y "Cuerpo" lo llena
-	var pagina := cuerpo.get_parent() as Control
-	pagina.custom_minimum_size = Vector2(620, 360)
-	cuerpo.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	cuerpo.add_theme_constant_override("separation", 12)
-
-	var scroll := contenedor_lista.get_parent() as Control
-	scroll.custom_minimum_size = Vector2(240, 0)
-	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	contenedor_lista.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-
-	var panel_detalle := icono_detalle.get_parent().get_parent() as Control
-	panel_detalle.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	texto_detalle.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	texto_detalle.custom_minimum_size = Vector2(0, 200)

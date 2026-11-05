@@ -24,6 +24,8 @@ static func guardar(g: Node) -> void:
 	datos.vistos = g.vistos.duplicate()
 	datos.derrotas = g.derrotas.duplicate()
 	datos.bolsillo = g.bolsillo
+	datos.plantilla_bolsillo = g.plantilla_bolsillo.duplicate()
+	datos.mejoras_obtenidas = g.mejoras_obtenidas.duplicate()
 	datos.run_en_curso = g.run_en_curso
 	var error := ResourceSaver.save(datos, RUTA)
 	if error == OK:
@@ -51,6 +53,8 @@ static func cargar(g: Node) -> void:
 	g.derrotas = datos.derrotas.duplicate()
 	g.marcar_inventario_base_como_visto()
 	g.bolsillo = datos.bolsillo
+	g.plantilla_bolsillo = datos.plantilla_bolsillo.duplicate()
+	g.mejoras_obtenidas = datos.mejoras_obtenidas.duplicate()
 	if datos.run_en_curso:
 		# El juego se cerró en plena run: se pierde lo que se llevaba
 		g.bolsillo = {}

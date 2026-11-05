@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://r2wija5rf5ok"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_0yx1b"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_ithl6"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_cmw3i"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_0yx1b")
+nombre = "velocidad de ataque"
+stat = "velocidad_ataque"
+valor = 3.0
+es_porcentaje = true
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_jp7lm"]
+script = ExtResource("2_ithl6")
+tag = 1
+cantidad_minima = 4
+cantidad_maxima = 10
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_cmw3i")
+nombre = "Caldo de insecto"
+requisitos = Array[ExtResource("2_ithl6")]([SubResource("Resource_jp7lm")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 5
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

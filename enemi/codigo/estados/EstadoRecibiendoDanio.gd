@@ -22,10 +22,3 @@ func actualizar_fisicas(delta: float) -> void:
 			enemigo.state_machine.cambiar_estado("persiguiendo")
 		else:
 			enemigo.state_machine.cambiar_estado("patrullando")
-func _recuperarse(duracion_stun: float) -> void:
-	await get_tree().create_timer(max(0.2, duracion_stun)).timeout
-	if enemigo.vida_actual > 0:
-		if is_instance_valid(enemigo.jugador):
-			enemigo.state_machine.cambiar_estado("persiguiendo")
-		else:
-			enemigo.state_machine.cambiar_estado("patrullando")

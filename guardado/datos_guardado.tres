@@ -9,22 +9,271 @@
 [ext_resource type="Texture2D" path="res://pj/modelos/texturas/zeta2.png" id="6_8eusa"]
 [ext_resource type="Texture2D" path="res://pj/modelos/texturas/pinza.PNG" id="7_8eusa"]
 
-[sub_resource type="Resource" id="Resource_wlgyo"]
-script = ExtResource("1_eag46")
-tipo = 2
-valor = 100.0
-duracion = 2.0
-metadata/_custom_type_script = "uid://etjgosm4i7ll"
+[sub_resource type="Resource" id="Resource_gy0bw"]
+script = ExtResource("4_8eusa")
+nombre = "Ala de escarabajo"
+cantidad = 20
+icono = ExtResource("3_56pmm")
+tipo = 1
+tags = Array[int]([2])
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
 
 [sub_resource type="Resource" id="Resource_cak3q"]
 script = ExtResource("4_8eusa")
-nombre = "zeta"
-cantidad = 3
+nombre = "Baba de caracol"
+cantidad = 20
+tipo = 1
+tags = Array[int]([4])
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_hpvnk"]
+script = ExtResource("1_eag46")
+tipo = 1
+valor = 3.0
+probabilidad = 0.3
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_xtnbl"]
+script = ExtResource("4_8eusa")
+nombre = "Carne rancia"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_hpvnk")])
+tags = Array[int]([8])
+hambre_restaurada = 2.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_e3yju"]
+script = ExtResource("4_8eusa")
+nombre = "Chile rojo"
+cantidad = 20
+tipo = 1
+tags = Array[int]([5])
+hambre_restaurada = 5.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_omnwk"]
+script = ExtResource("1_eag46")
+valor = 15.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_c4e5x"]
+script = ExtResource("4_8eusa")
+nombre = "Corazón de bestia"
+cantidad = 22
 icono = ExtResource("3_56pmm")
 tipo = 1
-efectos = Array[ExtResource("1_eag46")]([ExtResource("2_gqrxd"), SubResource("Resource_wlgyo")])
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_omnwk")])
 tags = Array[int]([0])
-hambre_restaurada = 30.0
+rareza = 1
+hambre_restaurada = 15.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_1qk3f"]
+script = ExtResource("4_8eusa")
+nombre = "Costilla"
+cantidad = 20
+icono = ExtResource("3_56pmm")
+tipo = 1
+tags = Array[int]([0])
+hambre_restaurada = 8.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_vp3iu"]
+script = ExtResource("1_eag46")
+valor = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_rxg1c"]
+script = ExtResource("4_8eusa")
+nombre = "Cristal comestible"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_vp3iu")])
+tags = Array[int]([6])
+rareza = 1
+hambre_restaurada = 10.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_hclo3"]
+script = ExtResource("4_8eusa")
+nombre = "Espora tóxica"
+cantidad = 20
+tipo = 1
+tags = Array[int]([7])
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_k5i2p"]
+script = ExtResource("1_eag46")
+tipo = 2
+stat_afectado = "velocidad_ataque"
+valor = 10.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_oxgok"]
+script = ExtResource("4_8eusa")
+nombre = "Fruta confitada"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_k5i2p")])
+tags = Array[int]([3])
+rareza = 1
+hambre_restaurada = 12.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_6vr3o"]
+script = ExtResource("1_eag46")
+valor = 10.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_piv83"]
+script = ExtResource("4_8eusa")
+nombre = "Gelatina verde"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_6vr3o")])
+tags = Array[int]([4])
+rareza = 1
+hambre_restaurada = 8.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_5fj7h"]
+script = ExtResource("1_eag46")
+tipo = 1
+probabilidad = 0.5
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_sxyxj"]
+script = ExtResource("4_8eusa")
+nombre = "Glándula de veneno"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_5fj7h")])
+tags = Array[int]([7])
+rareza = 1
+hambre_restaurada = 7.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_kw5t3"]
+script = ExtResource("4_8eusa")
+nombre = "Hongo brillante"
+cantidad = 20
+tipo = 1
+tags = Array[int]([6])
+hambre_restaurada = 5.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_hl520"]
+script = ExtResource("1_eag46")
+tipo = 1
+probabilidad = 0.5
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_46m61"]
+script = ExtResource("4_8eusa")
+nombre = "Hueso maldito"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_hl520")])
+tags = Array[int]([9])
+rareza = 1
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_re1ja"]
+script = ExtResource("4_8eusa")
+nombre = "Moho añejo"
+cantidad = 20
+tipo = 1
+tags = Array[int]([8])
+rareza = 1
+hambre_restaurada = 5.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_lsw8h"]
+script = ExtResource("1_eag46")
+tipo = 2
+stat_afectado = "dash_duraccion"
+valor = 15.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_vjjnv"]
+script = ExtResource("4_8eusa")
+nombre = "Ojo de murciélago"
+cantidad = 22
+icono = ExtResource("3_56pmm")
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_lsw8h")])
+tags = Array[int]([2])
+rareza = 1
+hambre_restaurada = 7.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_4ydtf"]
+script = ExtResource("1_eag46")
+tipo = 2
+stat_afectado = "dano"
+valor = 25.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_k2ae3"]
+script = ExtResource("4_8eusa")
+nombre = "Ojo del abismo"
+cantidad = 20
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_4ydtf")])
+tags = Array[int]([9])
+rareza = 2
+hambre_restaurada = 10.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_8sul6"]
+script = ExtResource("4_8eusa")
+nombre = "Panal de miel"
+cantidad = 20
+tipo = 1
+tags = Array[int]([3])
+hambre_restaurada = 7.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_4ieum"]
+script = ExtResource("4_8eusa")
+nombre = "Pata de grillo"
+cantidad = 7
+icono = ExtResource("3_56pmm")
+tipo = 1
+tags = Array[int]([1])
+hambre_restaurada = 3.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"
+
+[sub_resource type="Resource" id="Resource_gqa0v"]
+script = ExtResource("1_eag46")
+tipo = 2
+stat_afectado = "velocidad_max"
+valor = 10.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[sub_resource type="Resource" id="Resource_ei2ba"]
+script = ExtResource("4_8eusa")
+nombre = "Pluma de lechuza"
+cantidad = 18
+icono = ExtResource("3_56pmm")
+tipo = 1
+efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_gqa0v")])
+tags = Array[int]([1])
+rareza = 1
+hambre_restaurada = 6.0
 metadata/_custom_type_script = "uid://es23ttf8ya3i"
 
 [sub_resource type="Resource" id="Resource_n22il"]
@@ -38,7 +287,7 @@ metadata/_custom_type_script = "uid://etjgosm4i7ll"
 [sub_resource type="Resource" id="Resource_ygeq4"]
 script = ExtResource("4_8eusa")
 nombre = "nois"
-cantidad = 19
+cantidad = 18
 tipo = 1
 efectos = Array[ExtResource("1_eag46")]([SubResource("Resource_n22il")])
 tags = Array[int]([0])
@@ -49,7 +298,7 @@ metadata/_custom_type_script = "uid://es23ttf8ya3i"
 [sub_resource type="Resource" id="Resource_axj7l"]
 script = ExtResource("4_8eusa")
 nombre = "slop"
-cantidad = 92
+cantidad = 87
 icono = ExtResource("5_56pmm")
 tipo = 1
 tags = Array[int]([1, 0])
@@ -77,7 +326,7 @@ metadata/_custom_type_script = "uid://es23ttf8ya3i"
 [sub_resource type="Resource" id="Resource_yc0im"]
 script = ExtResource("4_8eusa")
 nombre = "zeta mago"
-cantidad = 39
+cantidad = 61
 icono = ExtResource("6_8eusa")
 tipo = 1
 efectos = Array[ExtResource("1_eag46")]([ExtResource("2_gqrxd")])
@@ -87,7 +336,6 @@ metadata/_custom_type_script = "uid://es23ttf8ya3i"
 
 [sub_resource type="Resource" id="Resource_8gan4"]
 script = ExtResource("4_8eusa")
-cantidad = 7
 icono = ExtResource("7_8eusa")
 tipo = 1
 tags = Array[int]([9])
@@ -98,19 +346,43 @@ metadata/_custom_type_script = "uid://es23ttf8ya3i"
 [resource]
 script = ExtResource("1_ff5wc")
 inventario_base = {
+"Ala de escarabajo": SubResource("Resource_gy0bw"),
+"Baba de caracol": SubResource("Resource_cak3q"),
+"Carne rancia": SubResource("Resource_xtnbl"),
+"Chile rojo": SubResource("Resource_e3yju"),
+"Corazón de bestia": SubResource("Resource_c4e5x"),
+"Costilla": SubResource("Resource_1qk3f"),
+"Cristal comestible": SubResource("Resource_rxg1c"),
+"Espora tóxica": SubResource("Resource_hclo3"),
+"Fruta confitada": SubResource("Resource_oxgok"),
+"Gelatina verde": SubResource("Resource_piv83"),
+"Glándula de veneno": SubResource("Resource_sxyxj"),
+"Hongo brillante": SubResource("Resource_kw5t3"),
+"Hueso maldito": SubResource("Resource_46m61"),
+"Moho añejo": SubResource("Resource_re1ja"),
+"Ojo de murciélago": SubResource("Resource_vjjnv"),
+"Ojo del abismo": SubResource("Resource_k2ae3"),
+"Panal de miel": SubResource("Resource_8sul6"),
+"Pata de grillo": SubResource("Resource_4ieum"),
+"Pluma de lechuza": SubResource("Resource_ei2ba"),
 "nois": SubResource("Resource_ygeq4"),
 "slop": SubResource("Resource_axj7l"),
 "zeta": SubResource("Resource_3moeg"),
 "zeta mago": SubResource("Resource_yc0im"),
 "Ítem": SubResource("Resource_8gan4")
 }
-bolsillo = {
-"zeta": SubResource("Resource_cak3q")
-}
-recetas_descubiertas = Array[String](["pooto", "poo"])
-conocimientos = Array[String](["zeta:normal", "sinergia:Vampiro", "zeta:magico", "sinergia:nose", "sinergia:Ligero"])
-vistos = Array[String](["bestia:03", "bestia:01", "item:zeta", "tag:0", "item:nois", "item:slop", "tag:1", "item:zeta mago", "item:Ítem", "tag:9"])
+recetas_descubiertas = Array[String](["pooto", "poo", "Guiso de bestia", "Caldo de insecto", "Banquete de insecto"])
+conocimientos = Array[String](["zeta:normal", "sinergia:Vampiro", "zeta:magico", "sinergia:nose", "sinergia:Ligero", "sinergia:Veneno"])
+vistos = Array[String](["bestia:03", "bestia:01", "item:zeta", "tag:0", "item:nois", "item:slop", "tag:1", "item:zeta mago", "item:Ítem", "tag:9", "item:Corazón de bestia", "item:Costilla", "item:Pluma de lechuza", "item:Pata de grillo", "item:Ojo de murciélago", "tag:2", "item:Ala de escarabajo", "item:Baba de caracol", "tag:4", "item:Carne rancia", "tag:8", "item:Chile rojo", "tag:5", "item:Cristal comestible", "tag:6", "item:Espora tóxica", "tag:7", "item:Fruta confitada", "tag:3", "item:Gelatina verde", "item:Glándula de veneno", "item:Hongo brillante", "item:Hueso maldito", "item:Moho añejo", "item:Ojo del abismo", "item:Panal de miel"])
 derrotas = {
-"01": 43,
-"03": 135
+"01": 71,
+"03": 234
+}
+plantilla_bolsillo = {
+"zeta": 5
+}
+mejoras_obtenidas = {
+"Banquete de insecto": 1,
+"Caldo de insecto": 1,
+"Guiso de bestia": 2
 }

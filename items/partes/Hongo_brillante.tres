@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://c7g03dsbdxhqb"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_xyy3n"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_jpdsp"]
+
+[resource]
+script = ExtResource("2_jpdsp")
+nombre = "Hongo brillante"
+tipo = 1
+tags = Array[int]([6])
+hambre_restaurada = 5.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

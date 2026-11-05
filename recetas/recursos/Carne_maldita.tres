@@ -1,0 +1,32 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://bpnnuv40sw04c"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_5lwh5"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_jiuqo"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_xjj1r"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_5lwh5")
+nombre = "+ Vida"
+valor = 40.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_q4nql"]
+script = ExtResource("2_jiuqo")
+cantidad_minima = 8
+cantidad_maxima = 15
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[sub_resource type="Resource" id="Resource_548xw"]
+script = ExtResource("2_jiuqo")
+tag = 9
+cantidad_minima = 3
+cantidad_maxima = 6
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_xjj1r")
+nombre = "Carne maldita"
+requisitos = Array[ExtResource("2_jiuqo")]([SubResource("Resource_q4nql"), SubResource("Resource_548xw")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 2
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

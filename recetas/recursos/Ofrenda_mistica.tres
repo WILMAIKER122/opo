@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://7g8upjkgtu0v"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_rprgk"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_n6420"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_l7cft"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_rprgk")
+nombre = "+ Hambre Max"
+stat = "hambre_max"
+valor = 20.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_q4nql"]
+script = ExtResource("2_n6420")
+cantidad_minima = 6
+cantidad_maxima = 12
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[sub_resource type="Resource" id="Resource_548xw"]
+script = ExtResource("2_n6420")
+tag = 3
+cantidad_minima = 2
+cantidad_maxima = 5
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_l7cft")
+nombre = "Ofrenda mística"
+requisitos = Array[ExtResource("2_n6420")]([SubResource("Resource_q4nql"), SubResource("Resource_548xw")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 3
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

@@ -124,10 +124,11 @@ static func _entradas_recetas() -> Array:
 			var texto := "[b]%s[/b]\n\n%s\n\nIngredientes: %s" % [
 				receta.nombre, receta.descripcion, receta.texto_requisitos()]
 			var icono: Texture2D = null
-			if receta.plato != null:
-				icono = receta.plato.icono
-				texto += "\n\nPlato: %s\n%s\nHambre: +%s" % [
-					receta.plato.nombre, receta.plato.descripcion, receta.plato.hambre_restaurada]
+			if receta.mejora != null:
+				icono = receta.mejora.icono
+				texto += "\n\nMejora: %s\n%s\nEfecto: %s\nNivel: %d / %d" % [
+					receta.mejora.nombre, receta.mejora.descripcion, receta.mejora.texto_efecto(),
+					CodigoGlobal.nivel_mejora(receta), receta.nivel_max]
 			lista.append(_entrada(Estado.COMPLETO, receta.nombre, icono, texto))
 		elif _receta_tiene_tag_visto(receta):
 			lista.append(_entrada_oculta("Encontraste ingredientes de esta receta.\nProbá cocinar combinaciones distintas para descubrirla."))

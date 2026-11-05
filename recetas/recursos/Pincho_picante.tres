@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://csiwq8c7q5pp3"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_taumk"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_ydcrq"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_0pror"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_taumk")
+nombre = "+ Daño"
+stat = "dano"
+valor = 1.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_q4nql"]
+script = ExtResource("2_ydcrq")
+cantidad_minima = 5
+cantidad_maxima = 10
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[sub_resource type="Resource" id="Resource_548xw"]
+script = ExtResource("2_ydcrq")
+tag = 5
+cantidad_minima = 3
+cantidad_maxima = 6
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_0pror")
+nombre = "Pincho picante"
+requisitos = Array[ExtResource("2_ydcrq")]([SubResource("Resource_q4nql"), SubResource("Resource_548xw")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 3
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

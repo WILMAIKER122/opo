@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://euigddt4addm"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_x8pwb"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_tun4w"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_4mx67"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_x8pwb")
+nombre = "Vida"
+valor = 20.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_jp7lm"]
+script = ExtResource("2_tun4w")
+cantidad_minima = 16
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_4mx67")
+nombre = "Festín de bestia"
+requisitos = Array[ExtResource("2_tun4w")]([SubResource("Resource_jp7lm")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 3
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

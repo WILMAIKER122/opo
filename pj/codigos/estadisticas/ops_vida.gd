@@ -33,7 +33,7 @@ static func curar_robo(est: estadisticas_player, cantidad: float) -> void:
 		est.dano_escudo_zeta -= reparado
 		cantidad -= reparado
 	if cantidad > 0.0:
-		var faltante := maxf(0.0, est.stats.vida_base - est._calcular("vida", est.stats.vida_base))
+		var faltante := maxf(0.0, est.vida_maxima() - est._calcular("vida", est.stats.vida_base))
 		var curado := minf(cantidad, faltante)
 		if curado > 0.0:
 			est.buffs.agregar_buff("vida", curado, false, -1.0)

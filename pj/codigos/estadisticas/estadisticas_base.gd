@@ -144,11 +144,39 @@ func escudo_zeta() -> float:
 	if con_zeta and zeta_actual and zeta_actual.estadisticas:
 		return maxf(0.0, zeta_actual.estadisticas.bonus_vida_max - dano_escudo_zeta)
 	return 0.0
-
+## Slots del bolsillo que se rellenan solos (mejora permanente, máx. = slots_bolsillo)
+func slots_autorelleno() -> int:
+	var extra := int(mejoras_permanentes.bonus_flat("slots_autorelleno"))
+	return clampi(stats.slots_autorelleno_base + extra, 0, stats.slots_bolsillo)
+	
 func _bonus_zeta_vida() -> float:
 	return escudo_zeta()
 
+func vida_maxima() -> float:
+	return (stats.vida_base + mejoras_permanentes.bonus_flat("vida")) * (1.0 + mejoras_permanentes.bonus_porcentaje("vida") / 100.0)
 
+func max_por_item_bolsillo() -> int:
+	return stats.max_por_item_bolsillo + int(mejoras_permanentes.bonus_flat("max_por_slot_bolsillo"))
+
+
+## Reconstruye las mejoras de cocina desde CodigoGlobal.mejoras_obtenidas.
+## Llamar al iniciar el Player y después de cocinar. Si hay varias recetas de Zeta inicial gana la última.
+func sincronizar_mejoras() -> void:
+	mejoras_permanentes.quitar_origen(SistemaMejorasPermanentes.Origen.COCINA)
+	for receta in SistemaCocina.obtener_recetas():
+		var nivel := CodigoGlobal.nivel_mejora(receta)
+		if nivel <= 0 or receta.mejora == null:
+			continue
+		var m := receta.mejora
+		for i in nivel:
+			match m.tipo:
+				MejoraPermanente.Tipo.STAT:
+					mejoras_permanentes.agregar_mejora(m.stat, m.valor, m.es_porcentaje, SistemaMejorasPermanentes.Origen.COCINA)
+				MejoraPermanente.Tipo.ZETA_INICIAL:
+					if m.zeta:
+						zeta_inicial = m.zeta
+	hambre.bonus_maximo = mejoras_permanentes.bonus_flat("hambre_max")
+	emit_changed()
 # ==============================================================================
 # INVENTARIO DE LA RUN
 # ==============================================================================

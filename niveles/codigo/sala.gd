@@ -14,13 +14,17 @@ enum Tipo { COMBATE, CAMPAMENTO, JEFE }
 var _abierta: bool = false
 ## Distancia desde el centro de la sala (X, Z) a la que aparece el jugador al entrar
 @export var distancia_aparicion: Vector2 = Vector2(8.0, 8.0)
-
+@export var escena_refuerzo: PackedScene = preload("res://enemi/enemigo_normal.tscn")
 func _ready() -> void:
 	for puerta in puertas:
 		puerta.cerrar()
 	var jugador := _jugador()
 	if jugador:
 		_colocar_jugador(jugador)
+		var extra := CodigoGlobal.refuerzos
+		CodigoGlobal.refuerzos = 0
+		if extra > 0 and tipo == Tipo.COMBATE:
+			_generar_refuerzos(extra, jugador)
 		if tipo == Tipo.CAMPAMENTO:
 			jugador.estadisticas.curar_robo(curacion_al_entrar)
 	if tipo == Tipo.CAMPAMENTO:
@@ -81,3 +85,16 @@ func _colocar_jugador(jugador: Player) -> void:
 	var cam := jugador.get_node_or_null("camara_pj")
 	if cam and cam.has_method("teleport_position"):
 		cam.call_deferred("teleport_position")
+
+## Enemigos extra por haber roto una puerta escindida en la sala anterior
+func _generar_refuerzos(cantidad: int, jugador: Player) -> void:
+	for i in cantidad:
+		var e := escena_refuerzo.instantiate() as Enemigo
+		e.jugador = jugador
+		add_child(e)
+		var pos := global_position
+		for intento in 8:
+			pos = global_position + Vector3(randf_range(-6.0, 6.0), 1.0, randf_range(-6.0, 6.0))
+			if pos.distance_to(jugador.global_position) > 6.0:
+				break
+		e.global_position = pos

@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://r6cn7gjr2p3o"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_osupg"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_14o3j"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_ertjk"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_osupg")
+nombre = "velocidad de ataque"
+stat = "hambre_max"
+es_porcentaje = true
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_osupg"]
+script = ExtResource("2_14o3j")
+tag = 3
+cantidad_minima = 4
+cantidad_maxima = 10
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_ertjk")
+nombre = "Dulce de miel"
+requisitos = Array[ExtResource("2_14o3j")]([SubResource("Resource_osupg")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 5
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

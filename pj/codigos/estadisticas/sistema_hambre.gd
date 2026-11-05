@@ -17,14 +17,18 @@ extends Resource
 @export var costo_ataque: float = 1.5
 
 var _tiempo_acumulado: float = 0.0
+## Bono permanente al máximo (lo pone estadisticas_player.sincronizar_mejoras)
+var bonus_maximo: float = 0.0
 
+func maximo() -> float:
+	return hambre_maxima + bonus_maximo
 func actualizar(delta: float, en_run: bool, velocidad_decaimiento: float = 1.0) -> float:
 	# Solo el decaimiento se acelera; el daño por hambre en 0 sigue usando el delta real
 	_tiempo_acumulado += delta * velocidad_decaimiento
 	
 	while _tiempo_acumulado >= intervalo_decaimiento:
 		_tiempo_acumulado -= intervalo_decaimiento
-		var cantidad = hambre_maxima * (porcentaje_decaimiento / 100.0)
+		var cantidad = maximo() * (porcentaje_decaimiento / 100.0)
 		hambre_actual = max(0.0, hambre_actual - cantidad)
 	
 	var dano_vida := 0.0
@@ -34,7 +38,7 @@ func actualizar(delta: float, en_run: bool, velocidad_decaimiento: float = 1.0) 
 	return dano_vida
 
 func comer(cantidad: float) -> void:
-	hambre_actual = min(hambre_maxima, hambre_actual + cantidad)
+	hambre_actual = min(maximo(), hambre_actual + cantidad)
 
 func gastar(cantidad: float) -> void:
 	hambre_actual = max(0.0, hambre_actual - cantidad)

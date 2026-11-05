@@ -3,7 +3,6 @@ class_name PuertaSala
 
 @export var vida_escindida: int = 4
 @export var enemigos_al_romper: int = 2
-@export var escena_enemigo: PackedScene = preload("res://enemi/enemigo_normal.tscn")
 
 var _opcion: Dictionary = {}
 var _abierta: bool = false
@@ -119,7 +118,7 @@ func _quitar_cuerpo() -> void:
 
 
 ## Lo llama area_pj.gd cuando el ataque del jugador toca el cuerpo de la puerta
-func golpear(atacante: Node3D) -> void:
+func golpear(_atacante: Node3D) -> void:
 	if not _abierta or _roto:
 		return
 	_vida -= 1
@@ -128,12 +127,8 @@ func golpear(atacante: Node3D) -> void:
 		return
 	_roto = true
 	_quitar_cuerpo()
-	_etiqueta.text = _texto(_opcion)
-	for i in enemigos_al_romper + int(_opcion.get("nivel", 0)):
-		var e := escena_enemigo.instantiate() as Enemigo
-		e.jugador = atacante as CharacterBody3D
-		get_parent().add_child(e)
-		e.global_position = global_position + Vector3(randf_range(-2.0, 2.0), 1.0, randf_range(-2.0, 2.0))
+	_opcion["refuerzos"] = enemigos_al_romper + int(_opcion.get("nivel", 0))
+	_etiqueta.text = "%s\n+%d enemigos adelante" % [_texto(_opcion), _opcion["refuerzos"]]
 
 
 func _texto(opcion: Dictionary) -> String:
@@ -148,9 +143,9 @@ func _texto(opcion: Dictionary) -> String:
 	var nombre := String(ItemData.TagComida.keys()[tag]).capitalize() if tag >= 0 else "Combate"
 	match opcion.get("puerta", "gratis"):
 		"pago":
-			return "%s  Nv.%d\n[E] %s" % [nombre, opcion["nivel"], GeneradorPuertas.texto_costo(opcion["costo"])]
+			return "%s  Nv.%d\n[%s] %s" % [nombre, opcion["nivel"], TeclasUI.tecla(&"interactuar"), CodigoGlobal.texto_costo(opcion["costo"])]
 		"escindida":
-			return "%s  Nv.%d\nRomper (¡enemigos!)" % [nombre, opcion["nivel"]]
+			return "%s  Nv.%d\nRomper (trae refuerzos)" % [nombre, opcion["nivel"]]
 	return nombre
 
 func _actualizar_vista() -> void:

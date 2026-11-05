@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://cag8ehl1nhs22"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_bankq"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_2y8ti"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_agxn3"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_bankq")
+nombre = "+ slot auto relleno"
+stat = "slots_autorelleno"
+valor = 1.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_q4nql"]
+script = ExtResource("2_2y8ti")
+tag = 6
+cantidad_minima = 10
+cantidad_maxima = 20
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_agxn3")
+nombre = "Ofrenda mística"
+requisitos = Array[ExtResource("2_2y8ti")]([SubResource("Resource_q4nql")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 5
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

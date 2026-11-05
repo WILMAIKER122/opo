@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://oxhja00d3vi1"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_h5w16"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_wc1w7"]
+
+[sub_resource type="Resource" id="Resource_4ydtf"]
+script = ExtResource("1_h5w16")
+tipo = 2
+stat_afectado = "dano"
+valor = 25.0
+es_porcentaje = true
+duracion = 20.0
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[resource]
+script = ExtResource("2_wc1w7")
+nombre = "Ojo del abismo"
+tipo = 1
+efectos = Array[ExtResource("1_h5w16")]([SubResource("Resource_4ydtf")])
+tags = Array[int]([9])
+rareza = 2
+hambre_restaurada = 10.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

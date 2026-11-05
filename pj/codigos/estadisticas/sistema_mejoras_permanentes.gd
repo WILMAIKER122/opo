@@ -1,8 +1,7 @@
 class_name SistemaMejorasPermanentes
 extends Resource
 
-enum Origen { ARBOL_HABILIDADES, ITEM_UNICO, OTRO }
-
+enum Origen { ARBOL_HABILIDADES, ITEM_UNICO, OTRO, COCINA }
 # Cada entrada: {"stat": String, "valor": float, "es_porcentaje": bool, "origen": Origen}
 @export var mejoras: Array[Dictionary] = []
 
@@ -28,3 +27,7 @@ func bonus_porcentaje(stat: String) -> float:
 		if m["stat"] == stat and m["es_porcentaje"]:
 			total += m["valor"]
 	return total
+func quitar_origen(origen: Origen) -> void:
+	for i in range(mejoras.size() - 1, -1, -1):
+		if mejoras[i]["origen"] == origen:
+			mejoras.remove_at(i)

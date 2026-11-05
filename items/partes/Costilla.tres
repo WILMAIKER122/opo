@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://cuy0jmtjou1of"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_c482s"]
+[ext_resource type="Texture2D" uid="uid://x6beopfpv3p6" path="res://pj/pj_zeta.png" id="3_o4spe"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="4_d34t5"]
+
+[resource]
+script = ExtResource("4_d34t5")
+nombre = "Costilla"
+icono = ExtResource("3_o4spe")
+tipo = 1
+tags = Array[int]([0])
+hambre_restaurada = 8.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

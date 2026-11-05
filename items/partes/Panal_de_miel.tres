@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://btpx1pbeyjr8"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_vqx41"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_h6vk5"]
+
+[resource]
+script = ExtResource("2_h6vk5")
+nombre = "Panal de miel"
+tipo = 1
+tags = Array[int]([3])
+hambre_restaurada = 7.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

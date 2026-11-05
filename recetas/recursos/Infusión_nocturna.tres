@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://b84xia6xgdtg7"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_q4nql"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_b8ofe"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_oqmdf"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_q4nql")
+nombre = "+ velocidad"
+stat = "velocidad_max"
+valor = 0.3
+es_porcentaje = true
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_q4nql"]
+script = ExtResource("2_b8ofe")
+tag = 2
+cantidad_minima = 5
+cantidad_maxima = 12
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_oqmdf")
+nombre = "Infusión nocturna"
+requisitos = Array[ExtResource("2_b8ofe")]([SubResource("Resource_q4nql")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 5
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

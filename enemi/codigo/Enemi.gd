@@ -1,5 +1,9 @@
 extends CharacterBody3D
 class_name Enemigo
+## Enemigo base. Delegados:
+##   OrientacionEnemigo   (giro de la malla y espejado de áreas)
+##   AlteracionesEnemigo  (veneno, quemadura, lentitud)
+##   EfectosCombate       (números flotantes y destello)
 
 enum TipoAtaque { EMBESTIDA, NORMAL, SALTO }
 
@@ -45,7 +49,6 @@ var gravity: float = ProjectSettings.get_setting("physics/3d/default_gravity")
 @export var invertir_lado: bool = false
 ## Velocidad del giro (unidades de scale.x por segundo). Usá el mismo valor que ROTATION_SPEED del personaje.
 @export var velocidad_giro: float = 12.0
-var mirando_derecha: bool = true
 
 # --- INICIO DEL ATAQUE ---
 ## El ataque empieza cuando el jugador está a esta distancia (horizontal) del CENTRO de AreaAtaque.
@@ -54,10 +57,6 @@ var mirando_derecha: bool = true
 @export var distancia_inicio_ataque: float = 0.0
 ## Segundos que el jugador tiene que seguir en posición (dentro del área y cerca del centro) antes de atacar
 @export var tiempo_espera_ataque: float = 0.2
-var _tiempo_en_posicion: float = 0.0
-var _escala_base_x: float = 1.0
-var _escala_objetivo_x: float = 1.0
-var _pos_base_x: Dictionary = {}
 @export var escena_parte_drop: PackedScene # Arrastra aquí la escena de tu Node3D
 
 @export_group("Efectos de golpe")
@@ -66,17 +65,10 @@ var _pos_base_x: Dictionary = {}
 @export var textura_destello: Texture2D
 @export var segundos_destello: float = 0.08
 
-var _material_destello: StandardMaterial3D
-
-
-# --- ESTADOS (veneno, quemadura, lentitud...) ---
-var _estados: Dictionary = {}   # id -> {"dps", "restante", "lentitud", "color"}
-var _factor_velocidad: float = 1.0
-var _acum_dot: float = 0.0
-var _tiempo_tick_dot: float = 0.0
-var _color_dot: Color = Color.WHITE
+var _tiempo_en_posicion: float = 0.0
 var _muriendo: bool = false
-
+var _orientacion: OrientacionEnemigo
+var _alteraciones := AlteracionesEnemigo.new()
 
 
 func _ready() -> void:
@@ -94,25 +86,18 @@ func _ready() -> void:
 			if hijo is MeshInstance3D:
 				visual = hijo
 				break
-	if visual:
-		_escala_base_x = absf(visual.scale.x)
-		_escala_objetivo_x = visual.scale.x
-
-	# Posición X de cada área tal como la dejaste en el editor (mirando a la derecha)
 	if areas_a_voltear.is_empty():
 		for area in [area_ataque, area_danio]:
 			if area:
 				areas_a_voltear.append(area)
-	for area in areas_a_voltear:
-		if area:
-			_pos_base_x[area] = area.position.x
+	_orientacion = OrientacionEnemigo.new(visual, areas_a_voltear, invertir_lado, velocidad_giro)
 
 	timer_ataque.timeout.connect(_on_timer_ataque_timeout)
 
 	# Inicializamos la máquina de estados pasando esta instancia del enemigo
 	state_machine.inicializar(self)
 
-	# El área de daño solo se enciende durante la embestida (lo hace EstadoAtacando)
+	# El área de daño solo se enciende durante el ataque (lo hace EstadoAtaque)
 	if area_danio:
 		area_danio.monitoring = false
 
@@ -120,7 +105,9 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	label.text = str(vida_actual)
 
-	_actualizar_estados(delta)
+	var dano_dot := _alteraciones.actualizar(delta)
+	if dano_dot > 0.0:
+		_aplicar_dano_dot(dano_dot)
 	if _muriendo:
 		return
 
@@ -130,9 +117,9 @@ func _physics_process(delta: float) -> void:
 	# Delegamos la física al estado activo
 	state_machine.actualizar_fisicas(delta)
 	# Lentitud: los estados reasignan la velocidad en cada frame, así que no se acumula
-	if _factor_velocidad < 1.0:
-		velocity.x *= _factor_velocidad
-		velocity.z *= _factor_velocidad
+	if _alteraciones.factor_velocidad < 1.0:
+		velocity.x *= _alteraciones.factor_velocidad
+		velocity.z *= _alteraciones.factor_velocidad
 	_evaluar_inicio_ataque(delta)
 
 	move_and_slide()
@@ -140,43 +127,26 @@ func _physics_process(delta: float) -> void:
 
 func _process(delta: float) -> void:
 	state_machine.actualizar(delta)
-	_actualizar_giro(delta)
+	_orientacion.actualizar_giro(delta)
 
 
-# --- ORIENTACIÓN ---
+# ==============================================================================
+# ORIENTACIÓN (delegada en OrientacionEnemigo)
+# ==============================================================================
 
 ## Define hacia qué lado mira el enemigo según el signo de direccion_x
-## (eje X del mundo). Si el valor es casi 0 mantiene el lado actual.
 func mirar_hacia(direccion_x: float) -> void:
-	if absf(direccion_x) < 0.05:
-		return
-	var lado_anterior := mirando_derecha
-	mirando_derecha = direccion_x > 0.0
-	if invertir_lado:
-		mirando_derecha = not mirando_derecha
-	if mirando_derecha != lado_anterior:
-		_aplicar_lado_a_areas()
-	_escala_objetivo_x = _escala_base_x if mirando_derecha else -_escala_base_x
+	_orientacion.mirar_hacia(direccion_x)
 
 
-## Gira suave la malla hacia el lado objetivo (se llama cada frame desde _process)
-func _actualizar_giro(delta: float) -> void:
-	if visual == null:
-		return
-	var nueva := move_toward(visual.scale.x, _escala_objetivo_x, velocidad_giro * delta)
-	# Evita quedar en escala 0 exacta
-	if absf(nueva) < 0.02:
-		nueva = 0.02 * signf(_escala_objetivo_x)
-	visual.scale.x = nueva
+## Lo llama el ataque al empezar: dónde va el AreaDanio (X mirando a la derecha)
+func fijar_area_danio_x(x: float) -> void:
+	_orientacion.fijar_x(area_danio, x)
 
 
-## Espeja las áreas de golpe (sin escalar): AreaDanio / AreaAtaque pasan al lado al que mira
-func _aplicar_lado_a_areas() -> void:
-	var signo := 1.0 if mirando_derecha else -1.0
-	for area in areas_a_voltear:
-		if area and _pos_base_x.has(area):
-			area.position.x = _pos_base_x[area] * signo
-
+# ==============================================================================
+# DAÑO Y MUERTE
+# ==============================================================================
 
 func recibir_danio(cantidad_danio: float, origen_impacto: Vector3, fuerza_knockback: float = 10.0, duracion_stun: float = 0.3) -> void:
 	if _muriendo:
@@ -195,7 +165,7 @@ func recibir_danio(cantidad_danio: float, origen_impacto: Vector3, fuerza_knockb
 		morir()
 		return
 
-	_destello()
+	EfectosCombate.destello(visual as GeometryInstance3D, textura_destello, segundos_destello)
 
 	# Cambiamos al estado de recibir daño y ejecutamos su empuje
 	state_machine.cambiar_estado("recibiendodanio")
@@ -204,24 +174,6 @@ func recibir_danio(cantidad_danio: float, origen_impacto: Vector3, fuerza_knockb
 	if estado_danio:
 		estado_danio.aplicar_knockback(origen_impacto, fuerza_knockback, duracion_stun)
 
-
-## Destello blanco: un material encima de la malla durante unos milisegundos
-func _destello() -> void:
-	var malla := visual as GeometryInstance3D
-	if malla == null:
-		return
-	if _material_destello == null:
-		_material_destello = StandardMaterial3D.new()
-		_material_destello.shading_mode = BaseMaterial3D.SHADING_MODE_UNSHADED
-		_material_destello.albedo_color = Color.WHITE
-		if textura_destello:
-			_material_destello.albedo_texture = textura_destello
-			_material_destello.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA_SCISSOR
-	malla.material_overlay = _material_destello
-	# El timer ignora el time_scale: el destello se ve completo después del hitstop
-	await get_tree().create_timer(segundos_destello, true, false, true).timeout
-	if is_instance_valid(malla):
-		malla.material_overlay = null
 
 func morir() -> void:
 	if _muriendo:
@@ -237,14 +189,31 @@ func morir() -> void:
 			get_tree().current_scene.add_child(pieza)
 			pieza.global_position = global_position + Vector3(randf_range(-0.5, 0.5), 0.5, randf_range(-0.5, 0.5))
 	queue_free()
-# --- SEÑALES ---
 
-# AreaAtaque.body_entered: YA NO dispara el ataque. Lo decide _evaluar_inicio_ataque(),
-# que espera a que el jugador esté bien dentro del área. Se deja la función para no romper
-# la conexión de la señal en el editor.
-func _on_area_ataque_body_entered(_body: Node3D) -> void:
-	pass
 
+# ==============================================================================
+# ESTADOS ALTERADOS (delegados en AlteracionesEnemigo)
+# ==============================================================================
+
+## Aplica (o renueva) un estado: daño por segundo y/o lentitud durante `segundos`
+func aplicar_estado(id: StringName, dps: float, segundos: float, lentitud: float = 0.0, color: Color = Color.WHITE) -> void:
+	if _muriendo:
+		return
+	_alteraciones.aplicar(id, dps, segundos, lentitud, color)
+
+
+func _aplicar_dano_dot(danio: float) -> void:
+	vida_actual -= danio
+	EfectosCombate.numero_flotante(get_tree().current_scene,
+			global_position + Vector3(0.0, 1.4, 0.0),
+			str(maxi(1, roundi(danio))), _alteraciones.color_dot, 0.7)
+	if vida_actual <= 0.0:
+		morir()
+
+
+# ==============================================================================
+# INICIO DEL ATAQUE
+# ==============================================================================
 
 ## Decide cuándo empieza el ataque: el jugador debe estar dentro de AreaAtaque,
 ## cerca del centro del área y mantenerse así tiempo_espera_ataque segundos.
@@ -273,8 +242,27 @@ func _evaluar_inicio_ataque(delta: float) -> void:
 		_tiempo_en_posicion = 0.0
 		state_machine.cambiar_estado(ESTADO_POR_ATAQUE[tipo_ataque])
 
+
+## ¿Hay lugar para que este enemigo ataque ahora?
+func _hay_cupo_de_ataque() -> bool:
+	var atacando := 0
+	for otro in get_tree().get_nodes_in_group("enemigos"):
+		if otro != self and otro is Enemigo and otro.state_machine.estado_actual is EstadoAtaque:
+			atacando += 1
+	return atacando < max_atacantes_simultaneos
+
+
+# ==============================================================================
+# SEÑALES (conectadas desde la escena)
+# ==============================================================================
+
+# AreaAtaque.body_entered: YA NO dispara el ataque (lo decide _evaluar_inicio_ataque).
+# Se deja la función para no romper la conexión de la señal en el editor.
+func _on_area_ataque_body_entered(_body: Node3D) -> void:
+	pass
+
+
 # AreaDanio.body_entered -> HACE DAÑO al jugador (solo mientras el ataque actual esté "haciendo_dano").
-# Sirve para cualquier ataque: EstadoAtacando, EstadoAtaqueNormal, EstadoAtaqueSalto...
 func _on_area_danio_body_entered(body: Node3D) -> void:
 	var estado := state_machine.estado_actual as EstadoAtaque
 	if estado == null or not estado.haciendo_dano or estado.golpeo_realizado:
@@ -303,61 +291,3 @@ func _on_area_3d_body_exited(body: Node3D) -> void:
 
 func _on_timer_ataque_timeout() -> void:
 	puede_atacar = true
-
-## Aplica (o renueva) un estado: daño por segundo y/o lentitud durante `segundos`
-func aplicar_estado(id: StringName, dps: float, segundos: float, lentitud: float = 0.0, color: Color = Color.WHITE) -> void:
-	if _muriendo:
-		return
-	_estados[id] = {"dps": dps, "restante": segundos, "lentitud": lentitud, "color": color}
-
-
-func _actualizar_estados(delta: float) -> void:
-	if _estados.is_empty():
-		_factor_velocidad = 1.0
-		return
-
-	var dps_total := 0.0
-	var lentitud := 0.0
-	for id in _estados.keys():
-		var e: Dictionary = _estados[id]
-		e["restante"] -= delta
-		if e["restante"] <= 0.0:
-			_estados.erase(id)
-			continue
-		dps_total += e["dps"]
-		lentitud = maxf(lentitud, e["lentitud"])
-		if e["dps"] > 0.0:
-			_color_dot = e["color"]
-	_factor_velocidad = 1.0 - lentitud
-
-	if dps_total <= 0.0:
-		return
-	# El daño se acumula y se aplica cada 0.5 s (un número por tick, sin spamear)
-	_acum_dot += dps_total * delta
-	_tiempo_tick_dot += delta
-	if _tiempo_tick_dot >= 0.5:
-		_tiempo_tick_dot = 0.0
-		var danio := _acum_dot
-		_acum_dot = 0.0
-		vida_actual -= danio
-		EfectosCombate.numero_flotante(get_tree().current_scene,
-				global_position + Vector3(0.0, 1.4, 0.0),
-				str(maxi(1, roundi(danio))), _color_dot, 0.7)
-		if vida_actual <= 0.0:
-			morir()
-
-
-## ¿Hay lugar para que este enemigo ataque ahora?
-func _hay_cupo_de_ataque() -> bool:
-	var atacando := 0
-	for otro in get_tree().get_nodes_in_group("enemigos"):
-		if otro != self and otro is Enemigo and otro.state_machine.estado_actual is EstadoAtaque:
-			atacando += 1
-	return atacando < max_atacantes_simultaneos
-
-## Lo llama el ataque al empezar: dónde va el AreaDanio (X mirando a la derecha)
-func fijar_area_danio_x(x: float) -> void:
-	if area_danio == null:
-		return
-	_pos_base_x[area_danio] = x   # así el espejado de _aplicar_lado_a_areas respeta el valor
-	area_danio.position.x = x * (1.0 if mirando_derecha else -1.0)

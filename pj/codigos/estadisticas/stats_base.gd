@@ -10,3 +10,4 @@ extends Resource
 @export var velocidad_ataque_base: float = 1.0
 @export var slots_bolsillo: int = 9
 @export var max_por_item_bolsillo: int = 5
+@export var slots_autorelleno_base: int = 0

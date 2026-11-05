@@ -62,7 +62,29 @@ text = "Cocina"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="FilaPestanas" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=733107394]
+layout_mode = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="BotonDescubrir" type="Button" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/FilaPestanas" unique_id=1894903318]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Descubrir"
+
+[node name="BotonRecetas" type="Button" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/FilaPestanas" unique_id=529369336]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(160, 40)
+layout_mode = 2
+focus_mode = 0
+toggle_mode = true
+text = "Recetas"
+
 [node name="Columnas" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=363062826]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 20
@@ -140,6 +162,77 @@ custom_minimum_size = Vector2(360, 0)
 layout_mode = 2
 autowrap_mode = 3
 
+[node name="ColumnasRecetas" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=747609253]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="ScrollLista" type="ScrollContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas" unique_id=88685571]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(260, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_scroll_mode = 0
+
+[node name="ContenedorRecetas" type="VBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/ScrollLista" unique_id=170702964]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelDetalleReceta" type="PanelContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas" unique_id=53608734]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxDetalle" type="VBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/PanelDetalleReceta" unique_id=1676043442]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="IconoReceta" type="TextureRect" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/PanelDetalleReceta/VBoxDetalle" unique_id=321876795]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(64, 64)
+layout_mode = 2
+size_flags_horizontal = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TituloReceta" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/PanelDetalleReceta/VBoxDetalle" unique_id=1993266191]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="TextoReceta" type="RichTextLabel" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/PanelDetalleReceta/VBoxDetalle" unique_id=963424466]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_vertical = 3
+bbcode_enabled = true
+
+[node name="LabelMensajeReceta" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/ColumnasRecetas/PanelDetalleReceta" unique_id=1046120484]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(360, 0)
+layout_mode = 2
+autowrap_mode = 2
+
+[node name="FilaBotones" type="HBoxContainer" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=1223595119]
+layout_mode = 2
+theme_override_constants/separation = 12
+alignment = 2
+
+[node name="BotonCocinar" type="Button" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/FilaBotones" unique_id=1223623174]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_mode = 0
+
+[node name="BotonCerrar" type="Button" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer/FilaBotones" unique_id=713083647]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 40)
+layout_mode = 2
+focus_mode = 0
+
 [node name="LabelAyuda" type="Label" parent="Control/PanelPrincipal/MarginContainer/VBoxContainer" unique_id=1825092030]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 21

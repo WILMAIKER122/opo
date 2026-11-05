@@ -2,7 +2,7 @@ class_name GestorRun
 extends RefCounted
 ## Ciclo de la run: iniciar, terminar, morir, abandonar y cambiar de sala.
 ## El estado vive en CodigoGlobal (g). Destino: res://codigo_global/GestorRun.gd
-
+const CARPETA_REFUERZO := "res://niveles/salas/refuerzo/"
 const RUTA_BASE := "res://niveles/base.tscn"
 const RUTA_RUN := "res://niveles/suelo_2.tscn"
 const CARPETAS_SALAS := {
@@ -32,6 +32,7 @@ static func iniciar(g: Node, est: estadisticas_player) -> void:
 	g.guardar_partida()
 	g.sala_numero = 0
 	g.nivel_sala = 0
+	g.refuerzos = 0
 	g.direccion_entrada = Vector3.ZERO
 	g.tipo_sala_actual = Sala.Tipo.COMBATE
 	g.tag_recompensa = -1
@@ -73,6 +74,8 @@ static func siguiente_sala(g: Node, opcion: Dictionary, est: estadisticas_player
 		finalizar(g, est)
 		return
 	g.sala_numero += 1
+	OpsBolsillo.autorellenar(est, est.inventario)
+	g.refuerzos = int(opcion.get("refuerzos", 0))
 	g.tipo_sala_actual = opcion["tipo"]
 	g.nivel_sala = int(opcion.get("nivel", 0))
 	g.direccion_entrada = opcion.get("dir_salida", Vector3.ZERO)
@@ -104,6 +107,10 @@ static func _transferir_a_base(g: Node, est: estadisticas_player) -> void:
 
 
 static func _escena_de_sala(g: Node, tipo: int) -> String:
+	if g.refuerzos > 0 and tipo == Sala.Tipo.COMBATE:
+		var especiales := _rutas_en(CARPETA_REFUERZO)
+		if not especiales.is_empty():
+			return especiales.pick_random()
 	for t in [tipo, Sala.Tipo.COMBATE]:
 		var rutas := _rutas_en(CARPETAS_SALAS[t])
 		if rutas.size() > 1:

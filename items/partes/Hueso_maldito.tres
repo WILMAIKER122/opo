@@ -1,0 +1,20 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bwfa4inn1fydi"]
+
+[ext_resource type="Script" uid="uid://etjgosm4i7ll" path="res://items/codigo/EfectoItem.gd" id="1_yhsfh"]
+[ext_resource type="Script" uid="uid://es23ttf8ya3i" path="res://items/codigo/itemsData.gd" id="2_bn54e"]
+
+[sub_resource type="Resource" id="Resource_hl520"]
+script = ExtResource("1_yhsfh")
+tipo = 1
+probabilidad = 0.5
+metadata/_custom_type_script = "uid://etjgosm4i7ll"
+
+[resource]
+script = ExtResource("2_bn54e")
+nombre = "Hueso maldito"
+tipo = 1
+efectos = Array[ExtResource("1_yhsfh")]([SubResource("Resource_hl520")])
+tags = Array[int]([9])
+rareza = 1
+hambre_restaurada = 4.0
+metadata/_custom_type_script = "uid://es23ttf8ya3i"

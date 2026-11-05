@@ -42,19 +42,67 @@ var indice_actual: int = 0
 var tween: Tween
 var _inventario: Dictionary = {}
 
+var _estadisticas: estadisticas_player
 
+const MODO_DESCUBRIR := 0
+const MODO_RECETAS := 1
+@onready var boton_cocinar: Button = %BotonCocinar
+@onready var boton_cerrar: Button = %BotonCerrar
+@onready var boton_descubrir: Button = %BotonDescubrir
+@onready var boton_recetas: Button = %BotonRecetas
+@onready var columnas_descubrir: Control = %Columnas
+@onready var columnas_recetas: Control = %ColumnasRecetas
+@onready var scroll_lista: ScrollContainer = %ScrollLista
+@onready var contenedor_recetas: VBoxContainer = %ContenedorRecetas
+@onready var icono_receta: TextureRect = %IconoReceta
+@onready var titulo_receta: Label = %TituloReceta
+@onready var texto_receta: RichTextLabel = %TextoReceta
+@onready var label_mensaje_receta: Label = %LabelMensajeReceta
+@onready var label_ayuda: Label = %LabelAyuda
+
+var modo: int = MODO_DESCUBRIR
+var indice_receta: int = 0
+var _recetas_conocidas: Array[RecetaCocina] = []
+var _botones_receta: Array[Button] = []
+## true si se cocinó en modo Recetas: al volver a Descubrir hay que rearmar la grilla
+var _inventario_sucio: bool = false
+
+
+func configurar(datos: Dictionary) -> void:
+	_estadisticas = datos.get("estadisticas")
 func _ready() -> void:
 	layer = 100
 	_inventario = CodigoGlobal.inventario_base
 	label_mensaje.text = ""
+	boton_descubrir.pressed.connect(_cambiar_modo.bind(MODO_DESCUBRIR))
+	boton_recetas.pressed.connect(_cambiar_modo.bind(MODO_RECETAS))
+	texto_receta.bbcode_enabled = true
+	boton_cocinar.pressed.connect(_aceptar)
+	boton_cerrar.pressed.connect(func(): MenuManager.close_current_menu({"accion": "cancelar"}))
+	boton_cocinar.text = "Cocinar (%s)" % TeclasUI.tecla(&"comer_confirmar")
+	boton_cerrar.text = "Cerrar (%s)" % TeclasUI.tecla(&"ui_cancel")	
 	construir()
-
+	_aplicar_modo()
 
 # ==============================================================================
 # CONTROLES (antes los reenviaba el estado Cocinar; ahora el popup los maneja solo)
 # ==============================================================================
 
 func _unhandled_input(event: InputEvent) -> void:
+	var consumido := true
+	if event.is_action_pressed("tomo_pestana_anterior") or event.is_action_pressed("tomo_pestana_siguiente"):
+		_cambiar_modo(MODO_RECETAS if modo == MODO_DESCUBRIR else MODO_DESCUBRIR)
+	elif event.is_action_pressed("ui_cancel"):
+		MenuManager.close_current_menu({"accion": "cancelar"})
+	elif modo == MODO_DESCUBRIR:
+		consumido = _input_descubrir(event)
+	else:
+		consumido = _input_recetas(event)
+	if consumido:
+		get_viewport().set_input_as_handled()
+
+
+func _input_descubrir(event: InputEvent) -> bool:
 	if event.is_action_pressed("ui_left"):
 		mover_seleccion(Vector2i(-1, 0))
 	elif event.is_action_pressed("ui_right"):
@@ -63,18 +111,27 @@ func _unhandled_input(event: InputEvent) -> void:
 		mover_seleccion(Vector2i(0, -1))
 	elif event.is_action_pressed("ui_down"):
 		mover_seleccion(Vector2i(0, 1))
-	elif event.is_action_pressed("comer_sumar", true):    # true = también al mantener apretado
+	elif event.is_action_pressed("comer_sumar", true):
 		agregar_actual(_cantidad(event))
 	elif event.is_action_pressed("comer_restar", true):
 		quitar_actual(_cantidad(event))
 	elif event.is_action_pressed("comer_confirmar"):
 		cocinar()
-	elif event.is_action_pressed("ui_cancel"):
-		MenuManager.close_current_menu({"accion": "cancelar"})
 	else:
-		return
-	get_viewport().set_input_as_handled()
+		return false
+	return true
 
+
+func _input_recetas(event: InputEvent) -> bool:
+	if event.is_action_pressed("ui_up"):
+		_seleccionar_receta(indice_receta - 1)
+	elif event.is_action_pressed("ui_down"):
+		_seleccionar_receta(indice_receta + 1)
+	elif event.is_action_pressed("comer_confirmar"):
+		_cocinar_receta()
+	else:
+		return false
+	return true
 
 ## 1 unidad normal, cantidad_rapida si se mantiene Shift
 func _cantidad(event: InputEvent) -> int:
@@ -205,27 +262,34 @@ func obtener_seleccion() -> Dictionary:
 	return resultado
 
 
-## Aquí (y solo aquí) se aprende una receta: al intentar cocinar, no al armar la mezcla.
+## Mezcla libre (modo Descubrir)
 func cocinar() -> void:
 	var resultado: Dictionary = CodigoGlobal.cocinar(obtener_seleccion())
+	label_mensaje.text = _mensaje_resultado(resultado)
+	if resultado["estado"] in ["ok", "fallida", "invalida"]:
+		construir()   # el inventario cambió: se rearma la grilla y la olla queda vacía
+
+
+func _mensaje_resultado(resultado: Dictionary) -> String:
 	match resultado["estado"]:
 		"ok":
 			var receta: RecetaCocina = resultado["receta"]
-			var mensaje := "¡Cocinaste %s!" % receta.plato.nombre
+			if _estadisticas:
+				_estadisticas.sincronizar_mejoras()
+			var mensaje := "¡Mejora obtenida: %s!\n%s" % [receta.mejora.nombre, receta.mejora.texto_efecto()]
 			if resultado["nueva"]:
 				mensaje += "\n¡Receta nueva descubierta: %s!" % receta.nombre
-			label_mensaje.text = mensaje
-			construir() # el inventario cambió: se rearma la grilla y la olla queda vacía
+			return mensaje
 		"fallida":
-			# La selección se mantiene para poder ajustarla
-			label_mensaje.text = "La mezcla no resultó en nada.\nNo se gastó ningún ingrediente."
+			var partes := PackedStringArray()
+			for p in resultado["perdido"]:
+				partes.append("-%d %s" % [p["cantidad"], p["nombre"]])
+			return "La mezcla no resultó en nada.\nPerdiste: " + ", ".join(partes)
+		"completa":
+			return "Ya tenés al máximo «%s». No se gastó nada." % resultado["receta"].mejora.nombre
 		"vacia":
-			label_mensaje.text = "La olla está vacía."
-		"invalida":
-			label_mensaje.text = "Algunos ingredientes ya no están disponibles."
-			construir()
-
-
+			return "La olla está vacía."
+	return "Algunos ingredientes ya no están disponibles."
 # ==============================================================================
 # REFRESCO DE LA UI
 # ==============================================================================
@@ -292,9 +356,9 @@ func _mostrar_resultado(receta: RecetaCocina, hay_mezcla: bool) -> void:
 		label_resultado.text = ""
 		icono_resultado.texture = null
 		return
-	if receta != null and receta.plato != null:
-		label_resultado.text = receta.plato.nombre
-		icono_resultado.texture = receta.plato.icono
+	if receta != null and receta.mejora != null:
+		label_resultado.text = receta.mejora.nombre
+		icono_resultado.texture = receta.mejora.icono
 	else:
 		label_resultado.text = texto_desconocido
 		icono_resultado.texture = icono_desconocido
@@ -307,8 +371,135 @@ func _actualizar_recetario() -> void:
 	for receta in todas:
 		if CodigoGlobal.receta_descubierta(receta):
 			descubiertas += 1
-			lineas.append("• %s — %s" % [receta.nombre, receta.texto_requisitos()])
+			lineas.append("• %s — %s  [%d/%d]" % [receta.nombre, receta.texto_requisitos(), CodigoGlobal.nivel_mejora(receta), receta.nivel_max])
 	var texto := "Recetario (%d/%d)" % [descubiertas, todas.size()]
 	if not lineas.is_empty():
 		texto += "\n" + "\n".join(lineas)
 	label_recetario.text = texto
+
+# ==============================================================================
+# MODOS
+# ==============================================================================
+
+func _cambiar_modo(nuevo: int) -> void:
+	if nuevo == modo:
+		return
+	modo = nuevo
+	if modo == MODO_DESCUBRIR and _inventario_sucio:
+		_inventario_sucio = false
+		construir()
+	_aplicar_modo()
+
+
+func _aplicar_modo() -> void:
+	boton_descubrir.set_pressed_no_signal(modo == MODO_DESCUBRIR)
+	boton_recetas.set_pressed_no_signal(modo == MODO_RECETAS)
+	columnas_descubrir.visible = modo == MODO_DESCUBRIR
+	columnas_recetas.visible = modo == MODO_RECETAS
+	label_ayuda.text = _texto_ayuda()
+	if modo == MODO_RECETAS:
+		_construir_recetas()
+
+
+# ==============================================================================
+# MODO RECETAS (solo las ya descubiertas)
+# ==============================================================================
+
+func _construir_recetas() -> void:
+	_recetas_conocidas.clear()
+	for receta in SistemaCocina.obtener_recetas():
+		if CodigoGlobal.receta_descubierta(receta):
+			_recetas_conocidas.append(receta)
+
+	for hijo in contenedor_recetas.get_children():
+		contenedor_recetas.remove_child(hijo)
+		hijo.queue_free()
+	_botones_receta.clear()
+
+	for i in _recetas_conocidas.size():
+		var receta := _recetas_conocidas[i]
+		var boton := Button.new()
+		boton.text = "%s  [%d/%d]" % [receta.nombre, CodigoGlobal.nivel_mejora(receta), receta.nivel_max]
+		boton.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		boton.custom_minimum_size = Vector2(0, 40)
+		boton.focus_mode = Control.FOCUS_NONE
+		boton.toggle_mode = true
+		boton.expand_icon = true
+		boton.icon = receta.mejora.icono if receta.mejora else null
+		boton.pressed.connect(_seleccionar_receta.bind(i))
+		contenedor_recetas.add_child(boton)
+		_botones_receta.append(boton)
+
+	_seleccionar_receta(indice_receta)
+
+
+func _seleccionar_receta(indice: int) -> void:
+	label_mensaje_receta.text = ""
+	if _recetas_conocidas.is_empty():
+		titulo_receta.text = ""
+		icono_receta.texture = null
+		texto_receta.text = "[i]Todavía no descubriste ninguna receta.\nProbá mezclas en «Descubrir».[/i]"
+		return
+
+	indice_receta = wrapi(indice, 0, _recetas_conocidas.size())
+	for i in _botones_receta.size():
+		_botones_receta[i].set_pressed_no_signal(i == indice_receta)
+	scroll_lista.ensure_control_visible(_botones_receta[indice_receta])
+
+	var receta := _recetas_conocidas[indice_receta]
+	titulo_receta.text = receta.nombre
+	icono_receta.texture = receta.mejora.icono if receta.mejora else null
+	texto_receta.text = _detalle_receta(receta)
+
+
+func _detalle_receta(receta: RecetaCocina) -> String:
+	var texto := ""
+	if receta.mejora != null:
+		texto += "[b]Mejora:[/b] %s\n%s\n[b]Efecto:[/b] %s\n" % [
+			receta.mejora.nombre, receta.mejora.descripcion, receta.mejora.texto_efecto()]
+	var nivel := CodigoGlobal.nivel_mejora(receta)
+	texto += "[b]Nivel:[/b] %d / %d\n\n[b]Ingredientes:[/b] %s\n" % [nivel, receta.nivel_max, receta.texto_requisitos()]
+
+	if nivel >= receta.nivel_max:
+		return texto + "\n[color=#7fdc7f]Ya está al máximo.[/color]"
+
+	var plan := SistemaCocina.armar_olla(receta, _inventario)
+	if plan["faltan"].is_empty():
+		var partes := PackedStringArray()
+		for clave in plan["olla"]:
+			partes.append("%dx %s" % [plan["olla"][clave], (_inventario[clave] as ItemData).nombre])
+		texto += "\n[b]Se usará:[/b] " + ", ".join(partes)
+	else:
+		var faltas := PackedStringArray()
+		for tag in plan["faltan"]:
+			faltas.append("%s x%d" % [SistemaCocina.nombre_tag(tag), plan["faltan"][tag]])
+		texto += "\n[color=#e86d6d]Te faltan: %s[/color]" % ", ".join(faltas)
+	return texto
+
+
+func _cocinar_receta() -> void:
+	if _recetas_conocidas.is_empty():
+		return
+	var receta := _recetas_conocidas[indice_receta]
+	var plan := SistemaCocina.armar_olla(receta, _inventario)
+	if not plan["faltan"].is_empty():
+		label_mensaje_receta.text = "Te faltan ingredientes."
+		return
+
+	var resultado: Dictionary = CodigoGlobal.cocinar(plan["olla"])
+	_inventario_sucio = true
+	_construir_recetas()   # refresca niveles, detalle y lo que queda en la despensa
+	label_mensaje_receta.text = _mensaje_resultado(resultado)
+
+func _aceptar() -> void:
+	if modo == MODO_DESCUBRIR:
+		cocinar()
+	else:
+		_cocinar_receta()
+
+
+func _texto_ayuda() -> String:
+	var ok := TeclasUI.tecla(&"comer_confirmar")
+	if modo == MODO_DESCUBRIR:
+		return "Flechas: mover · Z/X: ±1 (Shift ±5) · %s: cocinar · Q/E: modo · Esc: cerrar" % ok
+	return "↑↓: elegir receta · %s: cocinar · Q/E: modo · Esc: cerrar" % ok

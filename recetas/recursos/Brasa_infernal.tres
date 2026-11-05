@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="RecetaCocina" format=3 uid="uid://c7ajdlmpopg3i"]
+
+[ext_resource type="Script" uid="uid://cgb2sjkqw76te" path="res://recetas/codigo/MejoraPermanente.gd" id="1_ccnga"]
+[ext_resource type="Script" uid="uid://bc56myxjirvy4" path="res://recetas/codigo/RequisitoReceta.gd" id="2_je665"]
+[ext_resource type="Script" uid="uid://dgp8yow8gs1hc" path="res://recetas/codigo/RecetaCocina.gd" id="3_4ixxo"]
+
+[sub_resource type="Resource" id="Resource_rmeqb"]
+script = ExtResource("1_ccnga")
+nombre = "+ Daño"
+stat = "dano"
+valor = 2.0
+metadata/_custom_type_script = "uid://cgb2sjkqw76te"
+
+[sub_resource type="Resource" id="Resource_osupg"]
+script = ExtResource("2_je665")
+tag = 5
+cantidad_minima = 11
+metadata/_custom_type_script = "uid://bc56myxjirvy4"
+
+[resource]
+script = ExtResource("3_4ixxo")
+nombre = "Brasa infernal"
+requisitos = Array[ExtResource("2_je665")]([SubResource("Resource_osupg")])
+mejora = SubResource("Resource_rmeqb")
+nivel_max = 3
+metadata/_custom_type_script = "uid://dgp8yow8gs1hc"

@@ -64,3 +64,29 @@ static func buscar_receta(conteo: Dictionary) -> RecetaCocina:
 
 static func nombre_tag(tag: int) -> String:
 	return ItemData.TagComida.keys()[tag]
+
+## Arma la olla más barata para una receta usando partes de UN solo tag (las de varios tags
+## quedan para la mezcla manual). Gasta primero lo más común.
+## Devuelve { "olla": { clave: unidades }, "faltan": { tag: unidades que faltan } }
+static func armar_olla(receta: RecetaCocina, inventario: Dictionary) -> Dictionary:
+	var olla := {}
+	var faltan := {}
+	for requisito in receta.requisitos:
+		if requisito == null:
+			continue
+		var necesita := maxi(requisito.cantidad_minima, 1)
+		var candidatos: Array = []
+		for clave in inventario:
+			var item: ItemData = inventario[clave]
+			if es_ingrediente(item) and item.cantidad > 0 and item.tags.size() == 1 and item.tags[0] == requisito.tag:
+				candidatos.append(clave)
+		candidatos.sort_custom(func(a, b): return (inventario[a] as ItemData).rareza < (inventario[b] as ItemData).rareza)
+		for clave in candidatos:
+			if necesita <= 0:
+				break
+			var tomar := mini(necesita, (inventario[clave] as ItemData).cantidad)
+			olla[clave] = int(olla.get(clave, 0)) + tomar
+			necesita -= tomar
+		if necesita > 0:
+			faltan[requisito.tag] = necesita
+	return {"olla": olla, "faltan": faltan}
